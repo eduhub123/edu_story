@@ -1,0 +1,54 @@
+####################################################################################################
+# Creating container PHP
+####################################################################################################
+php1:
+    build: ./service
+    container_name: php1
+    volumes:
+        - ./service/:/var/www/html
+    ports:
+        - "9114:9000"
+
+php2:
+    build: ./service
+    container_name: php2
+    volumes:
+        - ./service/:/var/www/html
+    ports:
+        - "9115:9000"
+
+####################################################################################################
+# Creating container (Nginx)
+####################################################################################################
+
+nginx1:
+    image: nginx:latest
+    container_name: nginx1
+    ports:
+        - 7098:80
+    volumes:
+        - ./image/nginx/nginx-01.conf:/etc/nginx/nginx.conf
+    links:
+        - php1
+
+nginx2:
+    image: nginx:latest
+    container_name: nginx2
+    ports:
+        - 7099:80
+    volumes:
+        - ./image/nginx/nginx-02.conf:/etc/nginx/nginx.conf
+    links:
+        - php2
+
+nginx_proxy:
+    container_name: 'nginx_proxy'
+    image: nginx:latest
+    ports:
+        - 9098:80
+    volumes:
+        - ./image/nginx/nginx.proxy.conf:/etc/nginx/nginx.conf
+    links:
+        - nginx1
+        - nginx2
+
