@@ -13,7 +13,7 @@ $db = [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'edu_platform'),
+    'default' => env('DB_CONNECTION', 'edu_story'),
 
     /*
     |--------------------------------------------------------------------------
@@ -33,7 +33,7 @@ $db = [
 
     'connections' =>
         [
-            'edu_platform' => [
+            'edu_story' => [
                 'driver'      => 'mysql',
                 'host'        => env('DB_HOST', '127.0.0.1'),
                 'port'        => env('DB_PORT', 3306),
