@@ -4,24 +4,32 @@ namespace App\Models\Story;
 
 use Illuminate\Database\Eloquent\Model;
 
-class FreeStory  extends Model
+class FreeStory extends Model
 {
-    protected $table = 'free_story';
+    const TABLE = 'free_story';
 
     protected $connection = 'edu_story';
+    protected $table      = self::TABLE;
+    public    $timestamps = false;
+
+    const _ID       = 'id';
+    const _YEAR     = 'year';
+    const _MONTH    = 'month';
+    const _DAYS     = 'days';
+    const _SLANG_ID = 'slang_id';
 
     protected $fillable =
         [
-            'id',
-            'year',
-            'month',
-            'days',
-            'slang_id'
+            self::_ID,
+            self::_YEAR,
+            self::_MONTH,
+            self::_DAYS,
+            self::_SLANG_ID
         ];
 
 
     public function story_lang_relate()
     {
-        return $this->belongsTo('\App\Models\Story\StoryLang', 'slang_id', 'slang_id');
+        return $this->belongsTo(StoryLang::class, StoryLang::_SLANG_ID, self::_SLANG_ID);
     }
 }
