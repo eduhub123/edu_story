@@ -1,35 +1,36 @@
 <?php
 
+namespace App\Services\Platform;
+
 use App\Models\Platform\PopularSearch;
-use App\Repositories\Platform\PopularSearchRepository;
 use App\Services\RedisService;
+use App\Services\ServiceConnect\LessonConnectService;
 
 class PopularSearchService
 {
     private $redisService;
-    private $popularSearchRepository;
+    private $lessonConnectService;
 
     public function __construct(
         RedisService $redisService,
-        PopularSearchRepository $popularSearchRepository
+        LessonConnectService $lessonConnectService
     ) {
-        $this->redisService            = $redisService;
-        $this->popularSearchRepository = $popularSearchRepository;
+        $this->redisService = $redisService;
+        $this->lessonConnectService = $lessonConnectService;
     }
 
-    public function getPopularSearch($typeSearch, $appId, $os, $lang)
+    public function getPopularSearch($typeSearch, $appId)
     {
         $keyTypeSearch = implode('_', $typeSearch);
 
-        $keyPopular  = PopularSearch::KEY_REDIS_POPULAR_SEARCH_DATA . $appId . '_' . $keyTypeSearch . '_' . $os . '_' . $lang;
+        $keyPopular  = PopularSearch::KEY_REDIS_POPULAR_SEARCH . '_' . $appId . '_' . $keyTypeSearch;
         $dataPopular = $this->redisService->get($keyPopular, true);
 
         if (!$dataPopular) {
-            $dataPopular = $this->popularSearchRepository->getPopularSearch($appId, $typeSearch)->toArray();
-            foreach ($dataPopular as $key => $value) {
-                $dataPopular[$key]['thumb'] = config('environment.URL_DISPLAY_CDN'). $value['thumb'];
+            $dataPopular = $this->lessonConnectService->getPopularSearch($appId, $typeSearch);
+            if($dataPopular){
+                $this->redisService->set($keyPopular, $dataPopular);
             }
-            $this->redisService->set($keyPopular, $dataPopular);
         }
         return $dataPopular;
     }

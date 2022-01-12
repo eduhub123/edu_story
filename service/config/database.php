@@ -37,7 +37,7 @@ $db = [
                 'driver'      => 'mysql',
                 'host'        => env('DB_HOST', '127.0.0.1'),
                 'port'        => env('DB_PORT', 3306),
-                'database'    => env('DB_DATABASE', 'edu_platform'),
+                'database'    => env('DB_DATABASE', 'edu_story'),
                 'username'    => env('DB_USERNAME', ''),
                 'password'    => env('DB_PASSWORD', ''),
                 'unix_socket' => env('DB_SOCKET', ''),
@@ -48,23 +48,6 @@ $db = [
                 'engine'      => env('DB_ENGINE', null),
                 'timezone'    => env('DB_TIMEZONE', '+00:00'),
             ],
-
-            'edu_app' =>
-                [
-                    'driver'      => 'mysql',
-                    'host'        => env('DB_HOST_APP', '10.240.0.41'),
-                    'port'        => env('DB_PORT_APP', 3306),
-                    'database'    => env('DB_DATABASE_APP', 'edu_app'),
-                    'username'    => env('DB_USERNAME_APP', 'edu_app'),
-                    'password'    => env('DB_PASSWORD_APP', 'app_app_2021'),
-                    'unix_socket' => env('DB_SOCKET', ''),
-                    'charset'     => env('DB_CHARSET', 'utf8mb4'),
-                    'collation'   => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-                    'prefix'      => env('DB_PREFIX', ''),
-                    'strict'      => env('DB_STRICT_MODE', true),
-                    'engine'      => env('DB_ENGINE', null),
-                    'timezone'    => env('DB_TIMEZONE', '+00:00'),
-                ],
 
             'mongodb' => [
                 'driver'   => 'mongodb',

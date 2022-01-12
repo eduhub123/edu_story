@@ -3,182 +3,85 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\BaseMobileController;
-use App\Services\Platform\VersionService;
-use App\Services\RedisService;
+use App\Models\Platform\PopularSearch;
+use App\Models\Story\StoryLang;
+use App\Repositories\Story\StoryLangRepository;
+use App\Services\Platform\PopularSearchService;
+use App\Services\Story\StoryService;
 use App\Services\ZipService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class StoryController extends BaseMobileController
 {
+    private $storyLangRepository;
     private $request;
-    private $versionService;
-    private $redisService;
     private $zipService;
+    private $storyService;
+    private $popularSearchService;
 
     public function __construct(
-        FreeStoryRepository $freeStoryRepository,
-        StoryLevelRepository $storyLevelRepository,
+        StoryLangRepository $storyLangRepository,
         Request $request,
-        VersionService $versionService,
-        RedisService $redisService,
-        ZipService $zipService
+        ZipService $zipService,
+        StoryService $storyService,
+        PopularSearchService $popularSearchService
     ) {
         parent::__construct($request);
-        $this->request        = $request;
-        $this->versionService = $versionService;
-        $this->redisService   = $redisService;
-        $this->zipService     = $zipService;
+        $this->storyLangRepository  = $storyLangRepository;
+        $this->request              = $request;
+        $this->zipService           = $zipService;
+        $this->storyService         = $storyService;
+        $this->popularSearchService = $popularSearchService;
     }
 
     public function list()
     {
-        dd($this->ver);
         if ($this->ver == 44990 || $this->ver == 45680 || $this->ver == 45685) {
             $this->ver = 0;
         }
-        $storyItem   = [];
-        $level       = $this->request->input('level', 0);
-        $level       = intval($level);
-        $keyLevelAll = 'story_level_all_level' . $this->lang_id . $this->ver . $this->os . $this->is_vn . "_";
-//        $ver         = $this->_versionStoryRepository->getCurrentVersion();
 
-        $verInfo = $this->_storyLangRepository->getLastVersionStory($this->lang_id, $this->isNetworkEarlyStart);
-        $ver     = $verInfo->api_ver;
+        $storyItem = [];
+        $level     = $this->request->input('level', 0);
+        $level     = intval($level);
+        $json      = $this->request->input('json');
 
-        $json  = $request->input('json');
-        $today = date('Ymd', time());
+        $verInfo     = $this->storyLangRepository->getLastVersionStory($this->lang_id, $this->isNetworkEarlyStart);
+        $lastVersion = 0;
+        if ($verInfo) {
+            $lastVersion = $verInfo[StoryLang::_API_VER];
+        }
 
-        $keyDisplayLang = 'story_home_display_lang' . $this->os . $this->ver . $this->lang_id;
-
-        if ($ver <= $this->ver) {
+        if ($lastVersion <= $this->ver) {
             $this->status = 'success';
             goto next;
         }
 
-        $this->isSubmit = $this->commonService->isSubmitMobileApp($this->app_id, $this->os, $this->subversion);
-
-        $storyItem['level']               = $this->processDataStory($level);
-        $storyItem['level']['free_story'] = $this->processFreeStory();
-
-        $allLevel = $this->redisService->get($keyLevelAll, true);
-        if (!$allLevel) {
-            $allLevel = $this->_levelDetailRepository->getAllLevel($this->lang_id);
-            $this->redisService->set($keyLevelAll, $allLevel);
+        if (!$json) {
+            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_' . $today, 'list_story', $this->ver, $lastVersion);
+            if (file_exists($fileZip)) {
+                goto nextDownload;
+            }
         }
 
-        $storyItem['level']['all_level'] = $allLevel;
-        $storyItem['home']['feature']    = $this->processDataFeature();
-        $storyItem['home']['character']  = $this->processDataCharacter();
-        $storyItem['home']['category']   = $this->processDataCategory();
-        $storyItem['home']['level']      = $this->processDataLevel();
-        $storyItem['home']['grade']      = $this->processDataGrade();
+        $storyItem                  = $this->storyService->processDataStory($this->app_id, $this->device_type, $this->lang_id, $level, $this->ver, $lastVersion, $this->isNetworkEarlyStart);
+        $storyItem['free_story']    = $this->storyService->processFreeStory($this->ver, $lastVersion);
+        $storyItem['version_story'] = $lastVersion;
 
-        $storyItem['home']['list_language_display'] = $this->redisService->get($keyDisplayLang, true);
-        if (!$storyItem['home']['list_language_display']) {
-            $storyItem['home']['list_language_display'] = $this->_languageDisplayRepository->getListLang();
-            $this->redisService->set($keyDisplayLang, $storyItem['home']['list_language_display']);
-        }
+        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch([PopularSearch::POPULAR_STORY], $this->app_id);
 
-        $storyItem['home']['description'] = $this->processDataDescriptionLevel();
-
-        $storyItem['level']['ver']   = $ver;
-        $storyItem['level']['today'] = date('Ymd', time());
-
+        $this->message = __('app.success');
+        $this->status  = 'success';
         next:
-
-        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch([PopularSearch::POPULAR_STORY], $this->app_id, $this->os, $this->lang_id);
-
         if ($json) {
             return $this->ResponseData($storyItem);
         }
+        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status);
 
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'story_list' . $today, $storyItem,
-            'list_story_v2' . $this->isSubmit,
-            $this->ver, $ver, $this->isNetworkEarlyStart);
-
+        nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }
 
-    private function processDataStory($level)
-    {
-        $keyLevelStory = 'story_level_data_'.$this->os.$this->lang_id.$this->ver.$this->sv.$this->is_vn.'_'.$this->isSubmit.'_'.$this->isNetworkEarlyStart;
-        $dataTmp       = $this->redisService->get($keyLevelStory, true);
-        $list          = [];
-
-        if (!$dataTmp) {
-
-            $storyLevel = $this->_storyLevelRepository->getAllLevel($this->lang_id, $level, $this->ver, null, null,$this->isNetworkEarlyStart);
-
-            $getAllLesson = $this->_gameLessonRepository->getAllLessonIdWithStoryId();
-
-            $storyLesson = $this->activitiesStoriesRepository->getStoryIdWithActId($getAllLesson);
-
-            foreach ($storyLevel as $k => $e) {
-
-                if ($e->delete == StoryLevel::IS_DELETE) {
-                    $dataTmp['delete'][] = intval($e->slang_id);
-                    continue;
-                }
-                if ($e->data) {
-                    if ($e->zip_size) {
-                        $zip_size = json_decode($e->zip_size, true);
-                    }
-
-                    $list[$k]                           = json_decode($e->data, true);
-                    $list[$k]['has_act']                = isset($storyLesson[$e->slang_id]) ? 1 : 0;
-                    $list[$k]['image']                  = $this->_server->createUrlDownload('images/thumbnail/hd/'.$e->icon,
-                        $this->sv, '', $this->is_vn);
-
-                    if ($this->app_id == 51) {
-                        $list[$k]['quality']            = (string) $e->quality_score;
-                    } else {
-                        $list[$k]['quality']            = $e->quality_score;
-                    }
-
-                    //set file name by version update
-                    if ($e['date_publish'] > 1615546200 && $this->app_id == 40) {
-                        $fileNameHd = $e->sid . '_' . $e->lang_id . '_' . $e->version_story . '_hd.zip';
-                        $fileNameHdr = $e->sid . '_' . $e->lang_id . '_' . $e->version_story . '_hdr.zip';
-                    } else {
-                        $fileNameHd = $e->sid . '_' . $e->lang_id . '_hd.zip';
-                        $fileNameHdr = $e->sid . '_' . $e->lang_id. '_hdr.zip';
-                    }
-
-                    $list[$k]['download_link_hd'] = $this->_server->createUrlDownload($fileNameHd,
-                        0, 'zip', $this->is_vn);
-                    $list[$k]['download_link_hdr'] = $this->_server->createUrlDownload($fileNameHdr,
-                        0, 'zip', $this->is_vn);
-
-                    $list[$k]['download_link_hd_size']  = isset($zip_size['hd']) ? (float)$zip_size['hd'] : 0;
-                    $list[$k]['download_link_hdr_size'] = isset($zip_size['hdr']) ? (float)$zip_size['hdr'] : 0;
-                }
-            }
-
-            $dataTmp['data'] = array_values($list);
-            $this->redisService->set($keyLevelStory, $dataTmp);
-        }
-        return $dataTmp;
-    }
-
-    private function processFreeStory()
-    {
-        $year  = intval(date('Y', time()));
-        $month = intval(date('m', time()));
-        $day   = intval(date('d', time()));
-
-        $keyStoryfree  = 'story_level_free___'.$this->os.$this->lang_id.$this->ver.$year.$month.$day;
-        $dataStoryfree = $this->redisService->get($keyStoryfree, true);
-
-        if (!$dataStoryfree) {
-            $itemFreeStory = $this->_freeStoryRepository->getFreeStoryToDay();
-
-            foreach ($itemFreeStory as $item) {
-                $dataStoryfree[$item->story_lang_relate->lang_id][] = intval($item->slang_id);
-            }
-
-            $this->redisService->set($keyStoryfree, $dataStoryfree);
-        }
-
-        return $dataStoryfree;
-    }
 }

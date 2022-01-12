@@ -32,7 +32,6 @@ class MediaConnectService
             $data['description'] = $description;
         }
         $response = $this->curlService->curlPostUploadListFile($url, $data, null, $listFile);
-//        echo "response media :". $response.PHP_EOL;
         return json_decode($response, true);
     }
 

@@ -23,5 +23,13 @@ class StoryLevel extends Model
         self::_LEVEL_ID
     ];
 
+    const ITEM_PAGE = 10;
+    const IS_DELETE = 1;
+
+    public function storyLangRelate()
+    {
+        return $this->belongsTo(StoryLang::class, StoryLang::_SLANG_ID, self::_ID);
+    }
+
 
 }
