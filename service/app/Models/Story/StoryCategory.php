@@ -4,9 +4,9 @@ namespace App\Models\Story;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StoryLevel extends Model
+class StoryCategory extends Model
 {
-    const TABLE = 'story_level';
+    const TABLE = 'story_category';
 
     protected $connection = 'edu_story';
     public    $timestamps = false;
@@ -14,22 +14,14 @@ class StoryLevel extends Model
 
     const _ID       = 'id';
     const _SLANG_ID = 'slang_id';
-    const _LEVEL_ID = 'level_id';
+    const _CATE_ID  = 'cateId';
 
 
     protected $fillable = [
         self::_ID,
         self::_SLANG_ID,
-        self::_LEVEL_ID
+        self::_CATE_ID
     ];
-
-    const ITEM_PAGE = 10;
-    const IS_DELETE = 1;
-
-    public function storyLangRelate()
-    {
-        return $this->belongsTo(StoryLang::class, StoryLang::_SLANG_ID, self::_ID);
-    }
 
 
 }
