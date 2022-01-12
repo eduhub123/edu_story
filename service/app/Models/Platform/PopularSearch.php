@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Models\Platform;
 use Illuminate\Database\Eloquent\Model;
 
 class PopularSearch extends Model
@@ -30,7 +31,7 @@ class PopularSearch extends Model
     const POPULAR_WORKSHEET_PHONIC = 3;
     const POPULAR_WORKSHEET_STORY  = 4;
 
-    const KEY_REDIS_POPULAR_SEARCH_DATA = 'KEY_REDIS_POPULAR_SEARCH_DATA_';
+    const KEY_REDIS_POPULAR_SEARCH = 'KEY_REDIS_POPULAR_SEARCH';
 
     protected $fillable =
         [
