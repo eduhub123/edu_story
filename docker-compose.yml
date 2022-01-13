@@ -45,7 +45,7 @@ nginx_proxy:
     container_name: 'nginx_proxy'
     image: nginx:latest
     ports:
-        - 9099:80
+        - 9100:80
     volumes:
         - ./image/nginx/nginx.proxy.conf:/etc/nginx/nginx.conf
     links:
