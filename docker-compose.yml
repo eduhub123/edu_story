@@ -1,7 +1,7 @@
 ####################################################################################################
 # Creating container PHP
 ####################################################################################################
-php1:
+php_story_1:
     build: ./service
     container_name: php_story_1
     volumes:
@@ -9,7 +9,7 @@ php1:
     ports:
         - "9116:9000"
 
-php2:
+php_story_2:
     build: ./service
     container_name: php_story_2
     volumes:
@@ -21,7 +21,7 @@ php2:
 # Creating container (Nginx)
 ####################################################################################################
 
-nginx1:
+nginx_story_1:
     image: nginx:latest
     container_name: nginx_story_1
     ports:
@@ -31,7 +31,7 @@ nginx1:
     links:
         - php_story_1
 
-nginx2:
+nginx_story_2:
     image: nginx:latest
     container_name: nginx_story_2
     ports:
@@ -41,7 +41,7 @@ nginx2:
     links:
         - php_story_2
 
-nginx_proxy:
+nginx_proxy_story:
     image: nginx:latest
     container_name: nginx_proxy_story
     ports:
