@@ -7,7 +7,7 @@ php1:
     volumes:
         - ./service/:/var/www/html
     ports:
-        - "9114:9000"
+        - "9116:9000"
 
 php2:
     build: ./service
@@ -15,7 +15,7 @@ php2:
     volumes:
         - ./service/:/var/www/html
     ports:
-        - "9115:9000"
+        - "9117:9000"
 
 ####################################################################################################
 # Creating container (Nginx)
@@ -45,7 +45,7 @@ nginx_proxy:
     container_name: 'nginx_proxy'
     image: nginx:latest
     ports:
-        - 9098:80
+        - 9099:80
     volumes:
         - ./image/nginx/nginx.proxy.conf:/etc/nginx/nginx.conf
     links:
