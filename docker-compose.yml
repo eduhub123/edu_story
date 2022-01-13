@@ -3,7 +3,7 @@
 ####################################################################################################
 php1:
     build: ./service
-    container_name: php1
+    container_name: php_story_1
     volumes:
         - ./service/:/var/www/html
     ports:
@@ -11,7 +11,7 @@ php1:
 
 php2:
     build: ./service
-    container_name: php2
+    container_name: php_story_2
     volumes:
         - ./service/:/var/www/html
     ports:
@@ -23,32 +23,32 @@ php2:
 
 nginx1:
     image: nginx:latest
-    container_name: nginx1
+    container_name: nginx_story_1
     ports:
         - 7098:80
     volumes:
         - ./image/nginx/nginx-01.conf:/etc/nginx/nginx.conf
     links:
-        - php1
+        - php_story_1
 
 nginx2:
     image: nginx:latest
-    container_name: nginx2
+    container_name: nginx_story_2
     ports:
         - 7099:80
     volumes:
         - ./image/nginx/nginx-02.conf:/etc/nginx/nginx.conf
     links:
-        - php2
+        - php_story_2
 
 nginx_proxy:
-    container_name: 'nginx_proxy'
     image: nginx:latest
+    container_name: nginx_proxy_story
     ports:
         - 9100:80
     volumes:
         - ./image/nginx/nginx.proxy.conf:/etc/nginx/nginx.conf
     links:
-        - nginx1
-        - nginx2
+        - nginx_story_1
+        - nginx_story_2
 
