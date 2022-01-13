@@ -101,9 +101,9 @@ class StoryService
 
         $keyStoryFree  = self::KEY_REDIS_STORY_LIST_FREE . "_" . $version . "_" . $lastVersion . "_" . $today;
         $dataStoryFree = $this->redisService->get($keyStoryFree, true);
-
         if (!$dataStoryFree) {
             $listFreeStory = $this->freeStoryRepository->getFreeStoryToDay()->toArray();
+            $dataStoryFree = [];
             foreach ($listFreeStory as $freeStory) {
                 if (isset($freeStory['story_lang_relate'][StoryLang::_LANG_ID])) {
                     $langId                   = $freeStory['story_lang_relate'][StoryLang::_LANG_ID];

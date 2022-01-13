@@ -31,7 +31,7 @@ class PopularSearch extends Model
     const POPULAR_WORKSHEET_PHONIC = 3;
     const POPULAR_WORKSHEET_STORY  = 4;
 
-    const KEY_REDIS_POPULAR_SEARCH = 'KEY_REDIS_POPULAR_SEARCH';
+    const KEY_REDIS_POPULAR_SEARCH = 'KEY_REDIS_POPULAR_SEARCH_DATA_';
 
     protected $fillable =
         [
