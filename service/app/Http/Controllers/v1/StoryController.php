@@ -45,6 +45,9 @@ class StoryController extends BaseMobileController
         $level     = $this->request->input('level', 0);
         $level     = intval($level);
         $json      = $this->request->input('json');
+        $inHouse   = $this->request->input('in_house');
+
+        $this->isNetworkEarlyStart = $this->isNetworkEarlyStart || $inHouse;
 
         $verInfo     = $this->storyLangRepository->getLastVersionStory($this->lang_id, $this->isNetworkEarlyStart);
         $lastVersion = 0;
