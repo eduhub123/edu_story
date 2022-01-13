@@ -15,20 +15,20 @@ class PopularSearchService
         RedisService $redisService,
         LessonConnectService $lessonConnectService
     ) {
-        $this->redisService = $redisService;
+        $this->redisService         = $redisService;
         $this->lessonConnectService = $lessonConnectService;
     }
 
-    public function getPopularSearch($typeSearch, $appId)
+    public function getPopularSearch($appId, $typeSearch)
     {
         $keyTypeSearch = implode('_', $typeSearch);
 
-        $keyPopular  = PopularSearch::KEY_REDIS_POPULAR_SEARCH . '_' . $appId . '_' . $keyTypeSearch;
+        $keyPopular  = PopularSearch::KEY_REDIS_POPULAR_SEARCH . $appId . '_' . $keyTypeSearch;
         $dataPopular = $this->redisService->get($keyPopular, true);
 
         if (!$dataPopular) {
             $dataPopular = $this->lessonConnectService->getPopularSearch($appId, $typeSearch);
-            if($dataPopular){
+            if ($dataPopular) {
                 $this->redisService->set($keyPopular, $dataPopular);
             }
         }

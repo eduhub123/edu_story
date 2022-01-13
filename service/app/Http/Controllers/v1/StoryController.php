@@ -72,7 +72,7 @@ class StoryController extends BaseMobileController
         $storyItem['free_story']    = $this->storyService->processFreeStory($this->ver, $lastVersion);
         $storyItem['version_story'] = $lastVersion;
 
-        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch([PopularSearch::POPULAR_STORY], $this->app_id);
+        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch($this->app_id, [PopularSearch::POPULAR_STORY]);
 
         $this->message = __('app.success');
         $this->status  = 'success';
