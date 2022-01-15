@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Story\Category;
 use App\Models\Story\DescriptionGrade;
 use App\Models\Story\DescriptionLevel;
+use App\Models\Story\FreeStory;
 use App\Models\Story\Grade;
 use App\Models\Story\LevelDetails;
 use App\Models\Story\StoryLang;
 use App\Repositories\Story\CategoryRepository;
 use App\Repositories\Story\DescriptionLevelRepository;
+use App\Repositories\Story\FreeStoryRepository;
 use App\Repositories\Story\GradeRepository;
 use App\Repositories\Story\LevelDetailsRepository;
 use App\Repositories\Story\StoryLangRepository;
@@ -27,6 +29,7 @@ class StoryLangController extends Controller
     private $storyLangRepos;
     private $categoryRepos;
     private $levelDetailsRepos;
+    private $freeStoryRepos;
     private $descriptionLevelRepos;
     private $request;
 
@@ -36,6 +39,7 @@ class StoryLangController extends Controller
         StoryLangRepository $storyLangRepos,
         LevelDetailsRepository $levelDetailsRepos,
         DescriptionLevelRepository $descriptionLevelRepos,
+        FreeStoryRepository $freeStoryRepos,
         Request $request
     ) {
         $this->gradeRepos            = $gradeRepos;
@@ -43,6 +47,7 @@ class StoryLangController extends Controller
         $this->storyLangRepos        = $storyLangRepos;
         $this->levelDetailsRepos     = $levelDetailsRepos;
         $this->descriptionLevelRepos = $descriptionLevelRepos;
+        $this->freeStoryRepos        = $freeStoryRepos;
         $this->request               = $request;
     }
 
@@ -164,6 +169,25 @@ class StoryLangController extends Controller
             $value['lang_display_id'] = (int)$description[DescriptionLevel::_LANG_DISPLAY];
             $value['description']     = $description[DescriptionLevel::_DESCRIPTION];
             $data[]                   = $value;
+        }
+
+        $this->status  = 'success';
+        $this->message = __('app.success');
+
+        next:
+        return $this->responseData($data);
+    }
+
+    public function getStoryFree()
+    {
+        $listFreeStory = $this->freeStoryRepos->getFreeStoryToDay()->toArray();
+
+        $data = [];
+        foreach ($listFreeStory as $freeStory) {
+            if (isset($freeStory['story_lang_relate'][StoryLang::_LANG_ID])) {
+                $langId          = $freeStory['story_lang_relate'][StoryLang::_LANG_ID];
+                $data[$langId][] = (int)$freeStory[FreeStory::_SLANG_ID];
+            }
         }
 
         $this->status  = 'success';
