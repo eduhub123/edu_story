@@ -9,8 +9,8 @@ class FreeStory extends Model
     const TABLE = 'free_story';
 
     protected $connection = 'edu_story';
-    protected $table      = self::TABLE;
     public    $timestamps = false;
+    protected $table      = self::TABLE;
 
     const _ID       = 'id';
     const _YEAR     = 'year';
@@ -18,14 +18,15 @@ class FreeStory extends Model
     const _DAYS     = 'days';
     const _SLANG_ID = 'slang_id';
 
-    protected $fillable =
-        [
-            self::_ID,
-            self::_YEAR,
-            self::_MONTH,
-            self::_DAYS,
-            self::_SLANG_ID
-        ];
+    const IS_ACTIVE = 1;
+
+    protected $fillable = [
+        self::_ID,
+        self::_YEAR,
+        self::_MONTH,
+        self::_DAYS,
+        self::_SLANG_ID
+    ];
 
 
     public function story_lang_relate()

@@ -14,6 +14,8 @@ $router->group(
         $router->get('get-list-grade-story', 'App\StoryLangController@getListGradeStory');
 
         $router->get('get-list-description-story', 'App\StoryLangController@getListDescriptionStory');
+
+        $router->get('get-story-free', 'App\StoryLangController@getStoryFree');
     }
 );
 
