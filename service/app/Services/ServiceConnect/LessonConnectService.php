@@ -16,8 +16,9 @@ class LessonConnectService
         $this->curlService = $curlService;
     }
 
-    public function getPopularSearch($appId, $typeSearch){
-        $data    = ['app_id' => $appId, 'type_search' => $typeSearch];
+    public function getPopularSearch($appId, $typeSearch)
+    {
+        $data    = ['app_id' => $appId, 'type_search' => implode(',', $typeSearch)];
         $url     = Config::get('environment.API_SERVICE_LESSON') . "/api/get-popular-search";
         $version = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
         $version = json_decode($version, true);
