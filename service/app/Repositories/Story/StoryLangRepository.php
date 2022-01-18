@@ -49,4 +49,12 @@ class StoryLangRepository extends EloquentRepository
         }
         return $query->get();
     }
+
+    public function getAllLanguageUse(){
+        return $this->_model
+            ->select(StoryLang::_LANG_ID)
+            ->where(StoryLang::_LANG_ID,'>',0)
+            ->groupBy(StoryLang::_LANG_ID)
+            ->get();
+    }
 }

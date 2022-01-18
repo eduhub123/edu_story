@@ -45,6 +45,9 @@ class StoryController extends BaseMobileController
         $level     = $this->request->input('level', 0);
         $level     = intval($level);
         $json      = $this->request->input('json');
+        $inHouse   = $this->request->input('in_house');
+
+        $this->isNetworkEarlyStart = $this->isNetworkEarlyStart || $inHouse;
 
         $verInfo     = $this->storyLangRepository->getLastVersionStory($this->lang_id, $this->isNetworkEarlyStart);
         $lastVersion = 0;
@@ -66,7 +69,6 @@ class StoryController extends BaseMobileController
         }
 
         $storyItem                  = $this->storyService->processDataStory($this->app_id, $this->device_type, $this->lang_id, $level, $this->ver, $lastVersion, $this->isNetworkEarlyStart);
-        $storyItem['free_story']    = $this->storyService->processFreeStory($this->ver, $lastVersion);
         $storyItem['version_story'] = $lastVersion;
 
         $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch($this->app_id, [PopularSearch::POPULAR_STORY]);
