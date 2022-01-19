@@ -33,8 +33,8 @@ class StoryLevelRepository extends EloquentRepository
             ->where('t3.status', 'Publish')
             ->where('t3.ver', 1);
 
-        if ($isNetworkEarlyStart) {
-            $data = $data->where('t3.go_to_live', StoryLang::GO_TO_LIVE);
+        if (!$isNetworkEarlyStart) {
+            $data = $data->where('t3.go_to_live', '=',StoryLang::GO_TO_LIVE);
         }
 
         $data->join('level_details as t2', 'story_level.level_id', '=', 't2.id')
