@@ -53,11 +53,14 @@ class StoryService
             if ($story[StoryLang::_DATA]) {
                 $dataStoryNew = json_decode($story[StoryLang::_DATA], true);
 
-                if ($deviceType == "hd") {
-                    $dataStoryNew['image'] = 'images/thumbnail/hd/' . $story[StoryLang::_ICON];
-                } else {
-                    $dataStoryNew['image'] = 'images/thumbnail/hdr/' . $story[StoryLang::_ICON];
-                }
+                $dataStoryNew['image'] = 'images/thumbnail/hd/' . $story[StoryLang::_ICON];
+                $dataStoryNew['image'] = 'images/thumbnail/hdr/' . $story[StoryLang::_ICON];
+
+//                if ($deviceType == "hd") {
+//                    $dataStoryNew['image'] = 'images/thumbnail/hd/' . $story[StoryLang::_ICON];
+//                } else {
+//                    $dataStoryNew['image'] = 'images/thumbnail/hdr/' . $story[StoryLang::_ICON];
+//                }
 
                 if ($appId == ListApp::APP_ID_MS_VN) {
                     $dataStoryNew['quality'] = (string)$story[StoryLang::_QUALITY_SCORE];
