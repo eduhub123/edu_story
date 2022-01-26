@@ -16,6 +16,8 @@ $router->group(
         $router->get('get-list-description-story', 'App\StoryLangController@getListDescriptionStory');
 
         $router->get('get-story-free', 'App\StoryLangController@getStoryFree');
+
+        $router->post('get-list-story-by-list-id', 'App\StoryLangController@getListStory');
     }
 );
 
