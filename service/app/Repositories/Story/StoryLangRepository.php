@@ -57,4 +57,19 @@ class StoryLangRepository extends EloquentRepository
             ->groupBy(StoryLang::_LANG_ID)
             ->get();
     }
+
+    public function getListByListId($listSlangId)
+    {
+        return $this->_model
+            ->select(
+                StoryLang::_SLANG_ID,
+                StoryLang::_SID,
+                StoryLang::_LANG_ID,
+                StoryLang::_NAME,
+                StoryLang::_ZIP_SIZE,
+                StoryLang::_VERSION_STORY
+            )
+            ->whereIn(StoryLang::_SLANG_ID, $listSlangId)
+            ->get();
+    }
 }
