@@ -146,7 +146,7 @@ class BaseMobileController extends Controller
 
     private function setNetworkEarlyStart()
     {
-        $ipList = ['113.190.232.224', '118.70.176.20', '118.70.186.162', '222.252.17.100'];
+        $ipList = ['113.190.232.224', '118.70.176.20', '118.70.186.162', '222.252.17.100', '42.113.143.186'];
         if (in_array($this->ip, $ipList)) {
             return true;
         }
