@@ -11,7 +11,13 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceApp    = 'https://api.dev.monkeyuni.com/user';
     $downloadResourceS3      = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
     $urlDisplayCdn           = 'https://vysqy4zclvobj.vcdn.cloud/';
-} else {
+} elseif (env('APP_ENV') == 'product') {
+    $urlConnectServiceMedia  = 'https://media.dev.monkeyuni.net';
+    $urlConnectServiceLesson = 'https://api.dev.monkeyuni.com/product_lesson';
+    $urlConnectServiceApp    = 'https://api.dev.monkeyuni.com/product_user';
+    $downloadResourceS3      = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
+    $urlDisplayCdn           = 'https://vysqy4zclvobj.vcdn.cloud/';
+}else {
     $urlConnectServiceMedia  = 'http://localhost:8089';
     $urlConnectServiceLesson = 'http://localhost:8099';
     $urlConnectServiceApp    = 'http://localhost:9098';
