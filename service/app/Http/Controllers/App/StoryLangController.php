@@ -197,4 +197,22 @@ class StoryLangController extends Controller
         return $this->responseData($data);
     }
 
+    public function getListStory()
+    {
+        $data    = [];
+        $slangId = $this->request->input('slang_id');
+
+        if (!$slangId) {
+            $this->message = __('app.invalid_params');
+            goto next;
+        }
+
+        $data = $this->storyLangRepos->getListByListId($slangId)->keyBy(StoryLang::_SLANG_ID);
+
+        $this->status  = 'success';
+        $this->message = __('app.success');
+
+        next:
+        return $this->responseData($data);
+    }
 }
