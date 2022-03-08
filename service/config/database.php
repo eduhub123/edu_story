@@ -64,8 +64,8 @@ $db = [
             'mongodb' => [
                 'driver'   => 'mongodb',
                 'dsn'      => env('DB_MONGO_URI', ''),
-                'database' => 'edu_backend',
-            ],
+                'database' => env('DB_NAME_MONGO', ''),
+                ],
 
         ],
 
