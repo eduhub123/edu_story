@@ -65,7 +65,7 @@ $db = [
                 'driver'   => 'mongodb',
                 'dsn'      => env('DB_MONGO_URI', ''),
                 'database' => env('DB_NAME_MONGO', ''),
-                ],
+            ],
 
         ],
 
