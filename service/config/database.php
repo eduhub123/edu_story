@@ -49,16 +49,22 @@ $db = [
                 'timezone'    => env('DB_TIMEZONE', '+00:00'),
             ],
 
+//            'mongodb' => [
+//                'driver'   => 'mongodb',
+//                'host'     => env('DB_HOST_MONGO', '127.0.0.1'),
+//                'port'     => env('DB_PORT_MONGO', 27017),
+//                'database' => env('DB_NAME_MONGO', ''),
+//                'username' => env('USER_MONGO', ''),
+//                'password' => env('PASS_MONGO', ''),
+//                'options'  => [
+//                    'database' => env('DB_NAME_MONGO') // sets the authentication database required by mongo
+//                ]
+//            ],
+
             'mongodb' => [
                 'driver'   => 'mongodb',
-                'host'     => env('DB_HOST_MONGO', '127.0.0.1'),
-                'port'     => env('DB_PORT_MONGO', 27017),
+                'dsn'      => env('DB_MONGO_URI', ''),
                 'database' => env('DB_NAME_MONGO', ''),
-                'username' => env('USER_MONGO', ''),
-                'password' => env('PASS_MONGO', ''),
-                'options'  => [
-                    'database' => env('DB_NAME_MONGO') // sets the authentication database required by mongo
-                ]
             ],
 
         ],
