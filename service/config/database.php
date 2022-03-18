@@ -34,19 +34,30 @@ $db = [
     'connections' =>
         [
             'edu_story' => [
+                'read'        => [
+                    'host'     => [
+                        env('DB_SLAVE_1_HOST_STORY', env('DB_HOST_STORY', '0.0.0.0')),
+                    ],
+                    'port'     => env('DB_SLAVE_PORT_STORY', env('DB_PORT_STORY', 3306)),
+                    'username' => env('DB_SLAVE_USERNAME_STORY', env('DB_USERNAME_STORY', '')),
+                    'password' => env('DB_SLAVE_PASSWORD_STORY', env('DB_PASSWORD_STORY', '')),
+                ],
+                'write'       => [
+                    'host'     => [
+                        env('DB_MASTER_HOST_STORY', env('DB_HOST_STORY', '0.0.0.0'))
+                    ],
+                    'port'     => env('DB_MASTER_PORT_STORY', env('DB_PORT_STORY', 3306)),
+                    'username' => env('DB_MASTER_USERNAME_STORY', env('DB_USERNAME_STORY', '')),
+                    'password' => env('DB_MASTER_PASSWORD_STORY', env('DB_PASSWORD_STORY', '')),
+                ],
                 'driver'      => 'mysql',
-                'host'        => env('DB_HOST', '127.0.0.1'),
-                'port'        => env('DB_PORT', 3306),
-                'database'    => env('DB_DATABASE', 'edu_story'),
-                'username'    => env('DB_USERNAME', ''),
-                'password'    => env('DB_PASSWORD', 'monkeyapp@1234!@!'),
+                'database'    => env('DB_DATABASE_STORY', 'edu_story'),
                 'unix_socket' => env('DB_SOCKET', ''),
-                'charset'     => env('DB_CHARSET', 'utf8mb4'),
-                'collation'   => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-                'prefix'      => env('DB_PREFIX', ''),
-                'strict'      => env('DB_STRICT_MODE', true),
-                'engine'      => env('DB_ENGINE', null),
-                'timezone'    => env('DB_TIMEZONE', '+00:00'),
+                'charset'     => 'utf8',
+                'collation'   => 'utf8_unicode_ci',
+                'prefix'      => 'tbl_',
+                'strict'      => false,
+                'engine'      => null,
             ],
 
 //            'mongodb' => [
