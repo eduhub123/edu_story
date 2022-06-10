@@ -12,11 +12,17 @@ class SendTelegram extends Job
     private $content;
     private $tokenBot;
 
-    public function __construct($id, $content, $tokenBot = '')
+    public function __construct($content, $id = null, $tokenBot = null)
     {
+        if (!$id) {
+            $id = config('environment.TELEGRAM_CHAT_ID_ERROR_APP');
+        }
+        if (!$tokenBot) {
+            $tokenBot = config('environment.TELEGRAM_BOT_TOKEN_ERROR_APP');
+        }
         $this->id       = $id;
-        $this->content  = $content;
         $this->tokenBot = $tokenBot;
+        $this->content  = $content;
     }
 
     public function handle(TelegramService $telegramService)

@@ -3,6 +3,8 @@
 
 namespace App\Services;
 
+use Illuminate\Http\UploadedFile;
+
 class UploadService
 {
 
@@ -69,4 +71,33 @@ class UploadService
         }
     }
 
+    public static function zipFirstInstall($pathFolder, $fileName, $data)
+    {
+        try {
+            $checkZip = ZipService::zipFile($pathFolder, 'index.json', $fileName, json_encode($data, true));
+            if (!$checkZip) {
+                return false;
+            }
+            return $checkZip;
+        } catch (\Exception $e) {
+            echo $e->getMessage() . PHP_EOL;
+            return false;
+        }
+    }
+
+
+    public static function getFile($realFile)
+    {
+        $path_parts             = pathinfo($realFile);
+        $path_parts['basename'] = $path_parts['filename'] . '.' . $path_parts['extension'];
+
+        $imgInfo = getimagesize($realFile);
+        return new UploadedFile(
+            $realFile,
+            $path_parts['basename'],
+            $imgInfo['mime'],
+            filesize($realFile),
+            true
+        );
+    }
 }
