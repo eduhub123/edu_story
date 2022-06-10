@@ -2,9 +2,9 @@
 if (env('APP_ENV') == 'live') {
     $urlConnectServiceMedia   = 'https://media.dev.monkeyuni.net';
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
-    $urlConnectServiceSupport = 'https://www.ticket.monkeyuni.com';
+    $urlConnectServiceSupport = 'https://ticket.monkeyuni.net';
 
-    $urlConnectServiceApp    = 'https://app.monkeyuni.net/user';
+    $urlConnectServiceApp    = 'http://10.240.0.38:6098';
     $urlConnectServiceLesson = 'http://10.240.0.42:9097';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media.monkeyuni.com';
@@ -14,8 +14,8 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
     $urlConnectServiceSupport = 'https://ticket.dev.monkeyuni.com';
 
-    $urlConnectServiceLesson = 'https://api.dev.monkeyuni.com/lesson';
     $urlConnectServiceApp    = 'https://api.dev.monkeyuni.com/user';
+    $urlConnectServiceLesson = 'https://api.dev.monkeyuni.com/lesson';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
     $urlDisplayCdn      = 'https://vysqy4zclvobj.vcdn.cloud/';
@@ -24,8 +24,8 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
     $urlConnectServiceSupport = 'https://ticket.dev.monkeyuni.com';
 
-    $urlConnectServiceLesson = 'http://localhost:8099';
     $urlConnectServiceApp    = 'http://localhost:9098';
+    $urlConnectServiceLesson = 'http://localhost:8099';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
     $urlDisplayCdn      = 'https://vysqy4zclvobj.vcdn.cloud/';
