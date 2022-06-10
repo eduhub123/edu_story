@@ -44,7 +44,7 @@ class FirstInstallController extends Controller
 
         $dataFirstInstall       = $this->firstInstallService->getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion);
         $linkFileFirstInstallMS = $this->firstInstallService->zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall);
-        dd($linkFileFirstInstallMS);
+
         $this->status  = 'success';
         $this->message = __('app.success');
         next:
