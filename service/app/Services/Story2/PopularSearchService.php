@@ -12,7 +12,8 @@ class PopularSearchService
     private $popularSearchRepos;
     private $lessonConnectService;
 
-    const KEY_REDIS_POPULAR_SEARCH = 'KEY_REDIS_POPULAR_SEARCH_DATA';
+    const KEY_REDIS_POPULAR_SEARCH    = 'KEY_REDIS_POPULAR_SEARCH_DATA';
+    const KEY_REDIS_POPULAR_SEARCH_V2 = 'KEY_REDIS_POPULAR_SEARCH_V2';
 
     public function __construct(
         RedisService $redisService,
@@ -27,7 +28,7 @@ class PopularSearchService
     public function getPopularSearchV2($idApp, $types)
     {
         $keyTypes = implode('_', $types);
-        $key      = self::KEY_REDIS_POPULAR_SEARCH . '_' . $idApp . '_' . $keyTypes;
+        $key      = self::KEY_REDIS_POPULAR_SEARCH_V2 . '_' . $idApp . '_' . $keyTypes;
         $data     = $this->redisService->get($key, true);
         if (!$data) {
             $data = $this->popularSearchRepos->getPopularSearch($idApp, $types)->toArray();

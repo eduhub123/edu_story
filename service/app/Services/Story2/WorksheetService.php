@@ -20,7 +20,7 @@ class WorksheetService
     private $lessonConnectService;
     private $redisService;
 
-    const KEY_REDIS_WORKSHEET = 'KEY_REDIS_WORKSHEET';
+    const KEY_REDIS_WORKSHEET_V2 = 'KEY_REDIS_WORKSHEET_V2';
 
     public function __construct(
         WorksheetRepository $worksheetRepos,
@@ -36,7 +36,7 @@ class WorksheetService
 
     public function getDataWorksheet($idApp, $idLanguage, $version, $deviceType, $inHouse = false, $storiesLang =  [], $dataPhonic = [])
     {
-        $key           = self::KEY_REDIS_WORKSHEET . '_' . $idApp . '_' . $idLanguage . '_' . $version . '_' . $deviceType . '_' . $inHouse;
+        $key           = self::KEY_REDIS_WORKSHEET_V2 . '_' . $idApp . '_' . $idLanguage . '_' . $version . '_' . $deviceType . '_' . $inHouse;
         $dataWorksheet = $this->redisService->get($key, true);
         if (!$dataWorksheet) {
             $worksheets      = $this->worksheetRepos->getWorksheets($idApp, $version, $inHouse)->groupBy(Worksheet::_TYPE);
