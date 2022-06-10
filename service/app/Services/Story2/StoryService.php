@@ -6,7 +6,6 @@ use App\Models\Globals\ListApp;
 use App\Models\Story2\LevelSystem;
 use App\Models\Story2\StoryLang;
 use App\Repositories\Story2\FreeStoryRepository;
-use App\Repositories\Story2\storyLangRepos;
 use App\Repositories\Story2\StoryLangRepository;
 use App\Services\RedisService;
 
@@ -17,7 +16,6 @@ class StoryService
     private $storyLangRepos;
     private $redisService;
 
-    const KEY_REDIS_STORY_LIST_FREE = "KEY_REDIS_STORY_LIST_FREE";
     const KEY_REDIS_STORY_V2_LIST   = "KEY_REDIS_STORY_V2_LIST";
 
     public function __construct(
