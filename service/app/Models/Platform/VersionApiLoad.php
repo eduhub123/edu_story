@@ -34,6 +34,7 @@ class VersionApiLoad extends Model
     const TYPE_WORD              = 10;
     const AUDIOBOOK_APP          = 40;
     const TYPE_FLOW              = 100;
+    const TYPE_COMMON_MK_TALKING = 102;
 
 
     const TYPE_WORD_LANGUAGE = 'TYPE_WORD_LANGUAGE_';

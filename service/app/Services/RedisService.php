@@ -14,7 +14,6 @@ class RedisService
         if (!$data) {
             return false;
         }
-
         if (is_array($data)) {
             $data = json_encode($data);
         }
@@ -24,7 +23,6 @@ class RedisService
         } else {
             return Redis::set($key, $data);
         }
-
     }
 
     public function hSet($key, $index, $data, $time_expire = false)
@@ -35,19 +33,17 @@ class RedisService
         if (is_array($data)) {
             $data = json_encode($data);
         }
+        $set = Redis::hSet($key, $index, $data);
         if ($time_expire) {
-            $set = Redis::hSet($key, $index, $data);
-            $rs  = Redis::expire($key, $time_expire);
-        } else {
-            $set = Redis::hSet($key, $index, $data);
+            $rs = Redis::expire($key, $time_expire);
         }
         return $set;
     }
 
-    public function hGet($key, $index, $decode = false ,$arr = false)
+    public function hGet($key, $index, $decode = false, $arr = false)
     {
         $data = Redis::hGet($key, $index);
-        return $data ? ( $decode ? json_decode($data, $arr) : $data ) : false;
+        return $data ? ($decode ? json_decode($data, $arr) : $data) : false;
     }
 
     public function hMGet($key, $listKey)

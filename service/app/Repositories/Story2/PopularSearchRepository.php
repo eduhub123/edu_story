@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Repositories\Story2;
+
+use App\Models\Story2\PopularSearch;
 use App\Repositories\EloquentRepository;
 
 class PopularSearchRepository extends EloquentRepository
@@ -13,7 +16,7 @@ class PopularSearchRepository extends EloquentRepository
         return PopularSearch::class;
     }
 
-    public function getPopularSearch($appId, $type)
+    public function getPopularSearch($idApp, $types)
     {
         return $this->_model
             ->select(
@@ -24,9 +27,9 @@ class PopularSearchRepository extends EloquentRepository
                 PopularSearch::_TYPE,
                 PopularSearch::_TIME_UPDATE . ' as date_publish'
             )
-            ->where(PopularSearch::_APP_ID, $appId)
-            ->whereIn(PopularSearch::_TYPE, $type)
-            ->where(PopularSearch::_STATUS, PopularSearch::IS_ACTIVE)
+            ->where(PopularSearch::_ID_APP, $idApp)
+            ->whereIn(PopularSearch::_TYPE, $types)
+            ->where(PopularSearch::_STATUS, PopularSearch::STATUS_ACTIVE)
             ->get();
     }
 

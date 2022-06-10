@@ -21,8 +21,6 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-//$app->register(Illuminate\Mail\MailServiceProvider::class);
-//$app->register(\App\Providers\ZipperServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
 $app->register(Jenssegers\Mongodb\MongodbServiceProvider::class);
 $app->register(Ixudra\Curl\CurlServiceProvider::class);
@@ -150,10 +148,24 @@ $app->router->group([
 });
 
 $app->router->group([
+    'prefix'    => 'app/v2',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    require __DIR__ . '/../routes/app_v2.php';
+});
+
+$app->router->group([
     'prefix'    => 'api/v1',
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
     require __DIR__ . '/../routes/api_v1.php';
+});
+
+$app->router->group([
+    'prefix'    => 'api/v2',
+    'namespace' => 'App\Http\Controllers',
+], function ($router) {
+    require __DIR__ . '/../routes/api_v2.php';
 });
 
 return $app;

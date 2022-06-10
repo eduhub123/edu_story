@@ -18,6 +18,10 @@ $router->group(
         $router->get('get-story-free', 'App\StoryLangController@getStoryFree');
 
         $router->post('get-list-story-by-list-id', 'App\StoryLangController@getListStory');
+
+        $router->post('zip-first-install-ms', 'App\FirstInstallController@zipFirstInstallMS');
+
+        $router->get('get-list-free', 'App\FreeController@getListFree');
     }
 );
 
