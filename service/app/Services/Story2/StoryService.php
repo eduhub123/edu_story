@@ -98,25 +98,4 @@ class StoryService
         return [$list, $delete];
     }
 
-
-//    public function processFreeStory($version, $lastVersion)
-//    {
-//        $today = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-//
-//        $keyStoryFree  = self::KEY_REDIS_STORY_LIST_FREE . "_" . $version . "_" . $lastVersion . "_" . $today;
-//        $dataStoryFree = $this->redisService->get($keyStoryFree, true);
-//        if (!$dataStoryFree) {
-//            $listFreeStory = $this->freeStoryRepository->getFreeStoryToDay()->toArray();
-//            $dataStoryFree = [];
-//            foreach ($listFreeStory as $freeStory) {
-//                if (isset($freeStory['story_lang_relate'][StoryLang::_LANG_ID])) {
-//                    $langId                   = $freeStory['story_lang_relate'][StoryLang::_LANG_ID];
-//                    $dataStoryFree[$langId][] = intval($freeStory[FreeStory::_SLANG_ID]);
-//                }
-//            }
-//            $this->redisService->set($keyStoryFree, $dataStoryFree);
-//        }
-//
-//        return $dataStoryFree;
-//    }
 }
