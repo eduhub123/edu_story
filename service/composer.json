@@ -10,18 +10,19 @@
         "aporat/store-receipt-validator": "^4.0",
         "doctrine/dbal": "^2.10",
         "firebase/php-jwt": "^5.0",
+        "guzzlehttp/psr7": "^1.8.2",
         "illuminate/redis": "^6.0",
         "ip2location/ip2location-laravel": "~1.0",
         "ixudra/curl": "6.17",
         "jenssegers/mongodb": "^3.5",
+        "kreait/firebase-php": "^4.0",
         "laravel/lumen-framework": "^6.0",
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^2.7",
         "stevebauman/location": "^5.0",
         "symfony/cache": "^4.3",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "v10.2.2",
-        "vlucas/phpdotenv": "^3.3",
-        "guzzlehttp/psr7": "^1.8.2"
+        "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",
