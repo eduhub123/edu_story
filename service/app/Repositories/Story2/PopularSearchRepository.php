@@ -25,7 +25,7 @@ class PopularSearchRepository extends EloquentRepository
                 PopularSearch::_THUMB,
                 PopularSearch::_SORT,
                 PopularSearch::_TYPE,
-                PopularSearch::_TIME_UPDATE . ' as date_publish'
+                PopularSearch::_UPDATED_AT . ' as date_publish'
             )
             ->where(PopularSearch::_ID_APP, $idApp)
             ->whereIn(PopularSearch::_TYPE, $types)

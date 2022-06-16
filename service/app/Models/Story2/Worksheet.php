@@ -25,8 +25,8 @@ class Worksheet extends Model
     const _PLATFORM       = 'platform';
     const _IS_PUBLISH     = 'is_publish';
     const _IS_DELETED     = 'is_deleted';
-    const _TIME_CREATED   = 'time_created';
-    const _TIME_UPDATE    = 'time_updated';
+    const _CREATED_AT     = 'created_at';
+    const _UPDATED_AT     = 'updated_at';
 
     const IS_ASSIGN      = 1;
     const IS_NOT_ASSIGN  = 0;
@@ -43,7 +43,7 @@ class Worksheet extends Model
     const PLATFORM_WEB = 2;
     const PLATFORM_ALL = 3;
 
-    const FOLDER_SAVE         = 'upload/courseware';
+    const FOLDER_SAVE = 'upload/courseware';
 
     const MAX_WORKSHEET_USER_FREE     = 5;
     const MAX_WORKSHEET_USER_PURCHASE = 7;
@@ -69,7 +69,7 @@ class Worksheet extends Model
             self::_PLATFORM,
             self::_IS_PUBLISH,
             self::_IS_DELETED,
-            self::_TIME_CREATED,
-            self::_TIME_UPDATE
+            self::_CREATED_AT,
+            self::_UPDATED_AT
         ];
 }

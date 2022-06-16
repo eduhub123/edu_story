@@ -21,8 +21,8 @@ class PopularSearch extends Model
     const _SORT         = 'sort';
     const _STATUS       = 'status';
     const _IS_DELETED   = 'is_deleted';
-    const _TIME_UPDATE  = 'time_update';
-    const _TIME_CREATED = 'time_created';
+    const _CREATED_AT   = 'created_at';
+    const _UPDATED_AT   = 'updated_at';
 
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE   = 1;
@@ -43,7 +43,7 @@ class PopularSearch extends Model
             self::_SORT,
             self::_STATUS,
             self::_IS_DELETED,
-            self::_TIME_CREATED,
-            self::_TIME_UPDATE
+            self::_CREATED_AT,
+            self::_UPDATED_AT
         ];
 }
