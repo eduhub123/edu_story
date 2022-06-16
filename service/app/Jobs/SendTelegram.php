@@ -4,6 +4,7 @@
 namespace App\Jobs;
 
 use App\Services\ServiceConnect\TelegramService;
+use Illuminate\Support\Facades\Config;
 
 class SendTelegram extends Job
 {
@@ -12,11 +13,17 @@ class SendTelegram extends Job
     private $content;
     private $tokenBot;
 
-    public function __construct($id, $content, $tokenBot = '')
+    public function __construct($content, $id = null, $tokenBot = null)
     {
+        if (!$id) {
+            $id = Config::get('environment.TELEGRAM_CHAT_ID_ERROR_APP');
+        }
+        if (!$tokenBot) {
+            $tokenBot = Config::get('environment.TELEGRAM_BOT_TOKEN_ERROR_APP');
+        }
         $this->id       = $id;
-        $this->content  = $content;
         $this->tokenBot = $tokenBot;
+        $this->content  = env('APP_NAME') . " _ " . $content;
     }
 
     public function handle(TelegramService $telegramService)

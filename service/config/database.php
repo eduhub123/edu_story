@@ -60,7 +60,34 @@ $db = [
                 'engine'      => null,
             ],
 
-//            'mongodb' => [
+            'edu_story_2' => [
+                'read'        => [
+                    'host'     => [
+                        env('DB_SLAVE_1_HOST_STORY_2', env('DB_HOST_STORY_2', '0.0.0.0')),
+                    ],
+                    'port'     => env('DB_SLAVE_PORT_STORY_2', env('DB_PORT_STORY_2', 3306)),
+                    'username' => env('DB_SLAVE_USERNAME_STORY_2', env('DB_USERNAME_STORY_2', '')),
+                    'password' => env('DB_SLAVE_PASSWORD_STORY_2', env('DB_PASSWORD_STORY_2', '')),
+                ],
+                'write'       => [
+                    'host'     => [
+                        env('DB_MASTER_HOST_STORY_2', env('DB_HOST_STORY_2', '0.0.0.0'))
+                    ],
+                    'port'     => env('DB_MASTER_PORT_STORY_2', env('DB_PORT_STORY_2', 3306)),
+                    'username' => env('DB_MASTER_USERNAME_STORY_2', env('DB_USERNAME_STORY_2', '')),
+                    'password' => env('DB_MASTER_PASSWORD_STORY_2', env('DB_PASSWORD_STORY_2', '')),
+                ],
+                'driver'      => 'mysql',
+                'database'    => env('DB_DATABASE_STORY_2', 'edu_story'),
+                'unix_socket' => env('DB_SOCKET', ''),
+                'charset'     => 'utf8',
+                'collation'   => 'utf8_unicode_ci',
+                'prefix'      => 'tbl_',
+                'strict'      => false,
+                'engine'      => null,
+            ],
+
+            //            'mongodb' => [
 //                'driver'   => 'mongodb',
 //                'host'     => env('DB_HOST_MONGO', '127.0.0.1'),
 //                'port'     => env('DB_PORT_MONGO', 27017),
