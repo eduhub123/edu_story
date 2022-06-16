@@ -5,6 +5,7 @@ namespace App\Services\ServiceConnect;
 
 
 use App\Services\CurlService;
+use Illuminate\Support\Facades\Config;
 
 class MediaConnectService
 {
@@ -18,7 +19,7 @@ class MediaConnectService
 
     public function getFileInfoByPath($path)
     {
-        $url          = config('environment.API_SERVICE_MEDIA') . "/api/get-file-info";
+        $url          = Config::get('environment.API_SERVICE_MEDIA') . "/api/get-file-info";
         $data["path"] = $path;
         $response     = $this->curlService->curlGetData($url, $data);
         return json_decode($response, true);
@@ -26,7 +27,7 @@ class MediaConnectService
 
     public function uploadList($listFile, $folderPath, $description = '')
     {
-        $url                 = config('environment.API_SERVICE_MEDIA') . "/api/upload-list";
+        $url                 = Config::get('environment.API_SERVICE_MEDIA') . "/api/upload-list";
         $data["folder_path"] = $folderPath;
         if ($description) {
             $data['description'] = $description;
@@ -37,7 +38,7 @@ class MediaConnectService
 
     public function upload($file, $folderPath, $description = '', $overwrite = false, $fileOverwritePath = '')
     {
-        $url                 = config('environment.API_SERVICE_MEDIA') . "/api/upload";
+        $url                 = Config::get('environment.API_SERVICE_MEDIA') . "/api/upload";
         $data["folder_path"] = $folderPath;
         if ($description) {
             $data['description'] = $description;
@@ -47,12 +48,12 @@ class MediaConnectService
             $data['file_overwrite_path'] = $fileOverwritePath;
         }
         $response = $this->curlService->curlPostUploadFile($url, $data, null, $file);
-        return json_decode($response, true);;
+        return json_decode($response, true);
     }
 
     public function readFile($path)
     {
-        $url          = config('environment.API_SERVICE_MEDIA') . "/api/read-file-from-aws";
+        $url          = Config::get('environment.API_SERVICE_MEDIA') . "/api/read-file-from-aws";
         $data['path'] = $path;
         $dataResponse = $this->curlService->curlGetData($url, $data);
         return json_decode($dataResponse, true);
