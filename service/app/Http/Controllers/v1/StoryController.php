@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\BaseMobileController;
-use App\Models\Platform\PopularSearch;
+use App\Models\Story2\PopularSearch;
 use App\Models\Story\StoryLang;
 use App\Repositories\Story\StoryLangRepository;
-use App\Services\Platform\PopularSearchService;
+use App\Services\Story2\PopularSearchService;
 use App\Services\Story\StoryService;
 use App\Services\ZipService;
 use Carbon\Carbon;

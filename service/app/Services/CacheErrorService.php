@@ -23,7 +23,7 @@ class CacheErrorService
         $redisService = new RedisService();
         $redisService->hSet($errorKey, $index, json_encode($dataError, true));
         if ($sendTele) {
-            Queue::push(new SendTelegram(config('environment.TELEGRAM_CHAT_ID_CREATE_ORDER'), $errorKey, config('environment.TELEGRAM_BOT_TOKEN_CREATE_ORDER')));
+            Queue::push(new SendTelegram($errorKey));
         }
     }
 

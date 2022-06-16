@@ -44,7 +44,7 @@ class ZipService
             $json = json_decode(file_get_contents($filePathJson), true);
             if ($data != $json) {
                 $writeFile = File::put($filePathJson, $dataWrite);
-                Queue::push(new SendTelegram(config('environment.TELEGRAM_CHAT_ID_CREATE_ORDER'), "error file save not in json format ". $filePathJson, config('environment.TELEGRAM_BOT_TOKEN_CREATE_ORDER')));
+                Queue::push(new SendTelegram("error file save not in json format " . $filePathJson));
             }
         }
         if ($writeFile && file_exists($filePathJson)) {
@@ -98,7 +98,7 @@ class ZipService
                 $json = file_get_contents($pathFile);
                 if ($data != $json) {
                     $writeFile = File::put($pathFile, $dataWrite);
-                    Queue::push(new SendTelegram(config('environment.TELEGRAM_CHAT_ID_CREATE_ORDER'), "error file save with incorrect data ".$pathFile, config('environment.TELEGRAM_BOT_TOKEN_CREATE_ORDER')));
+                    Queue::push(new SendTelegram("error file save with incorrect data " . $pathFile));
                 }
             }
             if ($writeFile && file_exists($pathFile)) {
