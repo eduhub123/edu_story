@@ -3,21 +3,26 @@
 namespace App\Http\Controllers\App\v2;
 
 use App\Http\Controllers\Controller;
+use App\Models\Language;
 use App\Models\Story2\StoryLang;
 use App\Repositories\Story2\StoryLangRepository;
+use App\Services\Story2\StoryService;
 use Illuminate\Http\Request;
 
 class StoryLangController extends Controller
 {
 
     private $storyLangRepos;
+    private $storyService;
     private $request;
 
     public function __construct(
         StoryLangRepository $storyLangRepos,
+        StoryService $storyService,
         Request $request
     ) {
         $this->storyLangRepos = $storyLangRepos;
+        $this->storyService   = $storyService;
         $this->request        = $request;
     }
 
@@ -46,5 +51,17 @@ class StoryLangController extends Controller
         $this->message = __('app.success');
         next:
         return $this->responseData($data);
+    }
+
+    public function getVersionStory()
+    {
+        $idApp = $this->request->input('id_app');
+
+        $idLanguage  = Language::getIdLanguageByIdApp($idApp);
+        $lastVersion = $this->storyService->getLastVersionStory($idApp, $idLanguage);
+
+        $this->status  = 'success';
+        $this->message = __('app.success');
+        return $this->responseData($lastVersion);
     }
 }

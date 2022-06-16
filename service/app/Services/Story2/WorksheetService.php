@@ -34,6 +34,11 @@ class WorksheetService
         $this->redisService         = $redisService;
     }
 
+    public function getLastVersionWorksheet($idApp)
+    {
+        return $this->worksheetRepos->getLastVersionWorksheet($idApp);
+    }
+
     public function getDataWorksheet($idApp, $idLanguage, $version, $deviceType, $inHouse = false, $storiesLang =  [], $dataPhonic = [])
     {
         $key           = self::KEY_REDIS_WORKSHEET_V2 . '_' . $idApp . '_' . $idLanguage . '_' . $version . '_' . $deviceType . '_' . $inHouse;

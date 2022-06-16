@@ -22,6 +22,10 @@ $router->group(
         $router->post('zip-first-install-ms', 'App\FirstInstallController@zipFirstInstallMS');
 
         $router->get('get-list-free', 'App\FreeController@getListFree');
+
+        $router->get('get-version-audio-book', 'App\AudioBookController@getVersionAudioBook');
+
+        $router->get('get-version-worksheet', 'App\WorksheetController@getVersionWorksheet');
     }
 );
 

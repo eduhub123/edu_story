@@ -3,13 +3,20 @@
 namespace App\Services\Platform;
 
 use App\Models\Globals\ListApp;
+use App\Models\Language;
 use App\Models\Platform\VersionApiLoad;
 use App\Services\RedisService;
 use App\Services\ServiceConnect\LessonConnectService;
+use App\Services\Story2\AudioBookService;
+use App\Services\Story2\StoryService;
+use App\Services\Story2\WorksheetService;
 
 class VersionService
 {
     private $lessonConnectService;
+    private $storyService;
+    private $audioBookService;
+    private $worksheetService;
     private $redisService;
 
     const TYPE_STORIES_ACTIVITES = 1;
@@ -28,14 +35,23 @@ class VersionService
     const TYPE_FLOW              = 100;
     const TYPE_STORY             = 101;
     const TYPE_COMMON_MK_TALKING = 102;
+    const TYPE_AUDIO_BOOK_V2     = 103;
+    const TYPE_STORY_V2          = 104;
+    const TYPE_WORKSHEET_V2      = 105;
 
     const KEY_REDIS_VERSION = 'KEY_REDIS_VERSION_';
 
     public function __construct(
         LessonConnectService $lessonConnectService,
+        StoryService $storyService,
+        AudioBookService $audioBookService,
+        WorksheetService $worksheetService,
         RedisService $redisService
     ) {
         $this->lessonConnectService = $lessonConnectService;
+        $this->storyService         = $storyService;
+        $this->audioBookService     = $audioBookService;
+        $this->worksheetService     = $worksheetService;
         $this->redisService         = $redisService;
     }
 
@@ -43,13 +59,13 @@ class VersionService
     public function getDataVersionAppInfo($appId, $data)
     {
         if (!isset($data['version_story']) || !$data['version_story']) {
-            $data['version_story'] = $this->getVersion($appId, self::TYPE_STORY);
+            $data['version_story'] = $this->getVersion($appId, self::TYPE_STORY_V2);
         }
         if (!isset($data['version_audio']) || !$data['version_audio']) {
-            $data['version_audio'] = $this->getVersion($appId, self::TYPE_AUDIO_BOOK);
+            $data['version_audio'] = $this->getVersion($appId, self::TYPE_AUDIO_BOOK_V2);
         }
         if (!isset($data['version_worksheet']) || !$data['version_worksheet']) {
-            $data['version_worksheet'] = $this->getVersion($appId, self::TYPE_WORKSHEET);
+            $data['version_worksheet'] = $this->getVersion($appId, self::TYPE_WORKSHEET_V2);
         }
         if (!isset($data['version_game']) || !$data['version_game']) {
             $data['version_game'] = $this->getVersion($appId, self::TYPE_GAME);
@@ -85,12 +101,37 @@ class VersionService
     {
         $dataVersion = $this->redisService->hGet(self::KEY_REDIS_VERSION . $appId, $type, true, true);
         if (!$dataVersion) {
-            $dataVersion = $this->lessonConnectService->getVersion($appId, $type);
+            if ($type == self::TYPE_STORY_V2) {
+                $idLanguage  = Language::getIdLanguageByIdApp($appId);
+                $lastVersion = $this->storyService->getLastVersionStory($appId, $idLanguage);
+                $dataVersion = $this->setDataVerion($lastVersion, $appId, $type);
+            } elseif ($type == self::TYPE_AUDIO_BOOK_V2) {
+                $idLanguage  = Language::getIdLanguageByIdApp($appId);
+                $lastVersion = $this->audioBookService->getLastVersionAudioBook($appId, $idLanguage);
+                $dataVersion = $this->setDataVerion($lastVersion, $appId, $type);
+            } elseif ($type == self::TYPE_WORKSHEET_V2) {
+                $lastVersion = $this->worksheetService->getLastVersionWorksheet($appId);
+                $dataVersion = $this->setDataVerion($lastVersion, $appId, $type);
+            } else {
+                $dataVersion = $this->lessonConnectService->getVersion($appId, $type);
+            }
             if ($dataVersion) {
                 $this->redisService->hSet(self::KEY_REDIS_VERSION . $appId, $type, json_encode($dataVersion, true));
             }
         }
         return $dataVersion;
+    }
+
+    public function setDataVerion($version, $appId, $type)
+    {
+        return $dataVersion = [
+            VersionApiLoad::_VERSION_NUMBER => $version,
+            VersionApiLoad::_APP_ID         => $appId,
+            VersionApiLoad::_TYPE           => $type,
+            VersionApiLoad::_FILE_PATH      => "",
+            VersionApiLoad::_TIME_CREATED   => time(),
+            VersionApiLoad::_TIME_UPDATED   => time(),
+        ];
     }
 
     public function getVersion($appId, $type)

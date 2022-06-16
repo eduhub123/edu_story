@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Story2;
 
+use App\Models\Story2\StoryLang;
 use App\Models\Story2\Worksheet;
 use App\Models\Story2\WorksheetAssignLesson;
 use App\Repositories\EloquentRepository;
@@ -15,6 +16,13 @@ class WorksheetRepository extends EloquentRepository
     public function getModel()
     {
         return Worksheet::class;
+    }
+
+    public function getLastVersionWorksheet($idApp)
+    {
+        return $maxVersion = $this->_model
+            ->where(Worksheet::_ID_APP, $idApp)
+            ->max(Worksheet::_VERSION_NUMBER);
     }
 
     public function getWorksheets($idApp, $version, $inHouse)

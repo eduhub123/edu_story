@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v2;
 use App\Http\Controllers\BaseMobileController;
 use App\Models\Language;
 use App\Models\Story2\PopularSearch;
+use App\Services\Platform\VersionService;
 use App\Services\Story2\StoryService;
 use App\Services\Story2\PopularSearchService;
 use App\Services\ZipService;
@@ -16,18 +17,21 @@ class StoryController extends BaseMobileController
     private $request;
     private $storyService;
     private $popularSearchService;
+    private $versionService;
     private $zipService;
 
     public function __construct(
         Request $request,
         StoryService $storyService,
         PopularSearchService $popularSearchService,
+        VersionService $versionService,
         ZipService $zipService
     ) {
         parent::__construct($request);
         $this->request              = $request;
         $this->storyService         = $storyService;
         $this->popularSearchService = $popularSearchService;
+        $this->versionService       = $versionService;
         $this->zipService           = $zipService;
     }
 
@@ -42,7 +46,7 @@ class StoryController extends BaseMobileController
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
         $idLanguage  = Language::getIdLanguageByIdApp($this->app_id);
-        $lastVersion = $this->storyService->getLastVersionStory($this->app_id, $idLanguage);
+        $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_STORY_V2);
         $storyItem   = [];
         if ($lastVersion <= $this->ver) {
             $this->status = 'success';
