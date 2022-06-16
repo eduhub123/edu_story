@@ -16,7 +16,7 @@ class WorksheetAssignLesson extends Model
     const _ID            = 'id';
     const _ID_COURSEWARE = 'id_courseware';
     const _LESSON_ID     = 'lesson_id';
-    const _TIME_CREATED  = 'time_created';
+    const _CREATED_AT    = 'created_at';
     const _IS_DELETED    = 'is_deleted';
 
     protected $fillable =
@@ -24,7 +24,7 @@ class WorksheetAssignLesson extends Model
             self::_ID,
             self::_ID_COURSEWARE,
             self::_LESSON_ID,
-            self::_TIME_CREATED,
-            self::_IS_DELETED
+            self::_IS_DELETED,
+            self::_CREATED_AT
         ];
 }

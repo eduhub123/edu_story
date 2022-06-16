@@ -32,8 +32,7 @@ class WorksheetRepository extends EloquentRepository
                 Worksheet::TABLE . '.' . Worksheet::_ID,
                 Worksheet::TABLE . '.' . Worksheet::_TYPE,
                 Worksheet::TABLE . '.' . Worksheet::_NAME_ORIGINAL . ' as name_worksheet',
-                Worksheet::TABLE . '.' . Worksheet::_TIME_UPDATE . ' as date_publish',
-                Worksheet::TABLE . '.' . Worksheet::_TIME_UPDATE . ' as date_publish',
+                Worksheet::TABLE . '.' . Worksheet::_UPDATED_AT . ' as date_publish',
                 WorksheetAssignLesson::TABLE . '.' . WorksheetAssignLesson::_LESSON_ID
             )
             ->join(WorksheetAssignLesson::TABLE, Worksheet::TABLE . '.' . Worksheet::_ID, WorksheetAssignLesson::TABLE . '.' . WorksheetAssignLesson::_ID_COURSEWARE)
