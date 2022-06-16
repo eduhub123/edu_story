@@ -46,7 +46,7 @@ class WorksheetController extends BaseMobileController
         $inHouse                   = $this->request->input('in_house');
         $this->isNetworkEarlyStart = $this->isNetworkEarlyStart || $inHouse;
 
-        $lastVersion = $this->versionService->getVersion($this->app_id, VersionApiLoad::TYPE_WORKSHEET);
+        $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_WORKSHEET_V2);
         if (!$lastVersion) {
             $this->message = __('app.not_data_showing');
             goto next;

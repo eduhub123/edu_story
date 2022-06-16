@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseMobileController;
 use App\Models\Language;
 use App\Models\LangDisplay;
 use App\Models\Story2\PopularSearch;
+use App\Services\Platform\VersionService;
 use App\Services\Story2\AudioBookService;
 use App\Services\Story2\PopularSearchService;
 use App\Services\ZipService;
@@ -17,18 +18,21 @@ class AudioBookController extends BaseMobileController
     private $request;
     private $zipService;
     private $audioBookService;
+    private $versionService;
     private $popularSearchService;
 
     public function __construct(
         Request $request,
         ZipService $zipService,
         AudioBookService $audioBookService,
+        VersionService $versionService,
         PopularSearchService $popularSearchService
     ) {
         parent::__construct($request);
         $this->request              = $request;
         $this->zipService           = $zipService;
         $this->audioBookService     = $audioBookService;
+        $this->versionService       = $versionService;
         $this->popularSearchService = $popularSearchService;
     }
 
@@ -41,7 +45,7 @@ class AudioBookController extends BaseMobileController
 
         $idLanguage    = Language::getIdLanguageByIdApp($this->app_id);
         $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($this->app_id);
-        $lastVersion   = $this->audioBookService->getLastVersionAudioBook($this->app_id, $idLanguage);
+        $lastVersion   = $this->versionService->getVersion($this->app_id, VersionService::TYPE_AUDIO_BOOK_V2);
         if ($lastVersion <= $this->ver) {
             $this->status = 'success';
             goto next;

@@ -20,22 +20,6 @@ class VersionApiLoad extends Model
     const _TIME_CREATED   = 'time_created';
     const _TIME_UPDATED   = 'time_updated';
 
-    const TYPE_STORIES_ACTIVITES = 1;
-    const TYPE_STORIES_LESSON    = 2;
-    const TYPE_AUDIO_BOOK        = 3;
-    const TYPE_GAME              = 4;
-    const TYPE_CATE              = 5;
-    const TYPE_WORKSHEET         = 6;
-    const TYPE_LESSON            = 7;
-    const TYPE_LESSON_US         = 8;
-    const TYPE_LESSON_US_PRIVATE = 11;
-    const TYPE_LESSON_US_PROFILE = 12;
-    const TYPE_AWARD             = 9;
-    const TYPE_WORD              = 10;
-    const AUDIOBOOK_APP          = 40;
-    const TYPE_FLOW              = 100;
-    const TYPE_COMMON_MK_TALKING = 102;
-
 
     const TYPE_WORD_LANGUAGE = 'TYPE_WORD_LANGUAGE_';
     const LIST_TYPE_WORD = [
