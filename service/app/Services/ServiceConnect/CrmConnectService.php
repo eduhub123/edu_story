@@ -22,12 +22,14 @@ class CrmConnectService
         $data['app_id']       = $appId;
         $data['country_code'] = $countryCode;
         $url                  = Config::get('environment.API_SERVICE_CRM') . '/api/list-pay';
-        $response             = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
-        $response             = json_decode($response, true);
+
+        $responseData = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
+        $response     = json_decode($responseData, true);
+
         if (isset($response['status']) && $response['status'] == 'success') {
             return $response['data'];
         }
-        Queue::push(new SendTelegram( 'Data not showing - API list-pay'));
+        Queue::push(new SendTelegram('Data not showing - API list-pay' . $responseData . " " . json_encode($data)));
         return [];
     }
 }

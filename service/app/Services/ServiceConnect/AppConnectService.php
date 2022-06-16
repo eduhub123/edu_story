@@ -19,14 +19,14 @@ class AppConnectService
 
     public function getListApp()
     {
-        $url     = Config::get('environment.API_SERVICE_APP') . "/api/get-list-app";
-        $version = $this->curlService->curlGetData($url, [], env('TOKEN_TO_SERVER'));
-        $version = json_decode($version, true);
+        $url          = Config::get('environment.API_SERVICE_APP') . "/api/get-list-app";
+        $responseData = $this->curlService->curlGetData($url, [], env('TOKEN_TO_SERVER'));
+        $response     = json_decode($responseData, true);
 
-        if (isset($version['status']) && $version['status'] == 'success') {
-            return $version['data'];
+        if (isset($response['status']) && $response['status'] == 'success') {
+            return $response['data'];
         }
-        Queue::push(new SendTelegram( 'Data not showing - API get-list-app'));
+        Queue::push(new SendTelegram('Data not showing - API get-list-app' . $responseData));
         return [];
     }
 
