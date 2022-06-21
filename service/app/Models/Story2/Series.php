@@ -31,7 +31,7 @@ class Series extends Model
     const NOT_HIDDEN = 0;
     const HIDDEN = 1;
 
-    const PATH_UPLOAD_THUMB =  "upload/cms_dev/series";
+    const PATH_UPLOAD_THUMB =  "upload/cms/series";
 
     protected $fillable = [
         self::_ID_SERIES,
