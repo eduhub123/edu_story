@@ -192,37 +192,37 @@ class StoryService
             ],
             "option_2_items" => [
                 [
-                    "lang_id" => 2476,
+                    "story_id" => 2476,
                     "item_id" => 155,
                     "type" => "phonics"
                 ],
                 [
-                    "lang_id" => 2467,
+                    "story_id" => 2467,
                     "item_id" => 53,
                     "type" => "reading"
                 ],
                 [
-                    "lang_id" => 2527,
+                    "story_id" => 2527,
                     "item_id" => 110,
                     "type" => "phonics"
                 ],
                 [
-                    "lang_id" => 2539,
+                    "story_id" => 2539,
                     "item_id" => 103,
                     "type" => "reading"
                 ],
                 [
-                    "lang_id" => 2455,
+                    "story_id" => 2455,
                     "item_id" => 162,
                     "type" => "phonics"
                 ],
                 [
-                    "lang_id" => 2479,
+                    "story_id" => 2479,
                     "item_id" => 43,
                     "type" => "reading"
                 ],
                 [
-                    "lang_id" => 2526,
+                    "story_id" => 2526,
                     "item_id" => 185,
                     "type" => "phonics"
                 ],
