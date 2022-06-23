@@ -40,7 +40,7 @@ class AudioBookController extends BaseMobileController
     {
         $data      = [];
         $json      = $this->request->input('json', false);
-        $inHouse   = $this->request->input('in_house');
+        $inHouse   = $this->request->input('in_house', false);
         $version   = (int)$this->request->input('version', 0);
 
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;

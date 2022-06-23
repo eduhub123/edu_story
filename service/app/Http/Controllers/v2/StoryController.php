@@ -42,7 +42,7 @@ class StoryController extends BaseMobileController
         $level     = $this->request->input('level', 0);
         $level     = intval($level);
         $json      = $this->request->input('json');
-        $inHouse   = $this->request->input('in_house');
+        $inHouse   = $this->request->input('in_house', false);
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
         $idLanguage  = Language::getIdLanguageByIdApp($this->app_id);
