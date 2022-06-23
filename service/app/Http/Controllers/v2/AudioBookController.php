@@ -41,6 +41,8 @@ class AudioBookController extends BaseMobileController
         $data      = [];
         $json      = $this->request->input('json', false);
         $inHouse   = $this->request->input('in_house');
+        $version   = (int)$this->request->input('version', 0);
+
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
         $idLanguage    = Language::getIdLanguageByIdApp($this->app_id);
@@ -53,13 +55,13 @@ class AudioBookController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $this->ver, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
         }
 
-        list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $this->ver, $lastVersion, $isInHouse);
+        list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $version, $lastVersion, $isInHouse);
 
         $data['list_audio_book'] = array_values($audioBooks);
         $data['delete']          = array_values($delete);

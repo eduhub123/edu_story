@@ -33,7 +33,7 @@ class AudioBookService
         return $this->audioBookRepos->getLastVersionAudioBook($idApp, $idLanguage);
     }
 
-    public function processDataAudioBook($idApp,  $idLanguage, $version, $lastVersion, $isInHouse)
+    public function processDataAudioBook($idApp,  $idLanguage, $version = 0, $lastVersion = 0 , $isInHouse = false)
     {
         $keyAudioBook  = self::KEY_REDIS_AUDIO_BOOKS_V2 . "_" . $idApp . "_" . $idLanguage . "_" . $version . "_" . $lastVersion;
         $listAudioBook = $this->redisService->get($keyAudioBook, true);
