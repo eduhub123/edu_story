@@ -39,6 +39,7 @@ class AudioBookRepository extends EloquentRepository
             AudioBook::_TITLE,
             AudioBook::_DESCRIPTION,
             AudioBook::_EXTRA,
+            AudioBook::_CONTENT,
             AudioBook::_THUMB,
             AudioBook::_AUDIO,
             AudioBook::_DURATION,
