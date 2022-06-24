@@ -25,7 +25,7 @@ class CategoryService
         foreach ($categories as $key => $category) {
             $data[$key]['category_id'] = $category[Category::_ID_CATEGORY];
             $data[$key]['content']     = $category[Translate::_VALUE];
-            $data[$key]['image']       = $category[Category::_IMAGE] ? Category::PATH_UPLOAD_IMAGE_CATEGORY . $category[Category::_IMAGE] : '';
+            $data[$key]['image']       = $category[Category::_IMAGE] ? Category::PATH_UPLOAD_IMAGE_CATEGORY . "/" .$category[Category::_IMAGE] : '';
             $data[$key]['lang_id']     = Language::getIdLanguageByIdApp($category[Category::_ID_APP]);
         }
         return $data;
