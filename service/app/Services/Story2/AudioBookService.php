@@ -81,6 +81,7 @@ class AudioBookService
             'lang_id'            => intval($audioBook[AudioBook::_ID_LANGUAGE]),
             'cateId'             => intval($audioBook[AudioBook::_ID_GRADE]),
             'description'        => $audioBook[AudioBook::_DESCRIPTION] ?? '',
+            'content'            => $audioBook[AudioBook::_CONTENT] ?? '',
             'extra'              => $audioBook[AudioBook::_EXTRA],
             'thumb_image'        => AudioBook::PATH_UPLOAD_THUMB . "/" . $audioBook[AudioBook::_THUMB],
             'audio_file'         => AudioBook::PATH_UPLOAD_AUDIO . "/" . $audioBook[AudioBook::_AUDIO],
