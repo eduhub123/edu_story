@@ -87,7 +87,7 @@ class AudioBookService
             'duration'           => intval($audioBook[AudioBook::_DURATION]),
             'audio_file_size'    => $audioBook[AudioBook::_AUDIO_SIZE] ? (float)$audioBook[AudioBook::_AUDIO_SIZE] : 0,
             'version_audio_book' => intval($audioBook[AudioBook::_VERSION]),
-            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH] ?? ( $isInHouse ? $audioBook[AudioBook::_UPDATED_AT] : 0 ),
+            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH] != 0 ? $audioBook[AudioBook::_DATE_PUBLISH] : ( $isInHouse ? $audioBook[AudioBook::_UPDATED_AT] : 0 ),
             'child'              => $audioBook['child'] ?? [],
         ];
     }
