@@ -53,7 +53,7 @@ class AudioBookService
                 $delete[$idAudioBook] = intval($idAudioBook);
                 continue;
             }
-            $audiobookNew = $this->getItemAudioBook($audioBook);
+            $audiobookNew = $this->getItemAudioBook($audioBook, $isInHouse);
             if (count($audiobookNew['child']) > 0) {
                 foreach ($audiobookNew['child'] as $indexChild => &$audioBookChild) {
                     $status = LevelSystem::checkStatusLevelSystem($audioBookChild[AudioBook::_LEVEL_SYSTEM], $audioBookChild[AudioBook::_DATE_PUBLISH], $isInHouse);
@@ -64,7 +64,7 @@ class AudioBookService
                         unset($audiobookNew['child'][$indexChild]);
                         continue;
                     }
-                    $audioBookChild = $this->getItemAudioBook($audioBookChild);
+                    $audioBookChild = $this->getItemAudioBook($audioBookChild, $isInHouse);
                 }
                 $audiobookNew['child'] = array_values($audiobookNew['child']);
             }
@@ -73,7 +73,7 @@ class AudioBookService
         return [$list, $delete];
     }
 
-    private function getItemAudioBook($audioBook)
+    private function getItemAudioBook($audioBook, $isInHouse= false)
     {
         return [
             'id'                 => intval($audioBook[AudioBook::_ID_AUDIO_BOOK]),
@@ -87,7 +87,7 @@ class AudioBookService
             'duration'           => intval($audioBook[AudioBook::_DURATION]),
             'audio_file_size'    => $audioBook[AudioBook::_AUDIO_SIZE] ? (float)$audioBook[AudioBook::_AUDIO_SIZE] : 0,
             'version_audio_book' => intval($audioBook[AudioBook::_VERSION]),
-            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH],
+            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH] ?? ( $isInHouse ? $audioBook[AudioBook::_UPDATED_AT] : 0 ),
             'child'              => $audioBook['child'] ?? [],
         ];
     }
