@@ -30,4 +30,20 @@ class AppConnectService
         return [];
     }
 
+
+    public function getInfoProfile($profileId)
+    {
+        $data['profile_id']       = $profileId;
+
+        $url     = Config::get('environment.API_SERVICE_APP') . "/api/get-info-profile";
+        $version = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
+        $version = json_decode($version, true);
+
+        if (isset($version['status']) && $version['status'] == 'success') {
+            return $version['data'];
+        }
+
+        Queue::push(new SendTelegram('Data not found profileId: ' . $profileId . '- API get-info-profile'));
+        return [];
+    }
 }

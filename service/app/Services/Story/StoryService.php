@@ -115,4 +115,221 @@ class StoryService
 
         return $dataStoryFree;
     }
+
+    public function processTrialItems($profile)
+    {
+        $data = $this->getItemsForLess6();
+
+        if ($profile['age'] >= 6) {
+            $data = $this->getItemsForGreaterThanOrEqualTo6();
+        }
+
+        return $data;
+    }
+
+    private function getItemsForLess6()
+    {
+        return [
+            "option_1_item_stories" => [
+                [
+                    "item_id" => 2476,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2467,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2527,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2539,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2455,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2479,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2526,
+                    "type" => "story"
+                ],
+            ],
+            "option_1_item_others" => [
+                [
+                    "item_id" => 2476,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 539,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 53,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2539,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 529,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 43,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2526,
+                    "type" => "story"
+                ],
+            ],
+            "option_2_items" => [
+                [
+                    "story_id" => 2476,
+                    "item_id" => 539,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2467,
+                    "item_id" => 53,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2527,
+                    "item_id" => 529,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2539,
+                    "item_id" => 103,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2455,
+                    "item_id" => 540,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2479,
+                    "item_id" => 43,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2526,
+                    "item_id" => 541,
+                    "type" => "phonics"
+                ],
+            ],
+        ];
+    }
+
+    private function getItemsForGreaterThanOrEqualTo6()
+    {
+        return [
+            "option_1_item_stories" => [
+                [
+                    "item_id" => 2502,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2541,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2582,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2485,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2571,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2592,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2486,
+                    "type" => "story"
+                ],
+            ],
+            "option_1_item_others" => [
+                [
+                    "item_id" => 2502,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 539,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 165,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2485,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 529,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 158,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2486,
+                    "type" => "story"
+                ],
+            ],
+            "option_2_items" => [
+                [
+                    "story_id" => 2502,
+                    "item_id" => 539,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2541,
+                    "item_id" => 165,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2582,
+                    "item_id" => 529,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2485,
+                    "item_id" => 141,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2571,
+                    "item_id" => 540,
+                    "type" => "phonics"
+                ],
+                [
+                    "story_id" => 2592,
+                    "item_id" => 158,
+                    "type" => "reading"
+                ],
+                [
+                    "story_id" => 2486,
+                    "item_id" => 541,
+                    "type" => "phonics"
+                ],
+            ],
+        ];
+    }
 }
