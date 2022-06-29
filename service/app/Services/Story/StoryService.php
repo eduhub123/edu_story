@@ -166,7 +166,7 @@ class StoryService
                     "type" => "story"
                 ],
                 [
-                    "item_id" => 155,
+                    "item_id" => 539,
                     "type" => "phonics"
                 ],
                 [
@@ -178,7 +178,7 @@ class StoryService
                     "type" => "story"
                 ],
                 [
-                    "item_id" => 110,
+                    "item_id" => 529,
                     "type" => "phonics"
                 ],
                 [
@@ -193,7 +193,7 @@ class StoryService
             "option_2_items" => [
                 [
                     "story_id" => 2476,
-                    "item_id" => 155,
+                    "item_id" => 539,
                     "type" => "phonics"
                 ],
                 [
@@ -203,7 +203,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2527,
-                    "item_id" => 110,
+                    "item_id" => 529,
                     "type" => "phonics"
                 ],
                 [
@@ -213,7 +213,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2455,
-                    "item_id" => 162,
+                    "item_id" => 540,
                     "type" => "phonics"
                 ],
                 [
@@ -223,7 +223,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2526,
-                    "item_id" => 185,
+                    "item_id" => 541,
                     "type" => "phonics"
                 ],
             ],
@@ -269,7 +269,7 @@ class StoryService
                     "type" => "story"
                 ],
                 [
-                    "item_id" => 155,
+                    "item_id" => 539,
                     "type" => "phonics"
                 ],
                 [
@@ -281,7 +281,7 @@ class StoryService
                     "type" => "story"
                 ],
                 [
-                    "item_id" => 110,
+                    "item_id" => 529,
                     "type" => "phonics"
                 ],
                 [
@@ -296,7 +296,7 @@ class StoryService
             "option_2_items" => [
                 [
                     "story_id" => 2502,
-                    "item_id" => 155,
+                    "item_id" => 539,
                     "type" => "phonics"
                 ],
                 [
@@ -306,7 +306,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2582,
-                    "item_id" => 110,
+                    "item_id" => 529,
                     "type" => "phonics"
                 ],
                 [
@@ -316,7 +316,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2571,
-                    "item_id" => 162,
+                    "item_id" => 540,
                     "type" => "phonics"
                 ],
                 [
@@ -326,7 +326,7 @@ class StoryService
                 ],
                 [
                     "story_id" => 2486,
-                    "item_id" => 185,
+                    "item_id" => 541,
                     "type" => "phonics"
                 ],
             ],
