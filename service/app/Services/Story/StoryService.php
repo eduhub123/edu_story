@@ -135,46 +135,48 @@ class StoryService
     private function getFreeLess6()
     {
         return [
-            [
-                "item_id" => 2476,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 539,
-                "type" => "phonics"
-            ],
-            [
-                "item_id" => 53,
-                "type" => "reading"
-            ],
-            [
-                "item_id" => 2539,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 529,
-                "type" => "phonics"
-            ],
-            [
-                "item_id" => 43,
-                "type" => "reading"
-            ],
-            [
-                "item_id" => 2526,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 2455,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 2476,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 2467,
-                "type" => "story"
-            ],
+            "items" => [
+                [
+                    "item_id" => 2476,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 539,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 53,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2539,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 529,
+                    "type" => "phonics"
+                ],
+                [
+                    "item_id" => 43,
+                    "type" => "reading"
+                ],
+                [
+                    "item_id" => 2526,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2455,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2476,
+                    "type" => "story"
+                ],
+                [
+                    "item_id" => 2467,
+                    "type" => "story"
+                ]
+            ]
         ];
     }
 
