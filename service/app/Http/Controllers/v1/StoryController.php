@@ -103,14 +103,19 @@ class StoryController extends BaseMobileController
             goto next;
         }
 
-        $profile = $this->appConnectService->getInfoProfile($this->profileId);
+        $profile = $this->appConnectService->getInfoProfile($request->profile_id);
 
         if (count($profile) <= 0) {
             $this->message = __('app.profile_not_found_by_account');
             goto next;
         }
 
-        $data                 = $this->storyService->processTrialItems($profile);
+        $data = $this->storyService->processFreeItems($profile);
+
+        if ($this->appConnectService->checkUserSkip($this->infoUserId())) {
+            $data = $this->storyService->processTrialItems($profile);
+        }
+
         $data['last_version'] = $this->versionService->getVersion($this->app_id, VersionService::TYPE_TRIAL_ITEMS_MS);
 
         $this->status  = 'success';
@@ -119,30 +124,4 @@ class StoryController extends BaseMobileController
         next:
         return $this->responseData($data);
     }
-
-    public function getFreeItems(Request $request)
-    {
-        $data = [];
-
-        if ($this->validateBase($request, ['profile_id' => 'required'])) {
-            goto next;
-        }
-
-        $profile = $this->appConnectService->getInfoProfile($this->profileId);
-
-        if (count($profile) <= 0) {
-            $this->message = __('app.profile_not_found_by_account');
-            goto next;
-        }
-
-        $data                 = $this->storyService->processFreeItems($profile);
-        $data['last_version'] = $this->versionService->getVersion($this->app_id, VersionService::TYPE_TRIAL_ITEMS_MS);
-
-        $this->status  = 'success';
-        $this->message = __('app.success');
-
-        next:
-        return $this->responseData($data);
-    }
-
 }

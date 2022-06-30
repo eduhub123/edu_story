@@ -36,14 +36,33 @@ class AppConnectService
         $data['profile_id']       = $profileId;
 
         $url     = Config::get('environment.API_SERVICE_APP') . "/api/get-info-profile";
-        $version = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
-        $version = json_decode($version, true);
+        $response = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
+        $response = json_decode($response, true);
 
-        if (isset($version['status']) && $version['status'] == 'success') {
-            return $version['data'];
+        if (isset($response['status']) && $response['status'] == 'success') {
+            return $response['data'];
         }
 
         Queue::push(new SendTelegram('Data not found profileId: ' . $profileId . '- API get-info-profile'));
         return [];
+    }
+
+    public function checkUserSkip($userId)
+    {
+        if (!$userId) {
+            return false;
+        }
+
+        $data['user_id'] = $userId;
+
+        $url      = Config::get('environment.API_SERVICE_APP') . "/api/check-user-skip";
+        $response = $this->curlService->curlGetData($url, $data, env('TOKEN_TO_SERVER'));
+        $response = json_decode($response, true);
+
+        if (isset($response['status']) && $response['status'] == 'success') {
+            return $response['data'];
+        }
+
+        return false;
     }
 }
