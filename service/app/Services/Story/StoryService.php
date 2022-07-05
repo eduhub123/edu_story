@@ -118,64 +118,60 @@ class StoryService
 
     public function processTrialItems($profile)
     {
-        $data = env('APP_ENV') == 'live' ? $this->getItemsForLess6() : $this->fakeItemsForLess6();
+        $data = $this->getItemsForLess6();
 
         if ($profile['age'] >= 6) {
-            $data = env('APP_ENV') == 'live' ? $this->getItemsForGreaterThanOrEqualTo6() : $this->fakeItemsFor6();
+            $data = $this->getItemsForGreaterThanOrEqualTo6();
         }
 
-        return $data;
-    }
 
-    public function processFreeItems($profile)
-    {
-       return $this->getFreeLess6();
+        $data["free_items"] = $this->getFreeLess6();
+
+        return $data;
     }
 
     private function getFreeLess6()
     {
         return [
-            "items" => [
-                [
-                    "item_id" => 2476,
-                    "type" => "story"
-                ],
-                [
-                    "item_id" => 539,
-                    "type" => "phonics"
-                ],
-                [
-                    "item_id" => 53,
-                    "type" => "reading"
-                ],
-                [
-                    "item_id" => 2539,
-                    "type" => "story"
-                ],
-                [
-                    "item_id" => 529,
-                    "type" => "phonics"
-                ],
-                [
-                    "item_id" => 43,
-                    "type" => "reading"
-                ],
-                [
-                    "item_id" => 2526,
-                    "type" => "story"
-                ],
-                [
-                    "item_id" => 2455,
-                    "type" => "story"
-                ],
-                [
-                    "item_id" => 2476,
-                    "type" => "story"
-                ],
-                [
-                    "item_id" => 2467,
-                    "type" => "story"
-                ]
+            [
+                "item_id" => 2476,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 539,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 53,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2539,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 529,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 43,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2526,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 2455,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 2476,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 2467,
+                "type" => "story"
             ]
         ];
     }

@@ -110,11 +110,7 @@ class StoryController extends BaseMobileController
             goto next;
         }
 
-        $data = $this->storyService->processFreeItems($profile);
-
-        if ($this->appConnectService->checkUserSkip($this->infoUserId())) {
-            $data = $this->storyService->processTrialItems($profile);
-        }
+        $data = $this->storyService->processTrialItems($profile);
 
         $data['last_version'] = $this->versionService->getVersion($this->app_id, VersionService::TYPE_TRIAL_ITEMS_MS);
 
