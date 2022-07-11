@@ -113,6 +113,7 @@ class StoryController extends BaseMobileController
         $data = $this->storyService->processTrialItems($profile);
 
         $data['last_version'] = $this->versionService->getVersion($this->app_id, VersionService::TYPE_TRIAL_ITEMS_MS);
+        $data['age'] = $profile['age'];
 
         $this->status  = 'success';
         $this->message = __('app.success');
