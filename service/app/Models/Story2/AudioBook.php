@@ -40,8 +40,8 @@ class AudioBook extends Model
     const _UPDATED_AT   = 'updated_at';
 
 
-    const PATH_UPLOAD_THUMB = "upload/cms_dev/audio_book/thumb";
-    const PATH_UPLOAD_AUDIO = "upload/cms_dev/audio_book/audio";
+    const PATH_UPLOAD_THUMB = "upload/cms/audio_book/thumb";
+    const PATH_UPLOAD_AUDIO = "upload/cms/audio_book/audio";
 
     protected $fillable = [
         self::_ID_AUDIO_BOOK,

@@ -39,7 +39,13 @@ class FirstInstallController extends Controller
         $isLicence        = $this->request->input('is_licence', false);
         $detectUrlCluster = $this->request->input('detect_url_cluster', "https://www.monkeyuni.net");
         $dataVersion      = $this->request->input('data_version', []);
-
+        if (is_numeric($deviceType)) {
+            if($deviceType == 2) {
+                $deviceType = "hd";
+            } else {
+                $deviceType = "hdr";
+            }
+        }
         $dataVersion = $this->versionService->getDataVersionAppInfo($idApp, $dataVersion);
 
         $dataFirstInstall       = $this->firstInstallService->getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion);

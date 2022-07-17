@@ -26,7 +26,7 @@ class Category extends Model
     const STATUS_INACTIVE = 0;
     const STATUS_ACTIVE   = 1;
 
-    const PATH_UPLOAD_IMAGE_CATEGORY = "upload/cms_dev/category";
+    const PATH_UPLOAD_IMAGE_CATEGORY = "upload/cms/category";
 
     protected $fillable = [
         self::_ID_CATEGORY,

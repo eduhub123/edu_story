@@ -63,12 +63,12 @@ class StoryLang extends Model
     const STATUS_ACTIVE   = 1;
 
 
-    const PATH_UPLOAD_THUMB_HD        = "upload/cms_dev/story/thumb/hd";
-    const PATH_UPLOAD_THUMB_HDR       = "upload/cms_dev/story/thumb/hdr";
-    const PATH_UPLOAD_COVER_IMAGE_HD  = "upload/cms_dev/story/cover_image/hd";
-    const PATH_UPLOAD_COVER_IMAGE_HDR = "upload/cms_dev/story/cover_image/hdr";
-    const PATH_UPLOAD_ZIP_HD          = "upload/cms_dev/story/zip/hd";
-    const PATH_UPLOAD_ZIP_HDR         = "upload/cms_dev/story/zip/hdr";
+    const PATH_UPLOAD_THUMB_HD        = "upload/cms/story/thumb/hd";
+    const PATH_UPLOAD_THUMB_HDR       = "upload/cms/story/thumb/hdr";
+    const PATH_UPLOAD_COVER_IMAGE_HD  = "upload/cms/story/cover_image/hd";
+    const PATH_UPLOAD_COVER_IMAGE_HDR = "upload/cms/story/cover_image/hdr";
+    const PATH_UPLOAD_ZIP_HD          = "upload/cms/story/zip/hd";
+    const PATH_UPLOAD_ZIP_HDR         = "upload/cms/story/zip/hdr";
 
     protected $fillable = [
         self::_ID_STORY_LANG,

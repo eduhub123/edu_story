@@ -39,13 +39,15 @@ class AudioBookRepository extends EloquentRepository
             AudioBook::_TITLE,
             AudioBook::_DESCRIPTION,
             AudioBook::_EXTRA,
+            AudioBook::_CONTENT,
             AudioBook::_THUMB,
             AudioBook::_AUDIO,
             AudioBook::_DURATION,
             AudioBook::_AUDIO_SIZE,
             AudioBook::_LEVEL_SYSTEM,
             AudioBook::_VERSION,
-            AudioBook::_DATE_PUBLISH
+            AudioBook::_DATE_PUBLISH,
+            AudioBook::_UPDATED_AT
         )
         ->distinct()
         ->where(AudioBook::_VERSION, '>=', $version)
