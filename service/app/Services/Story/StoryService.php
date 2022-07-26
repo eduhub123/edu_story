@@ -119,13 +119,12 @@ class StoryService
     public function processTrialItems($profile)
     {
         $data = $this->getItemsForLess6();
+        $data["free_items"] = $this->getFreeLess6();
 
         if ($profile['age'] >= 6) {
             $data = $this->getItemsForGreaterThanOrEqualTo6();
+            $data["free_items"] = $this->getFreeForGreaterThanOrEqualTo6();
         }
-
-
-        $data["free_items"] = $this->getFreeLess6();
 
         return $data;
     }
@@ -134,43 +133,89 @@ class StoryService
     {
         return [
             [
-                "item_id" => 2476,
+                "item_id" => 584,
                 "type" => "story"
             ],
             [
-                "item_id" => 539,
+                "item_id" => 541,
                 "type" => "phonics"
             ],
             [
-                "item_id" => 53,
+                "item_id" => 25,
                 "type" => "reading"
-            ],
-            [
-                "item_id" => 2539,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 529,
-                "type" => "phonics"
-            ],
-            [
-                "item_id" => 43,
-                "type" => "reading"
-            ],
-            [
-                "item_id" => 2526,
-                "type" => "story"
-            ],
-            [
-                "item_id" => 2455,
-                "type" => "story"
             ],
             [
                 "item_id" => 2476,
                 "type" => "story"
             ],
             [
-                "item_id" => 2467,
+                "item_id" => 542,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 32,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 332,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 543,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 176,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2469,
+                "type" => "story"
+            ]
+        ];
+    }
+
+    private function getFreeForGreaterThanOrEqualTo6()
+    {
+        return [
+            [
+                "item_id" => 2644,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 541,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 72,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2621,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 542,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 70,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2630,
+                "type" => "story"
+            ],
+            [
+                "item_id" => 543,
+                "type" => "phonics"
+            ],
+            [
+                "item_id" => 145,
+                "type" => "reading"
+            ],
+            [
+                "item_id" => 2627,
                 "type" => "story"
             ]
         ];
