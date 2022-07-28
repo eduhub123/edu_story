@@ -23,7 +23,7 @@ class SendTelegram extends Job
         }
         $this->id       = $id;
         $this->tokenBot = $tokenBot;
-        $this->content  = env('APP_NAME') . " _ " . $content;
+        $this->content  = env('APP_NAME') . '[' . env('APP_ENV') . ']' . " _ " . $content;
     }
 
     public function handle(TelegramService $telegramService)
