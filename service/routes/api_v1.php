@@ -6,7 +6,6 @@ $router->get('story/list', 'v1\StoryController@list');
 $router->group(
     ['middleware' => ['VerifyTokenApp']],
     function () use ($router) {
-        $router->get('story/trial-items', 'v1\StoryController@getTrialItems');
     }
 );
 
