@@ -21,7 +21,7 @@ class StoryLangRepository extends EloquentRepository
         $query = $this->_model
             ->select('api_ver')
             ->where('lang_id', $langId);
-        if (!$isNetworkEarlyStart) {
+        if (!$isNetworkEarlyStart && env('APP_ENV') == 'live') {
             $query = $query->where('go_to_live', StoryLang::GO_TO_LIVE);
         }
 
