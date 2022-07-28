@@ -9,3 +9,9 @@ service/.env
 image/mysql/data
 image/.DS_Store
 service/database/ip2location
+image/nginx/nginx-story.conf
+image/redis
+docker-compose.local.yml
+
+#ingnore DS_store file for on mac
+*/.DS_Store
