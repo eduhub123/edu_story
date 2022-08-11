@@ -209,6 +209,7 @@ class FirstInstallService
 
     public function zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall)
     {
+        $keyFileName['env']                        = env('APP_ENV');
         $keyFileName['version_story']              = $dataVersion['version_story'] ?? 0;
         $keyFileName['version_audio']              = $dataVersion['version_audio'] ?? 0;
         $keyFileName['version_worksheet']          = $dataVersion['version_worksheet'] ?? 0;
@@ -223,7 +224,7 @@ class FirstInstallService
         $keyFileName['os']                         = $os;
         $keyFileName['in_house']                   = $isInHouse;
 
-        return $this->zipFileFirstInstall("first_install_v2_", $keyFileName, $dataFirstInstall);
+        return $this->zipFileFirstInstall("first_install_v2", $keyFileName, $dataFirstInstall);
     }
 
     public function zipFileFirstInstall($name, $keyFileName, $dataFirstInstall)
