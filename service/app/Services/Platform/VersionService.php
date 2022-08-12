@@ -38,6 +38,7 @@ class VersionService
     const TYPE_AUDIO_BOOK_V2     = 103;
     const TYPE_STORY_V2          = 104;
     const TYPE_WORKSHEET_V2      = 105;
+    const TYPE_TRIAL_ITEMS_MS    = 107;
 
     const KEY_REDIS_VERSION = 'KEY_REDIS_VERSION_';
 
@@ -84,6 +85,9 @@ class VersionService
         }
         if (!isset($data['version_common_mk_talking']) || !$data['version_common_mk_talking']) {
             $data['version_common_mk_talking'] = $this->getVersion($appId, self::TYPE_COMMON_MK_TALKING);
+        }
+        if (!isset($data['version_trial_items']) || !$data['version_trial_items']) {
+            $data['version_trial_items'] = $this->getVersion($appId, self::TYPE_TRIAL_ITEMS_MS);
         }
         return $data;
     }
