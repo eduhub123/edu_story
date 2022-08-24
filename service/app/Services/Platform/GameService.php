@@ -81,7 +81,7 @@ class GameService
                         "id"          => $game['id'],
                         "name"        => $game['name'],
                         "path_config" => $game['path_config'] ? $folderConfig . $game['path_config'] : '',
-                        "path_images" => $game['path_images'] ? $folderImage . $game['path_images'] : '',
+                        "path_images" => $dataApp['thumb'] ? $folderImage . $dataApp['thumb'] : $folderImage . $game['path_images'],
                         "zip_size"    => $game['zip_size'],
                     ];
                 }
