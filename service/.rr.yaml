@@ -1,0 +1,7 @@
+grpc:
+  listen: "tcp://0.0.0.0:40051"
+  proto: ["protobuf/src/story_lang.proto"]
+  workers:
+    command: "php worker.php"
+    pool:
+      numWorkers: 4

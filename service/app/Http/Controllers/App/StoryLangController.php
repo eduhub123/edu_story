@@ -121,6 +121,7 @@ class StoryLangController extends Controller
 
         $levelDetail = $this->levelDetailsRepos->getAllLevelByLang($listLangId)->toArray();
 
+
         foreach ($levelDetail as $item) {
             $langId            = $item[LevelDetails::_LANG_ID];
             $level['id']       = (int)$item[LevelDetails::_LEVEL];
@@ -140,6 +141,7 @@ class StoryLangController extends Controller
     public function getListGradeStory()
     {
         $listGrade = $this->gradeRepos->getDataByLanguageDisplay()->toArray();
+
 
         $data = [];
         foreach ($listGrade as $grade) {

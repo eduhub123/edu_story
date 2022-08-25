@@ -1,0 +1,89 @@
+syntax="proto3";
+
+package mypackage;
+
+//GetAllLevelStory
+message GetAllLevelStoryRequest {
+
+}
+
+message GetAllLevelStoryResponse {
+  repeated int64 data = 1;
+}
+
+
+//GetCategoryStory
+message GetCategoryStoryRequest {
+  int64 lang_id = 1;
+}
+
+message CategoryStory {
+  int64 category_id = 1;
+  string content = 2;
+  string image = 3;
+  int64 lang_id = 4;
+}
+
+message GetCategoryStoryResponse {
+  repeated CategoryStory data = 1;
+}
+
+//GetAllLanguageUse
+message LanguageUse {
+  int64 id = 1;
+  repeated Level levels = 2;
+}
+
+message Level {
+  int64 id = 1;
+  string des = 2;
+  string name = 3;
+  int64 grade_id = 4;
+}
+
+message GetAllLanguageUseRequest {
+  string token_server = 1;
+}
+
+message GetAllLanguageUseResponse {
+  repeated LanguageUse data = 1;
+}
+
+//GetListGrade
+message Grade {
+  string name = 1;
+  string des = 2;
+  int64 lang_display = 3;
+  int64 group = 4;
+  int64 id = 5;
+  int64 order = 6;
+}
+
+message GetListGradeRequest {}
+
+message GetListGradeResponse{
+  repeated Grade data = 1;
+}
+
+//Get List Description Story
+message DescriptionStory {
+  int64 order = 1;
+  int64 lang_display_id = 2;
+  string description = 3;
+}
+
+message GetListDescriptionStoryRequest{}
+
+message GetListDescriptionStoryResponse{
+  repeated DescriptionStory data = 1;
+}
+
+
+
+service StoryLangService{
+  rpc GetAllLevelStory(GetAllLevelStoryRequest) returns(GetAllLevelStoryResponse);
+  rpc GetCategoryStory(GetCategoryStoryRequest) returns(GetCategoryStoryResponse);
+  rpc GetAllLanguageUse(GetAllLanguageUseRequest) returns(GetAllLanguageUseResponse);
+  rpc GetListGrade(GetListGradeRequest) returns(GetListGradeResponse);
+  rpc GetListDescriptionStory(GetListDescriptionStoryRequest) returns(GetListDescriptionStoryResponse);
+}
