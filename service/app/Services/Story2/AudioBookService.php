@@ -51,6 +51,7 @@ class AudioBookService
                 continue;
             } elseif ($status == LevelSystem::STATUS_DELETE) {
                 $delete[$idAudioBook] = intval($idAudioBook);
+                $delete = $this->deleteChild($audioBook, $delete);
                 continue;
             }
             $audiobookNew = $this->getItemAudioBook($audioBook, $isInHouse);
@@ -60,7 +61,7 @@ class AudioBookService
                     if ($status == LevelSystem::STATUS_NEW) {
                         continue;
                     } elseif ($status == LevelSystem::STATUS_DELETE) {
-                        $delete[] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
+                        $delete[$audioBookChild[AudioBook::_ID_AUDIO_BOOK]] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
                         unset($audiobookNew['child'][$indexChild]);
                         continue;
                     }
@@ -71,6 +72,16 @@ class AudioBookService
             $list[] = $audiobookNew;
         }
         return [$list, $delete];
+    }
+
+    private function deleteChild($audioBook, $delete)
+    {
+        if (count($audioBook['child']) > 0) {
+            foreach ($audioBook['child'] as $audioBookChild) {
+                $delete[$audioBookChild[AudioBook::_ID_AUDIO_BOOK]] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
+            }
+        }
+        return $delete;
     }
 
     private function getItemAudioBook($audioBook, $isInHouse= false)
