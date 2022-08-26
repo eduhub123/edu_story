@@ -56,6 +56,7 @@ class AudioBookService
             }
             $audiobookNew = $this->getItemAudioBook($audioBook, $isInHouse);
             if (count($audiobookNew['child']) > 0) {
+                $audioBookChildNew = [];
                 foreach ($audiobookNew['child'] as $indexChild => &$audioBookChild) {
                     $status = LevelSystem::checkStatusLevelSystem($audioBookChild[AudioBook::_LEVEL_SYSTEM], $audioBookChild[AudioBook::_DATE_PUBLISH], $isInHouse);
                     if ($status == LevelSystem::STATUS_NEW) {
@@ -65,9 +66,9 @@ class AudioBookService
                         unset($audiobookNew['child'][$indexChild]);
                         continue;
                     }
-                    $audioBookChild = $this->getItemAudioBook($audioBookChild, $isInHouse);
+                    $audioBookChildNew[] = $this->getItemAudioBook($audioBookChild, $isInHouse);
                 }
-                $audiobookNew['child'] = array_values($audiobookNew['child']);
+                $audiobookNew['child'] = array_values($audioBookChildNew);
             }
             $list[] = $audiobookNew;
         }
