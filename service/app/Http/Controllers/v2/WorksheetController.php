@@ -27,7 +27,7 @@ class WorksheetController extends BaseMobileController
         ZipService $zipService,
         VersionService $versionService,
         PopularSearchService $popularSearchService,
-        WorksheetService $worksheetService,
+        WorksheetService $worksheetService
     ) {
         parent::__construct($request);
         $this->request              = $request;
