@@ -55,4 +55,31 @@ interface StoryLangServiceInterface extends GRPC\ServiceInterface
     * @throws GRPC\Exception\InvokeException
     */
     public function GetListDescriptionStory(GRPC\ContextInterface $ctx, GetListDescriptionStoryRequest $in): GetListDescriptionStoryResponse;
+
+    /**
+    * @param GRPC\ContextInterface $ctx
+    * @param GetListStoryByIdRequest $in
+    * @return GetListStoryByIdResponse
+    *
+    * @throws GRPC\Exception\InvokeException
+    */
+    public function GetListStoryById(GRPC\ContextInterface $ctx, GetListStoryByIdRequest $in): GetListStoryByIdResponse;
+
+    /**
+    * @param GRPC\ContextInterface $ctx
+    * @param GetListStoryByListIdRequest $in
+    * @return GetListStoryByListIdResponse
+    *
+    * @throws GRPC\Exception\InvokeException
+    */
+    public function GetListStoryByListId(GRPC\ContextInterface $ctx, GetListStoryByListIdRequest $in): GetListStoryByListIdResponse;
+
+    /**
+    * @param GRPC\ContextInterface $ctx
+    * @param GetStoryFreeRequest $in
+    * @return GetStoryFreeResponse
+    *
+    * @throws GRPC\Exception\InvokeException
+    */
+    public function GetStoryFree(GRPC\ContextInterface $ctx, GetStoryFreeRequest $in): GetStoryFreeResponse;
 }

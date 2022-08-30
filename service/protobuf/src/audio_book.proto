@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package mypackage;
+
+message GetVersionAudioBookRequest{
+  int64 id_app = 1;
+}
+
+message GetVersionAudioBookResponse {
+  int64 data = 1;
+}
+
+service AudioBookService {
+  rpc GetVersionAudioBook(GetVersionAudioBookRequest) returns(GetVersionAudioBookResponse);
+}

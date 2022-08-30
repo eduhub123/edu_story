@@ -1,0 +1,15 @@
+syntax="proto3";
+
+package mypackage;
+
+message GetVersionWorksheetRequest {
+  int64 id_app = 1;
+}
+
+message GetVersionWorksheetResponse {
+  int64 data = 1;
+}
+
+service WorksheetService {
+  rpc GetVersionWorksheet(GetVersionWorksheetRequest) returns(GetVersionWorksheetResponse);
+}

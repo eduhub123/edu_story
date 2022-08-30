@@ -1,4 +1,4 @@
-syntax="proto3";
+syntax = "proto3";
 
 package mypackage;
 
@@ -78,6 +78,58 @@ message GetListDescriptionStoryResponse{
   repeated DescriptionStory data = 1;
 }
 
+//GetListStoryById
+message Story {
+  int64 slang_id = 1;
+  string name = 2;
+  string icon = 3;
+  int32 delete = 4;
+  string data = 5;
+  int64 level = 6;
+  int64 cateId = 7;
+}
+
+message GetListStoryByIdRequest {
+  repeated int64 story_id = 1;
+  int64 lang_id = 2;
+}
+
+message GetListStoryByIdResponse {
+  repeated Story data = 1;
+}
+
+//GetListStoryByListId
+message StoryByListId {
+  int64 slang_id = 1;
+  int64 sid = 2;
+  int64 lang_id = 3;
+  string name = 4;
+  string zip_size = 5;
+  int64 version_story = 6;
+}
+
+message GetListStoryByListIdRequest{
+  repeated int64 slang_id = 1;
+  int64 lang_id = 2;
+}
+
+message GetListStoryByListIdResponse {
+  repeated StoryByListId data = 1;
+}
+
+
+//Get story free
+message GetStoryFreeRequest{}
+
+message GetStoryFreeResponse{
+  repeated StoryFree data = 1;
+}
+
+message StoryFree {
+  int64 lang_id = 1;
+  repeated int64 list = 2;
+}
+
 
 
 service StoryLangService{
@@ -86,4 +138,7 @@ service StoryLangService{
   rpc GetAllLanguageUse(GetAllLanguageUseRequest) returns(GetAllLanguageUseResponse);
   rpc GetListGrade(GetListGradeRequest) returns(GetListGradeResponse);
   rpc GetListDescriptionStory(GetListDescriptionStoryRequest) returns(GetListDescriptionStoryResponse);
+  rpc GetListStoryById(GetListStoryByIdRequest) returns(GetListStoryByIdResponse);
+  rpc GetListStoryByListId(GetListStoryByListIdRequest) returns(GetListStoryByListIdResponse);
+  rpc GetStoryFree(GetStoryFreeRequest) returns(GetStoryFreeResponse);
 }

@@ -26,6 +26,9 @@ $server = $app->make(Server::class);
 //$server->registerService(\Mypackage\UserServiceInterface::class, new \App\Grpc\UserService());
 
 $server->registerService(\Mypackage\StoryLangServiceInterface::class, new \App\Grpc\App\StoryLangController());
+$server->registerService(\Mypackage\AudioBookServiceInterface::class,new \App\Grpc\App\AudioBookController());
+$server->registerService(\Mypackage\WorksheetServiceInterface::class,new \App\Grpc\App\WorksheetController());
+$server->registerService(\Mypackage\FreeServiceInterface::class, new \App\Grpc\App\FreeController());
 /** 啟始 worker */
 $worker = new  Spiral\RoadRunner\Worker(new Spiral\Goridge\StreamRelay(STDIN, STDOUT));
 $server->serve($worker);

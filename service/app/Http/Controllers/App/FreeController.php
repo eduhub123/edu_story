@@ -31,6 +31,7 @@ class FreeController extends Controller
         $time  = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
 
         $listFreeStory = $this->freeStoryRepos->getFreeStory($idApp, $type, $time)->toArray();
+
         $data = [];
         foreach ($listFreeStory as $freeStory) {
             $idLanguage = Language::getIdLanguageByIdApp($freeStory[FreeStory::_ID_APP]);

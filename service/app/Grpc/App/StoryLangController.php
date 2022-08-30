@@ -5,10 +5,12 @@ namespace App\Grpc\App;
 use App\Models\Story\Category;
 use App\Models\Story\DescriptionGrade;
 use App\Models\Story\DescriptionLevel;
+use App\Models\Story\FreeStory;
 use App\Models\Story\LevelDetails;
 use App\Models\Story\StoryLang;
 use App\Repositories\Story\CategoryRepository;
 use App\Repositories\Story\DescriptionLevelRepository;
+use App\Repositories\Story\FreeStoryRepository;
 use App\Repositories\Story\GradeRepository;
 use App\Repositories\Story\LevelDetailsRepository;
 use App\Repositories\Story\StoryLangRepository;
@@ -25,9 +27,18 @@ use Mypackage\GetListDescriptionStoryRequest;
 use Mypackage\GetListDescriptionStoryResponse;
 use Mypackage\GetListGradeRequest;
 use Mypackage\GetListGradeResponse;
+use Mypackage\GetListStoryByIdRequest;
+use Mypackage\GetListStoryByIdResponse;
+use Mypackage\GetListStoryByListIdRequest;
+use Mypackage\GetListStoryByListIdResponse;
+use Mypackage\GetStoryFreeRequest;
+use Mypackage\GetStoryFreeResponse;
 use Mypackage\Grade;
 use Mypackage\LanguageUse;
 use Mypackage\Level;
+use Mypackage\Story;
+use Mypackage\StoryByListId;
+use Mypackage\StoryFree;
 use Mypackage\StoryLangServiceInterface;
 use Spiral\GRPC;
 
@@ -153,5 +164,102 @@ class StoryLangController implements StoryLangServiceInterface
         $response = new GetListDescriptionStoryResponse();
         $response->setData($data);
         return $response;
+    }
+
+    public function GetListStoryById(GRPC\ContextInterface $ctx, GetListStoryByIdRequest $in): GetListStoryByIdResponse
+    {
+        try {
+            $listStoryId = get_grpc_repeated($in->getStoryId());
+            $langId = $in->getLangId();
+
+            if (!$listStoryId) {
+                throw new GRPC\Exception\GRPCException(__('app.invalid_params'), 3);
+            }
+
+            $storyLangRepository = app()->make(StoryLangRepository::class);
+            $data = $storyLangRepository->getListById($listStoryId, $langId);
+
+            $result = [];
+
+            foreach ($data as $item) {
+                $story = new Story();
+                $story->setSlangId($item['slang_id']);
+                $story->setName($item['name']);
+                $story->setIcon($item['icon']);
+                $story->setDelete($item['delete']);
+                $story->setData($item['data']);
+                $story->setLevel($item['level']);
+                $story->setCateId($item['cateId']);
+
+                $result[] = $story;
+            }
+
+
+            $response = new GetListStoryByIdResponse();
+            $response->setData($result);
+            return $response;
+        } catch (\Exception $exception) {
+            throw new GRPC\Exception\GRPCException($exception->getMessage(), 13);
+        }
+    }
+
+    public function GetListStoryByListId(GRPC\ContextInterface $ctx, GetListStoryByListIdRequest $in): GetListStoryByListIdResponse
+    {
+        try {
+            $slangId = get_grpc_repeated($in->getSlangId());
+            $storyLangRepository = app()->make(StoryLangRepository::class);
+
+            $data = $storyLangRepository->getListByListId($slangId);
+
+            $result = [];
+
+            foreach ($data as $item) {
+                $story = new StoryByListId();
+                $story->setSlangId($item['slang_id']);
+                $story->setSid($item['sid']);
+                $story->setLangId($item['lang_id']);
+                $story->setName($item['name']);
+                $story->setZipSize($item['zip_size']);
+                $story->setVersionStory($item['version_story']);
+
+                $result[] = $story;
+            }
+
+
+            $response = new GetListStoryByListIdResponse();
+            $response->setData($result);
+            return $response;
+        } catch (\Exception $exception) {
+            throw new GRPC\Exception\GRPCException($exception->getMessage(), 13);
+        }
+    }
+
+    public function GetStoryFree(GRPC\ContextInterface $ctx, GetStoryFreeRequest $in): GetStoryFreeResponse
+    {
+        $listFreeStory = app()->make(FreeStoryRepository::class)->getFreeStoryToDay()->toArray();
+
+        $data = [];
+        foreach ($listFreeStory as $freeStory) {
+            if (isset($freeStory['story_lang_relate'][StoryLang::_LANG_ID])) {
+                $langId = $freeStory['story_lang_relate'][StoryLang::_LANG_ID];
+                $data[$langId][] = (int)$freeStory[FreeStory::_SLANG_ID];
+            }
+        }
+
+        $result = [];
+
+        foreach ($data as $key => $item) {
+            $free = new StoryFree();
+            $free->setLangId($key);
+            $free->setList($item);
+
+            $result[] = $free;
+        }
+
+        $response = new GetStoryFreeResponse();
+        $response->setData($result);
+        return $response;
+
+
     }
 }

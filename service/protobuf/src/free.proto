@@ -1,0 +1,28 @@
+syntax="proto3";
+
+package mypackage;
+
+message GetListFreeRequest {
+  int64 id_app = 1;
+  int64 type = 2;
+}
+
+message ListFree {
+  int64 id_language = 2;
+  repeated int64 data = 3;
+}
+
+message ListFreeWithoutType {
+  int64 type = 1;
+  repeated ListFree list = 2;
+}
+
+
+message  GetListFreeResponse {
+  repeated ListFree data_with_type = 1;
+  repeated ListFreeWithoutType data_without_type = 2;
+}
+
+service FreeService {
+  rpc GetListFree(GetListFreeRequest) returns(GetListFreeResponse);
+}

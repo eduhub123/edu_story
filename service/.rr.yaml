@@ -1,6 +1,6 @@
 grpc:
   listen: "tcp://0.0.0.0:40051"
-  proto: ["protobuf/src/story_lang.proto"]
+  proto: ["protobuf/src/story_lang.proto","protobuf/src/audio_book.proto","protobuf/src/worksheet.proto","protobuf/src/free.proto"]
   workers:
     command: "php worker.php"
     pool:
