@@ -51,26 +51,38 @@ class AudioBookService
                 continue;
             } elseif ($status == LevelSystem::STATUS_DELETE) {
                 $delete[$idAudioBook] = intval($idAudioBook);
+                $delete = $this->deleteChild($audioBook, $delete);
                 continue;
             }
             $audiobookNew = $this->getItemAudioBook($audioBook, $isInHouse);
             if (count($audiobookNew['child']) > 0) {
+                $audioBookChildNew = [];
                 foreach ($audiobookNew['child'] as $indexChild => &$audioBookChild) {
                     $status = LevelSystem::checkStatusLevelSystem($audioBookChild[AudioBook::_LEVEL_SYSTEM], $audioBookChild[AudioBook::_DATE_PUBLISH], $isInHouse);
                     if ($status == LevelSystem::STATUS_NEW) {
                         continue;
                     } elseif ($status == LevelSystem::STATUS_DELETE) {
-                        $delete[] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
+                        $delete[$audioBookChild[AudioBook::_ID_AUDIO_BOOK]] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
                         unset($audiobookNew['child'][$indexChild]);
                         continue;
                     }
-                    $audioBookChild = $this->getItemAudioBook($audioBookChild, $isInHouse);
+                    $audioBookChildNew[] = $this->getItemAudioBook($audioBookChild, $isInHouse);
                 }
-                $audiobookNew['child'] = array_values($audiobookNew['child']);
+                $audiobookNew['child'] = array_values($audioBookChildNew);
             }
             $list[] = $audiobookNew;
         }
         return [$list, $delete];
+    }
+
+    private function deleteChild($audioBook, $delete)
+    {
+        if (count($audioBook['child']) > 0) {
+            foreach ($audioBook['child'] as $audioBookChild) {
+                $delete[$audioBookChild[AudioBook::_ID_AUDIO_BOOK]] = intval($audioBookChild[AudioBook::_ID_AUDIO_BOOK]);
+            }
+        }
+        return $delete;
     }
 
     private function getItemAudioBook($audioBook, $isInHouse= false)
