@@ -77,8 +77,9 @@ class StoryService
                     $pathThumb = StoryLang::PATH_UPLOAD_THUMB_HDR;
                     $pathZip   = StoryLang::PATH_UPLOAD_ZIP_HDR;
                 }
-                $dataStoryNew['image']         = $pathThumb . "/" . $story[StoryLang::_THUMB];
-                $dataStoryNew['download_link'] = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+                $dataStoryNew['image']                   = $pathThumb . "/" . $story[StoryLang::_THUMB];
+                $dataStoryNew['download_link']           = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+                $dataStoryNew[StoryLang::_VERSION_STORY] = $story[StoryLang::_VERSION_STORY];
 
                 $zipSizeHd  = 0;
                 $zipSizeHdr = 0;
