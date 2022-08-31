@@ -79,7 +79,6 @@ class StoryService
                 }
                 $dataStoryNew['image']                   = $pathThumb . "/" . $story[StoryLang::_THUMB];
                 $dataStoryNew['download_link']           = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
-                $dataStoryNew['lang_id']                 = $story[StoryLang::_ID_LANGUAGES];
                 $dataStoryNew[StoryLang::_VERSION_STORY] = $story[StoryLang::_VERSION_STORY];
 
                 $zipSizeHd  = 0;
