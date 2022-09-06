@@ -124,6 +124,8 @@ class LessonConnectService
         $data['lang_id']     = $langId;
         $data['subversion']  = $subversion;
         $data['lesson_id']   = $lessonId;
+        $data['new_story']   = 1;
+
         $response            = $this->curlService->_curlPost($url, $data, true);
 
         if (isset($response['status']) && $response['status'] == 'success') {
