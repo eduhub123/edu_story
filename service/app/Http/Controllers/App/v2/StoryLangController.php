@@ -43,6 +43,7 @@ class StoryLangController extends Controller
                 'sid'           => $storyLang[StoryLang::_ID_STORIES],
                 'lang_id'       => $storyLang[StoryLang::_ID_LANGUAGES],
                 'name'          => $storyLang[StoryLang::_NAME],
+                'path_zip_file' => $storyLang[StoryLang::_PATH_ZIP_FILE],
                 'zip_size'      => $storyLang[StoryLang::_ZIP_SIZE],
                 'version_story' => $storyLang[StoryLang::_VERSION_STORY],
             ];
