@@ -96,6 +96,7 @@ class StoryLangRepository extends EloquentRepository
                 StoryLang::_ID_STORIES,
                 StoryLang::_ID_LANGUAGES,
                 StoryLang::_NAME,
+                StoryLang::_PATH_ZIP_FILE,
                 StoryLang::_ZIP_SIZE,
                 StoryLang::_VERSION_STORY
             )
