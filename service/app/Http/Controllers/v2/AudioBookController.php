@@ -5,7 +5,9 @@ namespace App\Http\Controllers\v2;
 use App\Http\Controllers\BaseMobileController;
 use App\Models\Language;
 use App\Models\LangDisplay;
+use App\Models\Story2\FreeStory;
 use App\Models\Story2\PopularSearch;
+use App\Repositories\Story2\FreeStoryRepository;
 use App\Services\Platform\VersionService;
 use App\Services\Story2\AudioBookService;
 use App\Services\Story2\PopularSearchService;
@@ -15,6 +17,7 @@ use Illuminate\Http\Request;
 
 class AudioBookController extends BaseMobileController
 {
+    private $freeStoryRepos;
     private $request;
     private $zipService;
     private $audioBookService;
@@ -22,6 +25,7 @@ class AudioBookController extends BaseMobileController
     private $popularSearchService;
 
     public function __construct(
+        FreeStoryRepository $freeStoryRepos,
         Request $request,
         ZipService $zipService,
         AudioBookService $audioBookService,
@@ -29,6 +33,7 @@ class AudioBookController extends BaseMobileController
         PopularSearchService $popularSearchService
     ) {
         parent::__construct($request);
+        $this->freeStoryRepos       = $freeStoryRepos;
         $this->request              = $request;
         $this->zipService           = $zipService;
         $this->audioBookService     = $audioBookService;
@@ -83,4 +88,65 @@ class AudioBookController extends BaseMobileController
         return response()->download($fileZip);
     }
 
+    public function listVM()
+    {
+        $data      = [];
+        $json      = $this->request->input('json', false);
+        $inHouse   = $this->request->input('in_house', false);
+        $version   = (int)$this->request->input('version', 0);
+
+        $isInHouse = $this->isNetworkEarlyStart || $inHouse;
+
+        $idLanguage    = Language::getIdLanguageByIdApp($this->app_id);
+        $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($this->app_id);
+        $lastVersion   = $this->versionService->getVersion($this->app_id, VersionService::TYPE_AUDIO_BOOK_V2);
+        if ($lastVersion <= $this->ver) {
+            $this->status = 'success';
+            goto next;
+        }
+
+        if (!$json) {
+            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion);
+            if (file_exists($fileZip)) {
+                goto nextDownload;
+            }
+        }
+
+        //list_audio_book
+        list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $version, $lastVersion, $isInHouse);
+
+        $freeAudioBook = [];
+        $freeStories = $this->freeStoryRepos->getFreeStory($this->app_id, FreeStory::TYPE_AUDIO, time())->toArray();
+        foreach ($freeStories as $freeStory) {
+            $idLanguage = Language::getIdLanguageByIdApp($freeStory[FreeStory::_ID_APP]);
+            $freeAudioBook[$idLanguage][] = $freeStory[FreeStory::_ID_STORY];
+        }
+
+        $data['list_audio_book'] = [
+            'delete'          => array_values($delete),
+            'data'            => array_values($audioBooks),
+            'free_audio_book' => $freeAudioBook,
+            'today'           => time(),
+            'version'         => $lastVersion
+        ];
+        //series
+        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $data['info']['Series']  = $series;
+        //popular_search
+        $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);
+
+        $this->message = __('app.success');
+        $this->status  = 'success';
+
+        next :
+        if ($json) {
+            return $this->responseData($data);
+        }
+        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook', 0, $lastVersion, "", $this->status);
+
+        nextDownload :
+        return response()->download($fileZip);
+    }
 }

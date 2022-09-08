@@ -82,4 +82,56 @@ class StoryController extends BaseMobileController
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }
 
+    public function listVM()
+    {
+        $this->ver = $this->storyService->convertVersion($this->ver);
+
+        $level     = $this->request->input('level', 0);
+        $level     = intval($level);
+        $json      = $this->request->input('json');
+        $inHouse   = $this->request->input('in_house', false);
+        $isInHouse = $this->isNetworkEarlyStart || $inHouse;
+
+        $idLanguage  = Language::getIdLanguageByIdApp($this->app_id);
+        $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_STORY_V2);
+        $storyItem   = [];
+        if ($lastVersion <= $this->ver) {
+            $this->status = 'success';
+            goto next;
+        }
+
+        if (!$json) {
+            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story', $this->ver, $lastVersion);
+            if (file_exists($fileZip)) {
+                goto nextDownload;
+            }
+        }
+
+        list($story, $delete) = $this->storyService->processDataStory($this->app_id, $this->device_type, $idLanguage, $level, $this->ver, $lastVersion, $isInHouse);
+
+        $storyItem['story']          = array_values($story);
+        $storyItem['delete']         = array_values($delete);
+        $storyItem['version_story']  = $lastVersion;
+        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_STORY]);
+
+        $storyItem['level']          = array_values($story);
+        $storyItem['home']           = array_values($story);
+        $storyItem['popular_search'] = $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_STORY]);
+
+        $this->message = __('app.success');
+        $this->status  = 'success';
+
+        next:
+        if ($json) {
+            return $this->ResponseData($storyItem);
+        }
+        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status);
+
+        nextDownload :
+        return response()->download($fileZip)->deleteFileAfterSend(false);
+    }
+
+
 }

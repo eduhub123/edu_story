@@ -2,6 +2,7 @@
 
 namespace App\Services\Story2;
 
+use App\Models\Story2\PopularSearch;
 use App\Repositories\Story2\PopularSearchRepository;
 use App\Services\RedisService;
 use App\Services\ServiceConnect\LessonConnectService;
@@ -35,6 +36,15 @@ class PopularSearchService
             $this->redisService->set($key, $data, 3600);
         }
         return $data;
+    }
+
+    public function getPopularSearchV2MV($idApp, $types)
+    {
+        $popularSearches = $this->getPopularSearchV2($idApp, $types);
+        foreach ($popularSearches as $key => $popularSearch) {
+            $popularSearches[$key][PopularSearch::_THUMB] = " https://monkeymedia.vcdn.com.vn/" . $popularSearch[PopularSearch::_THUMB];
+        }
+        return $popularSearches;
     }
 
     public function getPopularSearch($appId, $typeSearch)
