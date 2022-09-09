@@ -16,7 +16,7 @@ class DescriptionLevelRepository extends EloquentRepository
     public function getDescription()
     {
         return $this->_model
-            ->select(DescriptionLevel::_DESCRIPTION, DescriptionLevel::_LANG_DISPLAY, DescriptionLevel::_LEVEL_ORDER)
+            ->select(DescriptionLevel::_DESCRIPTION, DescriptionLevel::_LANG_DISPLAY_ID, DescriptionLevel::_LEVEL_ORDER)
             ->get();
     }
 }

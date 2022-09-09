@@ -45,6 +45,11 @@ class Series extends Model
         self::_UPDATED_AT,
     ];
 
+    public function names()
+    {
+        return $this->hasMany(Translate::class, Translate::_KEY, self::_KEY_NAME);
+    }
+
     public static function convertStatusToHidden($status)
     {
         $hidden = self::NOT_HIDDEN;

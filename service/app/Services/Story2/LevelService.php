@@ -3,22 +3,33 @@
 namespace App\Services\Story2;
 
 use App\Models\LangDisplay;
+use App\Models\Story\DescriptionLevel;
 use App\Models\Story2\Level;
 use App\Models\Story2\Translate;
+use App\Repositories\Story\DescriptionLevelRepository;
 use App\Repositories\Story2\LevelRepository;
 use App\Repositories\Story2\TranslateRepository;
+use App\Services\RedisService;
 
 class LevelService
 {
     private $levelRepos;
+    private $descriptionLevelRepos;
     private $translateRepos;
+    private $redisService;
+
+    const KEY_REDIS_LEVEL_DESCRIPTION = 'KEY_REDIS_LEVEL_DESCRIPTION';
 
     public function __construct(
         LevelRepository $levelRepos,
-        TranslateRepository $translateRepos
+        DescriptionLevelRepository $descriptionLevelRepos,
+        TranslateRepository $translateRepos,
+        RedisService $redisService
     ) {
-        $this->levelRepos     = $levelRepos;
-        $this->translateRepos = $translateRepos;
+        $this->levelRepos            = $levelRepos;
+        $this->descriptionLevelRepos = $descriptionLevelRepos;
+        $this->translateRepos        = $translateRepos;
+        $this->redisService          = $redisService;
     }
 
     public function getListLevel($idApp)
@@ -48,6 +59,31 @@ class LevelService
             $levelIds[$levelId] = $levelId;
         }
         return [$levelIds, $dataLevels];
+    }
+
+    public function getDescriptionLevels()
+    {
+        $key               = self::KEY_REDIS_LEVEL_DESCRIPTION;
+        $descriptionLevels = $this->redisService->get($key, true);
+        if (!$descriptionLevels) {
+            $descriptionLevels = $this->descriptionLevelRepos->getDescription()->toArray();
+            $this->redisService->set($key, $descriptionLevels, 3600);
+        }
+        return $descriptionLevels;
+    }
+
+    public function processDataDescriptionLevel()
+    {
+        $descriptionLevels = $this->getDescriptionLevels();
+        $description       = [];
+        foreach ($descriptionLevels as $descriptionLevel) {
+            $description[] = [
+                'order'           => intval($descriptionLevel[DescriptionLevel::_LEVEL_ORDER]),
+                'description'     => $descriptionLevel[DescriptionLevel::_DESCRIPTION],
+                'lang_display_id' => intval($descriptionLevel[DescriptionLevel::_LANG_DISPLAY_ID])
+            ];
+        }
+        return $description;
     }
 
 }

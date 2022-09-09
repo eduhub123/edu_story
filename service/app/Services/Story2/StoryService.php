@@ -8,6 +8,7 @@ use App\Models\Story2\StoryLang;
 use App\Repositories\Story2\FreeStoryRepository;
 use App\Repositories\Story2\StoryLangRepository;
 use App\Services\RedisService;
+use Illuminate\Support\Facades\Config;
 
 class StoryService
 {
@@ -51,7 +52,7 @@ class StoryService
         }
         $list   = [];
         $delete = [];
-        foreach ($listStory as $i => $story) {
+        foreach ($listStory as $story) {
             $idStoryLang = $story[StoryLang::_ID_STORY_LANG];
 
             $status = LevelSystem::checkStatusLevelSystem($story[StoryLang::_LEVEL_SYSTEM], $story[StoryLang::_DATE_PUBLISH], $isInHouse);
@@ -63,13 +64,6 @@ class StoryService
             }
             if ($story[StoryLang::_DATA]) {
                 $dataStoryNew = json_decode($story[StoryLang::_DATA], true);
-
-                if ($idApp == ListApp::APP_ID_MS_VN) {
-                    $dataStoryNew['quality'] = (string)$story[StoryLang::_QUALITY_SCORE];
-                } else {
-                    $dataStoryNew['quality'] = $story[StoryLang::_QUALITY_SCORE];
-                }
-
                 if ($deviceType == "hd") {
                     $pathThumb = StoryLang::PATH_UPLOAD_THUMB_HD;
                     $pathZip   = StoryLang::PATH_UPLOAD_ZIP_HD;
@@ -77,8 +71,14 @@ class StoryService
                     $pathThumb = StoryLang::PATH_UPLOAD_THUMB_HDR;
                     $pathZip   = StoryLang::PATH_UPLOAD_ZIP_HDR;
                 }
+                $dataStoryNew['quality']       = $story[StoryLang::_QUALITY_SCORE];
                 $dataStoryNew['image']         = $pathThumb . "/" . $story[StoryLang::_THUMB];
                 $dataStoryNew['download_link'] = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+                if ($idApp == ListApp::APP_ID_MS_VN) {
+                    $dataStoryNew['quality']       = (string)$story[StoryLang::_QUALITY_SCORE];
+                    $dataStoryNew['image']         = Config::get('environment.URL_DISPLAY_CDN') . $dataStoryNew['image'];
+                    $dataStoryNew['download_link'] = Config::get('environment.URL_DISPLAY_CDN') . $dataStoryNew['download_link'];
+                }
 
                 $zipSizeHd  = 0;
                 $zipSizeHdr = 0;
