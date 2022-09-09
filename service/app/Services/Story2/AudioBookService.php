@@ -36,6 +36,11 @@ class AudioBookService
         return $this->audioBookRepos->getLastVersionAudioBook($idApp, $idLanguage);
     }
 
+    public function getContentAudioBookById($idAudioBook){
+        return $this->audioBookRepos->getContentAudioBookById($idAudioBook);
+    }
+
+    //AudioBooks
     public function getAudioBooks($idApp, $idLanguage, $version = 0, $lastVersion = 0)
     {
         $keyAudioBook  = self::KEY_REDIS_AUDIO_BOOKS_V2 . "_" . $idApp . "_" . $idLanguage . "_" . $version . "_" . $lastVersion;
@@ -47,6 +52,7 @@ class AudioBookService
         return $listAudioBook;
     }
 
+    //processDataAudioBook
     public function processDataAudioBook($idApp,  $idLanguage, $version = 0, $lastVersion = 0 , $isInHouse = false)
     {
         $listAudioBook = $this->getAudioBooks($idApp, $idLanguage, $version, $lastVersion);
@@ -144,6 +150,7 @@ class AudioBookService
         ];
     }
 
+    //DataSeries
     public function getDataSeries($idApp, $idLanguage, $idLangDisplay, $lastVersion)
     {
         $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2 . '_' . $idApp . '_' . $idLangDisplay . '_' . $lastVersion;

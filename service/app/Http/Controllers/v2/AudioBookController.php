@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v2;
 use App\Http\Controllers\BaseMobileController;
 use App\Models\Language;
 use App\Models\LangDisplay;
+use App\Models\Story2\AudioBook;
 use App\Models\Story2\FreeStory;
 use App\Models\Story2\PopularSearch;
 use App\Services\Platform\VersionService;
@@ -144,6 +145,36 @@ class AudioBookController extends BaseMobileController
 
         nextDownload :
         return response()->download($fileZip);
+    }
+
+    public function detail()
+    {
+        $id   = $this->request->input('id');
+        $json = $this->request->input('json', false);
+        if (!$id) {
+            $content = '';
+            goto next;
+        }
+
+        if (!$json) {
+            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today. $id,'audio_book_detail_v2',  $this->ver);
+            if (file_exists($fileZip)) {
+                goto nextDownload;
+            }
+        }
+
+        $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
+        $content          = $contentAudioBook ? $contentAudioBook[AudioBook::_CONTENT] : '';
+
+        next:
+        if ($json) {
+            echo json_encode($content);die;
+        }
+        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', $this->ver);
+        nextDownload :
+        return response()->download($fileZip)->deleteFileAfterSend(false);
     }
 
 }

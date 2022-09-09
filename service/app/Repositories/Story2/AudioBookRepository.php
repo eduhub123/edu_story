@@ -77,4 +77,12 @@ class AudioBookRepository extends EloquentRepository
             ->get();
     }
 
+    public function getContentAudioBookById($idAudioBook)
+    {
+        return $this->_model
+            ->select(AudioBook::_CONTENT)
+            ->where(AudioBook::_ID_AUDIO_BOOK, $idAudioBook)
+            ->first();
+    }
+
 }
