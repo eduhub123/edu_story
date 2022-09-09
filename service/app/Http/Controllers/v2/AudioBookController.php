@@ -7,9 +7,9 @@ use App\Models\Language;
 use App\Models\LangDisplay;
 use App\Models\Story2\FreeStory;
 use App\Models\Story2\PopularSearch;
-use App\Repositories\Story2\FreeStoryRepository;
 use App\Services\Platform\VersionService;
 use App\Services\Story2\AudioBookService;
+use App\Services\Story2\FreeStoryService;
 use App\Services\Story2\PopularSearchService;
 use App\Services\ZipService;
 use Carbon\Carbon;
@@ -17,27 +17,28 @@ use Illuminate\Http\Request;
 
 class AudioBookController extends BaseMobileController
 {
-    private $freeStoryRepos;
+
     private $request;
     private $zipService;
     private $audioBookService;
     private $versionService;
+    private $freeStoryService;
     private $popularSearchService;
 
     public function __construct(
-        FreeStoryRepository $freeStoryRepos,
         Request $request,
         ZipService $zipService,
         AudioBookService $audioBookService,
         VersionService $versionService,
+        FreeStoryService $freeStoryService,
         PopularSearchService $popularSearchService
     ) {
         parent::__construct($request);
-        $this->freeStoryRepos       = $freeStoryRepos;
         $this->request              = $request;
         $this->zipService           = $zipService;
         $this->audioBookService     = $audioBookService;
         $this->versionService       = $versionService;
+        $this->freeStoryService     = $freeStoryService;
         $this->popularSearchService = $popularSearchService;
     }
 
@@ -116,7 +117,7 @@ class AudioBookController extends BaseMobileController
         //list_audio_book
         list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $version, $lastVersion, $isInHouse);
 
-        $freeAudioBook = $this->getFreeAudioBook();
+        $freeAudioBook = $this->freeStoryService->getFreeStories($this->app_id, FreeStory::TYPE_AUDIO, time());
 
         $data['list_audio_book'] = [
             'delete'          => array_values($delete),
@@ -126,7 +127,7 @@ class AudioBookController extends BaseMobileController
             'version'         => $lastVersion
         ];
         //series
-        $series = $this->audioBookService->getDataSeriesVM($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $series = $this->audioBookService->getDataSeriesVM($this->app_id, $idLanguage, $lastVersion);
         $data['info']['Series']  = $series;
         //popular_search
         $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);
@@ -145,14 +146,4 @@ class AudioBookController extends BaseMobileController
         return response()->download($fileZip);
     }
 
-    protected function getFreeAudioBook()
-    {
-        $freeAudioBook = [];
-        $freeStories = $this->freeStoryRepos->getFreeStory($this->app_id, FreeStory::TYPE_AUDIO, time())->toArray();
-        foreach ($freeStories as $freeStory) {
-            $idLanguage = Language::getIdLanguageByIdApp($freeStory[FreeStory::_ID_APP]);
-            $freeAudioBook[$idLanguage][] = $freeStory[FreeStory::_ID_STORY];
-        }
-        return $freeAudioBook;
-    }
 }

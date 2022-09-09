@@ -45,9 +45,9 @@ class Series extends Model
         self::_UPDATED_AT,
     ];
 
-    public function name()
+    public function names()
     {
-        return $this->hasMany(Translate::class, Translate::_KEY, self::_KEY_NAME)->keyBy(Translate::_ID_LANG_DISPLAY);
+        return $this->hasMany(Translate::class, Translate::_KEY, self::_KEY_NAME);
     }
 
     public static function convertStatusToHidden($status)

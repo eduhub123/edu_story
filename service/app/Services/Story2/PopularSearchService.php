@@ -6,6 +6,7 @@ use App\Models\Story2\PopularSearch;
 use App\Repositories\Story2\PopularSearchRepository;
 use App\Services\RedisService;
 use App\Services\ServiceConnect\LessonConnectService;
+use Illuminate\Support\Facades\Config;
 
 class PopularSearchService
 {
@@ -42,7 +43,7 @@ class PopularSearchService
     {
         $popularSearches = $this->getPopularSearchV2($idApp, $types);
         foreach ($popularSearches as $key => $popularSearch) {
-            $popularSearches[$key][PopularSearch::_THUMB] = config('environment.URL_DISPLAY_CDN') . $popularSearch[PopularSearch::_THUMB];
+            $popularSearches[$key][PopularSearch::_THUMB] = Config::get('environment.URL_DISPLAY_CDN') . $popularSearch[PopularSearch::_THUMB];
         }
         return $popularSearches;
     }
