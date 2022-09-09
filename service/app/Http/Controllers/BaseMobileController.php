@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App;
+use App\Services\DetectDeviceService;
 use App\Services\DetectIpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -146,8 +147,9 @@ class BaseMobileController extends Controller
 
     private function setNetworkEarlyStart()
     {
-        $ipList = ['113.190.232.224', '118.70.176.20', '118.70.186.162', '222.252.17.100', '42.113.143.186', '58.186.61.150'];
-        if (in_array($this->ip, $ipList)) {
+        $detectDeviceService = new DetectDeviceService();
+        $ipList = ['113.190.232.224', '118.70.176.20', '118.70.186.162', '222.252.17.100', '42.113.143.186', '58.186.61.150', '222.252.28.108'];
+        if (in_array($this->ip, $ipList) || $detectDeviceService->checkDeviceInhouse($this->device_id)) {
             return true;
         }
         return false;
