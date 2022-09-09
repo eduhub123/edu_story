@@ -111,15 +111,15 @@ class WorksheetService
                 } else {
                     $pathThumb = StoryLang::PATH_UPLOAD_THUMB_HDR;
                 }
-                $storyLang['image'] = $pathThumb . '/' . $storyLang[StoryLang::_THUMB];
+                $storiesLang[$idStoryLang]['image'] = $pathThumb . '/' . $storyLang[StoryLang::_THUMB];
                 $levels             = [];
                 foreach ($storyLang['story_lang_level'] as $story_lang_level) {
                     if (isset($story_lang_level['level']) && $story_lang_level['level']) {
                         $levels[] = $story_lang_level['level'][Level::_LEVEL];
                     }
                 }
-                $storyLang['level']    = array_unique($levels);
-                $storyLang['category'] = array_unique(array_column($storyLang['story_lang_category'], StoryLangCategory::_ID_CATEGORY));
+                $storiesLang[$idStoryLang]['level']    = array_unique($levels);
+                $storiesLang[$idStoryLang]['category'] = array_unique(array_column($storyLang['story_lang_category'], StoryLangCategory::_ID_CATEGORY));
             }
         }
         foreach ($worksheets as $idStoryLang => &$worksheet) {
@@ -133,7 +133,7 @@ class WorksheetService
             $worksheet['thumb']       = $storiesLang[$idStoryLang]['image'];
             $worksheet['name_lesson'] = $storiesLang[$idStoryLang]['name'];
             $worksheet['level']       = $storiesLang[$idStoryLang]['level'];
-            $worksheet['category']    = $storiesLang[$idStoryLang]['category'];
+            $worksheet['category']    = $storiesLang[$idStoryLang]['category'] ?? [];
         }
         return $worksheets;
     }
