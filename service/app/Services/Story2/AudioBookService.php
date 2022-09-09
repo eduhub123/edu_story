@@ -110,7 +110,7 @@ class AudioBookService
         $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2 . '_' . $idApp . '_' . $idLangDisplay . '_' . $lastVersion;
         $dataSeries = $this->redisService->get($key, true);
         if (!$dataSeries) {
-            $listSeries                  = $this->seriesService->getListSeries($idApp, $idLangDisplay, $lastVersion);
+            $listSeries                  = $this->seriesService->getListSeriesByLangDisplay($idApp, $idLangDisplay, $lastVersion);
             $idAudioBooksGroupByIdSeries = $this->audioBookRepos->getListIdAudioBookAndSeries($idApp, $idLanguage)->groupBy(Series::_ID_SERIES)->toArray();
 
             $dataSeries = [];
@@ -129,4 +129,59 @@ class AudioBookService
         }
         return array_values($dataSeries);
     }
+
+    public function getDataSeriesVM($idApp, $idLanguage, $idLangDisplay, $lastVersion)
+    {
+
+        $idLangDisplays = [1, 4];
+//        $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2 . '_' . $idApp . '_' . $idLangDisplay . '_' . $lastVersion;
+//        $dataSeries = $this->redisService->get($key, true);
+//        if (!$dataSeries) {
+            $listSeries                  = $this->seriesService->getListSeries($idApp, $lastVersion);
+            dd($listSeries);
+            $idAudioBooksGroupByIdSeries = $this->audioBookRepos->getListIdAudioBookAndSeries($idApp, $idLanguage)->groupBy(Series::_ID_SERIES)->toArray();
+
+            $dataSeries = [];
+            foreach ($listSeries as $idSeries => $item) {
+                $idAudioBooks = [];
+                if (isset($idAudioBooksGroupByIdSeries[$idSeries])) {
+                    $idAudioBooks = array_column($idAudioBooksGroupByIdSeries[$idSeries], AudioBook::_ID_AUDIO_BOOK);
+                }
+                foreach ($idLangDisplays as $idLangDisplay){
+                    $dataSeries[$idSeries][$idLanguage]  = $item[Translate::_VALUE];
+                }
+                $dataSeries[$idSeries]['id']     = $idSeries;
+                $dataSeries[$idSeries]['book']   = $idAudioBooks;
+                $dataSeries[$idSeries]['hidden'] = Series::convertStatusToHidden($item[Series::_STATUS]);
+            }
+//            $this->redisService->set($key, $dataSeries, 3600);
+//        }
+        return array_values($dataSeries);
+
+//        if ($this->subversion <= '3.1.2' && $this->app_id != ListApp::APP_ID_MS_VN || $this->subversion < '1.6.6') {
+//            return $this->_getSeriesOld($result);
+//        }
+//
+//        $langId = $this->app_id == ListApp::APP_ID_MS_VN ? 4 : 1;
+//        $listId = array_keys($result['data']);
+//        $audioBookSeries = $this->audioBookSeriesRepository->getAudioBookSeriesBySid($listId, $langId)->keyBy('id')->toArray();
+//        $arr = [];
+//        foreach ($result['data'] as $key => $item) {
+//            if (!isset($audioBookSeries[$key])) {
+//                continue;
+//            }
+//
+//            $res = $audioBookSeries[$key];
+//            $arr[$key]['title'] = $res['name'];
+//            $arr[$key]['thumb'] = config('environment.URL_DISPLAY_CDN').$res['thumb'];
+//
+//            $arr[$key]['id'] = $key;
+//            if (!($result['hidden'][$key])) {
+//                $arr[$key]['book'] = $item;
+//            }
+//            $arr[$key]['hidden'] = $result['hidden'][$key];
+//        }
+//        return array_values($arr);
+    }
+
 }

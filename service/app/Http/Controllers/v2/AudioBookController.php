@@ -116,22 +116,17 @@ class AudioBookController extends BaseMobileController
         //list_audio_book
         list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $version, $lastVersion, $isInHouse);
 
-        $freeAudioBook = [];
-        $freeStories = $this->freeStoryRepos->getFreeStory($this->app_id, FreeStory::TYPE_AUDIO, time())->toArray();
-        foreach ($freeStories as $freeStory) {
-            $idLanguage = Language::getIdLanguageByIdApp($freeStory[FreeStory::_ID_APP]);
-            $freeAudioBook[$idLanguage][] = $freeStory[FreeStory::_ID_STORY];
-        }
+        $freeAudioBook = $this->getFreeAudioBook();
 
         $data['list_audio_book'] = [
             'delete'          => array_values($delete),
             'data'            => array_values($audioBooks),
             'free_audio_book' => $freeAudioBook,
-            'today'           => time(),
+            'today'           => date('Ymd', time()),
             'version'         => $lastVersion
         ];
         //series
-        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $series = $this->audioBookService->getDataSeriesVM($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
         $data['info']['Series']  = $series;
         //popular_search
         $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);
@@ -148,5 +143,16 @@ class AudioBookController extends BaseMobileController
 
         nextDownload :
         return response()->download($fileZip);
+    }
+
+    protected function getFreeAudioBook()
+    {
+        $freeAudioBook = [];
+        $freeStories = $this->freeStoryRepos->getFreeStory($this->app_id, FreeStory::TYPE_AUDIO, time())->toArray();
+        foreach ($freeStories as $freeStory) {
+            $idLanguage = Language::getIdLanguageByIdApp($freeStory[FreeStory::_ID_APP]);
+            $freeAudioBook[$idLanguage][] = $freeStory[FreeStory::_ID_STORY];
+        }
+        return $freeAudioBook;
     }
 }

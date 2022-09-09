@@ -20,7 +20,7 @@ class SeriesRepository extends EloquentRepository
         return Series::class;
     }
 
-    public function getSeries($idApp, $idLangDisplay)
+    public function getListSeriesByLangDisplay($idApp, $idLangDisplay)
     {
         return $this->_model
             ->select(Series::_ID_SERIES, Series::_THUMB, Series::_KEY_NAME, Series::_STATUS, Translate::_VALUE)
@@ -33,5 +33,13 @@ class SeriesRepository extends EloquentRepository
             ->get();
     }
 
-
+    public function getListSeries($idApp)
+    {
+        return $this->_model
+            ->select(Series::_ID_SERIES, Series::_THUMB, Series::_KEY_NAME, Series::_STATUS)
+            ->with('name')
+            ->where(Series::_STATUS, Series::STATUS_ACTIVE)
+            ->where(Series::_ID_APP, $idApp)
+            ->get();
+    }
 }

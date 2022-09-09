@@ -42,7 +42,7 @@ class PopularSearchService
     {
         $popularSearches = $this->getPopularSearchV2($idApp, $types);
         foreach ($popularSearches as $key => $popularSearch) {
-            $popularSearches[$key][PopularSearch::_THUMB] = " https://monkeymedia.vcdn.com.vn/" . $popularSearch[PopularSearch::_THUMB];
+            $popularSearches[$key][PopularSearch::_THUMB] = config('environment.URL_DISPLAY_CDN') . $popularSearch[PopularSearch::_THUMB];
         }
         return $popularSearches;
     }
