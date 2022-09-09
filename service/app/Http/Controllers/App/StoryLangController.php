@@ -166,7 +166,7 @@ class StoryLangController extends Controller
 
         foreach ($listDescription as $description) {
             $value['order']           = (int)$description[DescriptionLevel::_LEVEL_ORDER];
-            $value['lang_display_id'] = (int)$description[DescriptionLevel::_LANG_DISPLAY];
+            $value['lang_display_id'] = (int)$description[DescriptionLevel::_LANG_DISPLAY_ID];
             $value['description']     = $description[DescriptionLevel::_DESCRIPTION];
             $data[]                   = $value;
         }

@@ -9,6 +9,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Ixudra\Curl\Facades\Curl;
 use App\Models\Globals\ListApp;
 
@@ -140,7 +141,7 @@ class CurlService
 
     public function curlToCleverTapGet($appId, $url)
     {
-        $url = config('environment.API_CLEVERTAP') . $url;
+        $url = Config::get('environment.API_CLEVERTAP') . $url;
 
         $configAccount =
             [
@@ -182,7 +183,7 @@ class CurlService
 
     public function curlToCleverTap($appId, $url, $data)
     {
-        $url = config('environment.API_CLEVERTAP') . $url;
+        $url = Config::get('environment.API_CLEVERTAP') . $url;
         if (is_array($data)) {
             $data = json_encode($data);
         }
