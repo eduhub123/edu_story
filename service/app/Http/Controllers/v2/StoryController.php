@@ -163,7 +163,7 @@ class StoryController extends BaseMobileController
             return $this->ResponseData($storyItem);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story_vm', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story_vm', $this->ver, $lastVersion, "", $this->status, '', true);
 
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);

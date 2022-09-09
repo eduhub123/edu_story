@@ -141,7 +141,7 @@ class AudioBookController extends BaseMobileController
             return $this->responseData($data);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', $version, $lastVersion, "", $this->status, '', true);
 
         nextDownload :
         return response()->download($fileZip);
@@ -158,7 +158,7 @@ class AudioBookController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today. $id,'audio_book_detail_v2',  $this->ver);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today. $id,'audio_book_detail_v2');
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -167,12 +167,17 @@ class AudioBookController extends BaseMobileController
         $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
         $content          = $contentAudioBook ? $contentAudioBook[AudioBook::_CONTENT] : '';
 
+        if($content){
+            $this->message = __('app.success');
+            $this->status  = 'success';
+        }
+
         next:
         if ($json) {
             echo json_encode($content);die;
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', $this->ver);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', 0,0, '', $this->status, '', true);
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }

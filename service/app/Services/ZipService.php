@@ -24,7 +24,8 @@ class ZipService
         $newVersion = 0,
         $deviceId = "",
         $status = "success",
-        $isNetworkES = ""
+        $isNetworkES = "",
+        $isFile = false
     ) {
         $folderData = 'zip_app/';
         if (!file_exists($folderData)) {
@@ -49,7 +50,11 @@ class ZipService
         }
         if ($writeFile && file_exists($filePathJson)) {
             $pathFileZip = $folderData . '/' . $fileName . '.zip';
-            $checkZip    = ExtendedZip::zipFile($filePathJson, $pathFileZip);
+            if($isFile){
+                $checkZip    = ExtendedZip::zipFile($filePathJson, $pathFileZip, \ZipArchive::CREATE, $fileName . '.json');
+            } else {
+                $checkZip    = ExtendedZip::zipFile($filePathJson, $pathFileZip);
+            }
             unlink($filePathJson);
             if (!$checkZip) {
                 return false;
