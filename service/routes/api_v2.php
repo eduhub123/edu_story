@@ -4,6 +4,8 @@ $router->get('story/list', 'v2\StoryController@list');
 
 $router->get('story/list_vn', 'v2\StoryController@listVM');
 
+$router->get('story/get-story', 'v2\StoryController@getStory');
+
 $router->get('audiobook/list', 'v2\AudioBookController@getAudioBook');
 
 $router->get('audiobook/list_vn', 'v2\AudioBookController@listVM');

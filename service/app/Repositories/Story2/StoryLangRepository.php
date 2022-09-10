@@ -103,4 +103,19 @@ class StoryLangRepository extends EloquentRepository
             ->whereIn(StoryLang::_ID_STORY_LANG, $idStoriesLang)
             ->get();
     }
+
+
+    public function getStoryLangByIdStory($params)
+    {
+        return $this->_model
+            ->select(
+                StoryLang::_ID_STORY_LANG,
+                StoryLang::_ID_STORIES,
+                StoryLang::_PATH_ZIP_FILE,
+                StoryLang::_VERSION_STORY
+            )
+            ->where(StoryLang::_ID_STORIES, $params['sid'])
+            ->where(StoryLang::_ID_APP, $params['app_id'])
+            ->first();
+    }
 }
