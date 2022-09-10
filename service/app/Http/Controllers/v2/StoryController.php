@@ -6,6 +6,8 @@ use App\Http\Controllers\BaseMobileController;
 use App\Models\Language;
 use App\Models\Story2\FreeStory;
 use App\Models\Story2\PopularSearch;
+use App\Models\Story2\StoryLang;
+use App\Repositories\Story2\StoryLangRepository;
 use App\Services\Platform\VersionService;
 use App\Services\Story2\CategoryService;
 use App\Services\Story2\FreeStoryService;
@@ -17,6 +19,9 @@ use App\Services\Story2\PopularSearchService;
 use App\Services\ZipService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class StoryController extends BaseMobileController
 {
@@ -30,6 +35,7 @@ class StoryController extends BaseMobileController
     private $freeStoryService;
     private $popularSearchService;
     private $langDisplayService;
+    private $storyLangRepository;
 
     public function __construct(
         Request $request,
@@ -41,7 +47,8 @@ class StoryController extends BaseMobileController
         VersionService $versionService,
         FreeStoryService $freeStoryService,
         PopularSearchService $popularSearchService,
-        LangDisplayService $langDisplayService
+        LangDisplayService $langDisplayService,
+        StoryLangRepository $storyLangRepository
     ) {
         parent::__construct($request);
         $this->request              = $request;
@@ -54,6 +61,7 @@ class StoryController extends BaseMobileController
         $this->freeStoryService     = $freeStoryService;
         $this->popularSearchService = $popularSearchService;
         $this->langDisplayService   = $langDisplayService;
+        $this->storyLangRepository  = $storyLangRepository;
     }
 
     public function list()
@@ -167,6 +175,38 @@ class StoryController extends BaseMobileController
 
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
+    }
+
+
+    /**
+     * @throws ValidationException
+     */
+    public function getStory(Request $request)
+    {
+        $this->validate($request, [
+            'app_id' => 'required',
+            'sid'    => 'required'
+        ]);
+
+        $data = [
+            'story' => '',
+            'status'=> false,
+        ];
+
+        $story = $this->storyLangRepository->getStoryLangByIdStory($request->all());
+
+        if (!$story) {
+            goto next;
+        }
+
+        $pathZip        = $request->is_hdr ? StoryLang::PATH_UPLOAD_ZIP_HDR : StoryLang::PATH_UPLOAD_ZIP_HD;
+        $downloadLink   = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+
+        $data['story']  = Config::get('environment.URL_DISPLAY_CDN') . $downloadLink;
+        $data['status'] = true;
+
+        next:
+        return response()->json($data);
     }
 
 
