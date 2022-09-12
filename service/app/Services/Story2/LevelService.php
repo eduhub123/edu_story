@@ -58,7 +58,7 @@ class LevelService
             }
             $levelIds[$levelId] = $levelId;
         }
-        return [$levelIds, $dataLevels];
+        return [array_values($levelIds), $dataLevels];
     }
 
     public function getDescriptionLevels()
