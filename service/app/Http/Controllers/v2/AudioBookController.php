@@ -128,7 +128,7 @@ class AudioBookController extends BaseMobileController
             'version'         => $lastVersion
         ];
         //series
-        $series = $this->audioBookService->getDataSeriesVM($this->app_id, $idLanguage, $lastVersion);
+        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
         $data['info']['Series']  = $series;
         //popular_search
         $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);

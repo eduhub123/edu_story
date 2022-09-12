@@ -165,46 +165,17 @@ class AudioBookService
                 if (isset($idAudioBooksGroupByIdSeries[$idSeries])) {
                     $idAudioBooks = array_column($idAudioBooksGroupByIdSeries[$idSeries], AudioBook::_ID_AUDIO_BOOK);
                 }
-                $dataSeries[$idSeries]['id']     = $idSeries;
-                $dataSeries[$idSeries]['title']  = $item[Translate::_VALUE];
-                $dataSeries[$idSeries]['thumb']  = Series::PATH_UPLOAD_THUMB . "/" . $item[Series::_THUMB];
-                $dataSeries[$idSeries]['book']   = $idAudioBooks;
-                $dataSeries[$idSeries]['hidden'] = Series::convertStatusToHidden($item[Series::_STATUS]);
-            }
-            $this->redisService->set($key, $dataSeries, 3600);
-        }
-        return array_values($dataSeries);
-    }
-
-    public function getDataSeriesVM($idApp, $idLanguage, $lastVersion)
-    {
-        $idLangDisplays = ["1", "4"];
-        $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2_VM . '_' . $idApp . '_'  . '_' . $lastVersion;
-        $dataSeries = $this->redisService->get($key, true);
-        if (!$dataSeries) {
-            $listSeries                  = $this->seriesService->getListSeries($idApp, $lastVersion);
-            $idAudioBooksGroupByIdSeries = $this->audioBookRepos->getListIdAudioBookAndSeries($idApp, $idLanguage)->groupBy(Series::_ID_SERIES)->toArray();
-
-            $dataSeries = [];
-            foreach ($listSeries as $item) {
-                $idAudioBooks = [];
-                $idSeries     = $item[Series::_ID_SERIES];
-                if (isset($idAudioBooksGroupByIdSeries[$idSeries])) {
-                    $idAudioBooks = array_column($idAudioBooksGroupByIdSeries[$idSeries], AudioBook::_ID_AUDIO_BOOK);
+                $thumb = Series::PATH_UPLOAD_THUMB . "/" . $item[Series::_THUMB];
+                if ($idApp == ListApp::APP_ID_MS_VN) {
+                    $thumb = Config::get('environment.URL_DISPLAY_CDN') . $thumb;
                 }
-                $dataSeriesNew = [];
-                foreach ($idLangDisplays as $idLangDisplay) {
-                    $dataSeriesNew[(string)$idLangDisplay] = "";
-                    foreach ($item['names'] as $name) {
-                        if ($name[Translate::_ID_LANG_DISPLAY] == $idLangDisplay) {
-                            $dataSeriesNew[(string)$idLangDisplay] = $name[Translate::_VALUE];
-                        }
-                    }
-                }
-                $dataSeriesNew['id']     = $idSeries;
-                $dataSeriesNew['book']   = $idAudioBooks;
-                $dataSeriesNew['hidden'] = Series::convertStatusToHidden($item[Series::_STATUS]);
-                $dataSeries[] = $dataSeriesNew;
+                $dataSeries[$idSeries] = [
+                    'id'     => $idSeries,
+                    'title'  => $item[Translate::_VALUE],
+                    'thumb'  => $thumb,
+                    'book'   => $idAudioBooks,
+                    'hidden' => Series::convertStatusToHidden($item[Series::_STATUS]),
+                ];
             }
             $this->redisService->set($key, $dataSeries, 3600);
         }
