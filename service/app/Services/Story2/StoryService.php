@@ -71,9 +71,13 @@ class StoryService
                     $pathThumb = StoryLang::PATH_UPLOAD_THUMB_HDR;
                     $pathZip   = StoryLang::PATH_UPLOAD_ZIP_HDR;
                 }
-                $dataStoryNew['quality']       = $story[StoryLang::_QUALITY_SCORE];
-                $dataStoryNew['image']         = $pathThumb . "/" . $story[StoryLang::_THUMB];
-                $dataStoryNew['download_link'] = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+                $dataStoryNew['quality']                 = $story[StoryLang::_QUALITY_SCORE];
+                $dataStoryNew['image']                   = $pathThumb . "/" . $story[StoryLang::_THUMB];
+                $dataStoryNew['download_link']           = $pathZip . "/" . $story[StoryLang::_PATH_ZIP_FILE];
+                $dataStoryNew['lang_id']                 = (string)$story[StoryLang::_ID_LANGUAGES];
+                $dataStoryNew[StoryLang::_VERSION_STORY] = (string)$story[StoryLang::_VERSION_STORY];
+                $dataStoryNew[StoryLang::_DATE_PUBLISH]  = (string)$story[StoryLang::_DATE_PUBLISH];
+
                 if ($idApp == ListApp::APP_ID_MS_VN) {
                     $dataStoryNew['quality']       = (string)$story[StoryLang::_QUALITY_SCORE];
                     $dataStoryNew['image']         = Config::get('environment.URL_DISPLAY_CDN') . $dataStoryNew['image'];
