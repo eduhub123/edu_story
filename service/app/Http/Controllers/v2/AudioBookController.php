@@ -98,7 +98,7 @@ class AudioBookController extends BaseMobileController
         $version   = (int)$this->request->input('ver', 0);
 
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
-        $isInHouse = true;
+
         $idLanguage    = Language::getIdLanguageByIdApp($this->app_id);
         $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($this->app_id);
         $lastVersion   = $this->versionService->getVersion($this->app_id, VersionService::TYPE_AUDIO_BOOK_V2);
