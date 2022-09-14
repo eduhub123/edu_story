@@ -121,6 +121,7 @@ class StoryController extends BaseMobileController
         $inHouse   = $this->request->input('in_house', false);
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
+        $today       = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
         $idLanguage  = Language::getIdLanguageByIdApp($this->app_id);
         $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_STORY_V2);
         $storyItem   = [];
@@ -130,7 +131,6 @@ class StoryController extends BaseMobileController
         }
 
         if (!$json) {
-            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
             $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story_vm', $this->ver, $lastVersion);
             if (file_exists($fileZip)) {
                 goto nextDownload;
@@ -140,7 +140,7 @@ class StoryController extends BaseMobileController
         list($story, $delete) = $this->storyService->processDataStory($this->app_id, $this->device_type, $idLanguage, $level, $this->ver, $lastVersion, $isInHouse);
 
         list($levelIds, $dataLevels) = $this->levelService->getListLevel($this->app_id);
-        $freeStories = $this->freeStoryService->getFreeStories($this->app_id, FreeStory::TYPE_STORY, time());
+        $freeStories = $this->freeStoryService->getFreeStories($this->app_id, FreeStory::TYPE_STORY, $today);
 
         $storyItem['level'] = [
             'delete'     => array_values($delete),
@@ -170,7 +170,6 @@ class StoryController extends BaseMobileController
         if ($json) {
             return $this->ResponseData($storyItem);
         }
-        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
         $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story_vm', $this->ver, $lastVersion, "", $this->status, '', true);
 
         nextDownload :
