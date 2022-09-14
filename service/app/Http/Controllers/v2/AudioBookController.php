@@ -151,21 +151,26 @@ class AudioBookController extends BaseMobileController
     {
         $id   = $this->request->input('id');
         $json = $this->request->input('json', false);
+
+        $content = '';
+        $version = 0;
         if (!$id) {
-            $content = '';
             goto next;
+        }
+
+        $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
+        if ($contentAudioBook) {
+            $content = $contentAudioBook[AudioBook::_CONTENT];
+            $version = $contentAudioBook[AudioBook::_VERSION];
         }
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today. $id,'audio_book_detail_v2');
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today . $id, 'audio_book_detail_v2', 0, $version);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
         }
-
-        $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
-        $content          = $contentAudioBook ? $contentAudioBook[AudioBook::_CONTENT] : '';
 
         if($content){
             $this->message = __('app.success');
@@ -177,7 +182,7 @@ class AudioBookController extends BaseMobileController
             echo json_encode($content);die;
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', 0,0, '', $this->status, '', true);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', 0,$version, '', $this->status, '', true);
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }
