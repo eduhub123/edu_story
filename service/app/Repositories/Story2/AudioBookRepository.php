@@ -80,7 +80,7 @@ class AudioBookRepository extends EloquentRepository
     public function getContentAudioBookById($idAudioBook)
     {
         return $this->_model
-            ->select(AudioBook::_CONTENT)
+            ->select(AudioBook::_CONTENT, AudioBook::_VERSION)
             ->where(AudioBook::_ID_AUDIO_BOOK, $idAudioBook)
             ->first();
     }
