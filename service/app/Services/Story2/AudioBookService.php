@@ -151,9 +151,9 @@ class AudioBookService
     }
 
     //DataSeries
-    public function getDataSeries($idApp, $idLanguage, $idLangDisplay, $lastVersion)
+    public function getDataSeries($idApp, $idLanguage, $idLangDisplay, $lastVersion, $isInHouse = false)
     {
-        $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2 . '_' . $idApp . '_' . $idLangDisplay . '_' . $lastVersion;
+        $key        = self::KEY_REDIS_AUDIO_BOOK_SERIES_V2 . '_' . $idApp . '_' . $idLangDisplay . '_' . $lastVersion . '_' . $isInHouse;
         $dataSeries = $this->redisService->get($key, true);
         if (!$dataSeries) {
             $listSeries                  = $this->seriesService->getListSeriesByLangDisplay($idApp, $idLangDisplay, $lastVersion);
@@ -163,7 +163,19 @@ class AudioBookService
             foreach ($listSeries as $idSeries => $item) {
                 $idAudioBooks = [];
                 if (isset($idAudioBooksGroupByIdSeries[$idSeries])) {
-                    $idAudioBooks = array_column($idAudioBooksGroupByIdSeries[$idSeries], AudioBook::_ID_AUDIO_BOOK);
+                    $idAudioBooksNotInHouse = [];
+                    $idAudioBooksInHouse    = [];
+                    foreach ($idAudioBooksGroupByIdSeries[$idSeries] as $audioBook) {
+                        $idAudioBooksInHouse[] = $audioBook[AudioBook::_ID_AUDIO_BOOK];
+                        if ($audioBook[AudioBook::_LEVEL_SYSTEM] == LevelSystem::LEVEL_SYSTEM_71) {
+                            $idAudioBooksNotInHouse[] = $audioBook[AudioBook::_ID_AUDIO_BOOK];
+                        }
+                    }
+                    if ($isInHouse) {
+                        $idAudioBooks = $idAudioBooksInHouse;
+                    } else {
+                        $idAudioBooks = $idAudioBooksNotInHouse;
+                    }
                 }
                 $thumb = Series::PATH_UPLOAD_THUMB . "/" . $item[Series::_THUMB];
                 if ($idApp == ListApp::APP_ID_MS_VN) {
