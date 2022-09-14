@@ -39,7 +39,7 @@ class StoryService
 
     public function getLastVersionStory($idApp, $idLanguage)
     {
-        return $this->storyLangRepos->getLastVersionStory($idApp, $idLanguage);
+        return $this->storyLangRepos->getLastVersionStory($idApp, $idLanguage) ?? 0;
     }
 
     public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse)

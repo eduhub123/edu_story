@@ -33,7 +33,7 @@ class AudioBookService
 
     public function getLastVersionAudioBook($idApp, $idLanguage)
     {
-        return $this->audioBookRepos->getLastVersionAudioBook($idApp, $idLanguage);
+        return $this->audioBookRepos->getLastVersionAudioBook($idApp, $idLanguage) ?? 0;
     }
 
     public function getContentAudioBookById($idAudioBook){
