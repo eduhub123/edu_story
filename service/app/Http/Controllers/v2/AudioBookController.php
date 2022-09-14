@@ -74,7 +74,7 @@ class AudioBookController extends BaseMobileController
         $data['delete']          = array_values($delete);
         $data['version_audio']   = $lastVersion;
         $data['popular_search']  = $this->popularSearchService->getPopularSearchV2($this->app_id, [PopularSearch::POPULAR_AUDIO]);
-        $data['Series']          = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $data['Series']          = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion, $isInHouse);
 
         $this->message = __('app.success');
         $this->status  = 'success';
@@ -128,7 +128,7 @@ class AudioBookController extends BaseMobileController
             'version'         => $lastVersion
         ];
         //series
-        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion, $isInHouse);
         $data['info']['Series']  = $series;
         //popular_search
         $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);

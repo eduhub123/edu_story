@@ -104,7 +104,7 @@ class FirstInstallService
         $audioItem['delete']          = array_values($delete);
         $audioItem['version_audio']   = $dataVersion['version_audio'] ?? 0;
         $audioItem['popular_search']  = $dataPopularSearch[PopularSearch::POPULAR_AUDIO] ?? [];
-        $audioItem['Series']          = $this->audioBookService->getDataSeries($idApp, $idLanguage, $idLangDisplay, $dataVersion['version_audio'] ?? 0);
+        $audioItem['Series']          = $this->audioBookService->getDataSeries($idApp, $idLanguage, $idLangDisplay, $dataVersion['version_audio'] ?? 0, $isInHouse);
         $data['audio']                = $audioItem;
 
         //story
