@@ -90,6 +90,9 @@ class StoryService
                 $dataStoryNew['download_link_hd_size']  = $zipSizeHd;
                 $dataStoryNew['download_link_hdr_size'] = $zipSizeHdr;
 
+                $dataStoryNew['download_link_hdr'] = Config::get('environment.URL_DISPLAY_CDN') . StoryLang::PATH_UPLOAD_ZIP_HDR . '/' . $story[StoryLang::_PATH_ZIP_FILE];
+                $dataStoryNew['download_link_hd']  = Config::get('environment.URL_DISPLAY_CDN') . StoryLang::PATH_UPLOAD_ZIP_HD . '/' . $story[StoryLang::_PATH_ZIP_FILE];
+
                 $list[$idStoryLang] = $dataStoryNew;
             }
         }
