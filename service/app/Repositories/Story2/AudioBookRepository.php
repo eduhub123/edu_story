@@ -70,8 +70,10 @@ class AudioBookRepository extends EloquentRepository
     public function getListIdAudioBookAndSeries($idApp, $idLanguage)
     {
         return $this->_model
-            ->select(AudioBook::TABLE . '.' . AudioBook::_ID_AUDIO_BOOK, AudioBook::TABLE . '.' . AudioBook::_ID_SERIES)
-            ->where(AudioBook::TABLE . '.' . AudioBook::_LEVEL_SYSTEM, LevelSystem::LEVEL_SYSTEM_71)
+            ->select(AudioBook::TABLE . '.' . AudioBook::_ID_AUDIO_BOOK, AudioBook::TABLE . '.' . AudioBook::_ID_SERIES,
+                AudioBook::TABLE . '.' . AudioBook::_LEVEL_SYSTEM)
+            ->whereIn(AudioBook::TABLE . '.' . AudioBook::_LEVEL_SYSTEM,
+                [LevelSystem::LEVEL_SYSTEM_51, LevelSystem::LEVEL_SYSTEM_61, LevelSystem::LEVEL_SYSTEM_71])
             ->where(AudioBook::_ID_APP, $idApp)
             ->where(AudioBook::_ID_LANGUAGE, $idLanguage)
             ->get();
@@ -80,7 +82,7 @@ class AudioBookRepository extends EloquentRepository
     public function getContentAudioBookById($idAudioBook)
     {
         return $this->_model
-            ->select(AudioBook::_CONTENT)
+            ->select(AudioBook::_CONTENT, AudioBook::_VERSION)
             ->where(AudioBook::_ID_AUDIO_BOOK, $idAudioBook)
             ->first();
     }

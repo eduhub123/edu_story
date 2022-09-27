@@ -36,7 +36,7 @@ class WorksheetService
 
     public function getLastVersionWorksheet($idApp)
     {
-        return $this->worksheetRepos->getLastVersionWorksheet($idApp);
+        return $this->worksheetRepos->getLastVersionWorksheet($idApp) ?? 0;
     }
 
     public function getDataWorksheet($idApp, $idLanguage, $version, $deviceType, $inHouse = false, $storiesLang =  [], $dataPhonic = [])

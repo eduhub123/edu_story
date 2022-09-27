@@ -62,7 +62,7 @@ class AudioBookController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -74,7 +74,7 @@ class AudioBookController extends BaseMobileController
         $data['delete']          = array_values($delete);
         $data['version_audio']   = $lastVersion;
         $data['popular_search']  = $this->popularSearchService->getPopularSearchV2($this->app_id, [PopularSearch::POPULAR_AUDIO]);
-        $data['Series']          = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion);
+        $data['Series']          = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion, $isInHouse);
 
         $this->message = __('app.success');
         $this->status  = 'success';
@@ -84,7 +84,7 @@ class AudioBookController extends BaseMobileController
             return $this->responseData($data);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook', 0, $lastVersion, "", $this->status, $isInHouse);
 
         nextDownload :
         return response()->download($fileZip);
@@ -99,6 +99,7 @@ class AudioBookController extends BaseMobileController
 
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
+        $today         = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
         $idLanguage    = Language::getIdLanguageByIdApp($this->app_id);
         $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($this->app_id);
         $lastVersion   = $this->versionService->getVersion($this->app_id, VersionService::TYPE_AUDIO_BOOK_V2);
@@ -108,8 +109,7 @@ class AudioBookController extends BaseMobileController
         }
 
         if (!$json) {
-            $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook_vm', $version, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook_vm', $version, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -118,7 +118,7 @@ class AudioBookController extends BaseMobileController
         //list_audio_book
         list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($this->app_id, $idLanguage, $version, $lastVersion, $isInHouse);
 
-        $freeAudioBook = $this->freeStoryService->getFreeStories($this->app_id, FreeStory::TYPE_AUDIO, time());
+        $freeAudioBook = $this->freeStoryService->getFreeStories($this->app_id, FreeStory::TYPE_AUDIO, $today);
 
         $data['list_audio_book'] = [
             'delete'          => array_values($delete),
@@ -128,7 +128,7 @@ class AudioBookController extends BaseMobileController
             'version'         => $lastVersion
         ];
         //series
-        $series = $this->audioBookService->getDataSeriesVM($this->app_id, $idLanguage, $lastVersion);
+        $series = $this->audioBookService->getDataSeries($this->app_id, $idLanguage, $idLangDisplay, $lastVersion, $isInHouse);
         $data['info']['Series']  = $series;
         //popular_search
         $data['popular_search']  =  $this->popularSearchService->getPopularSearchV2MV($this->app_id, [PopularSearch::POPULAR_AUDIO]);
@@ -140,8 +140,7 @@ class AudioBookController extends BaseMobileController
         if ($json) {
             return $this->responseData($data);
         }
-        $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', $version, $lastVersion, "", $this->status, '', true);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', $version, $lastVersion, "", $this->status, $isInHouse, true);
 
         nextDownload :
         return response()->download($fileZip);
@@ -151,21 +150,26 @@ class AudioBookController extends BaseMobileController
     {
         $id   = $this->request->input('id');
         $json = $this->request->input('json', false);
+
+        $content = '';
+        $version = 0;
         if (!$id) {
-            $content = '';
             goto next;
+        }
+
+        $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
+        if ($contentAudioBook) {
+            $content = $contentAudioBook[AudioBook::_CONTENT];
+            $version = $contentAudioBook[AudioBook::_VERSION];
         }
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today. $id,'audio_book_detail_v2');
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_detail_v2_' . $today . $id, 'audio_book_detail_v2', 0, $version);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
         }
-
-        $contentAudioBook = $this->audioBookService->getContentAudioBookById($id);
-        $content          = $contentAudioBook ? $contentAudioBook[AudioBook::_CONTENT] : '';
 
         if($content){
             $this->message = __('app.success');
@@ -177,7 +181,7 @@ class AudioBookController extends BaseMobileController
             echo json_encode($content);die;
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', 0,0, '', $this->status, '', true);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_detail_v2_' . $today. $id, $content, 'audio_book_detail_v2', 0,$version, '', $this->status, '', true);
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }
