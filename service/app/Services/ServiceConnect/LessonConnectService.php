@@ -136,7 +136,7 @@ class LessonConnectService
     }
 
 
-    public function getListLesson($appId, $deviceType, $subversion, $langId = 1, $version = 0)
+    public function getListLesson($appId, $deviceType, $subversion, $langId = 1, $version = 0, $inHouse = false)
     {
         $url                 = Config::get('environment.API_SERVICE_LESSON') . "/api/v1/lesson/list";
         $data['app_id']      = $appId;
@@ -144,6 +144,7 @@ class LessonConnectService
         $data['lang_id']     = $langId;
         $data['subversion']  = $subversion;
         $data['version']     = $version;
+        $data['in_house']    = $inHouse;
         $data['json']        = 1;
         $data['is_web']      = 1;
         $responseData        = $this->curlService->curlGetData($url, $data);

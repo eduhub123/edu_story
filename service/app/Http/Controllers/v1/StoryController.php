@@ -54,11 +54,11 @@ class StoryController extends BaseMobileController
         $level     = $this->request->input('level', 0);
         $level     = intval($level);
         $json      = $this->request->input('json');
+
         $inHouse   = $this->request->input('in_house');
+        $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
-        $this->isNetworkEarlyStart = $this->isNetworkEarlyStart || $inHouse;
-
-        $verInfo     = $this->storyLangRepository->getLastVersionStory($this->lang_id, $this->isNetworkEarlyStart);
+        $verInfo     = $this->storyLangRepository->getLastVersionStory($this->lang_id, $isInHouse);
         $lastVersion = 0;
         if ($verInfo) {
             $lastVersion = $verInfo[StoryLang::_API_VER];
@@ -71,13 +71,13 @@ class StoryController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_' . $today, 'list_story', $this->ver, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_' . $today, 'list_story', $this->ver, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
         }
 
-        $storyItem                  = $this->storyService->processDataStory($this->app_id, $this->device_type, $this->lang_id, $level, $this->ver, $lastVersion, $this->isNetworkEarlyStart);
+        $storyItem                  = $this->storyService->processDataStory($this->app_id, $this->device_type, $this->lang_id, $level, $this->ver, $lastVersion, $isInHouse);
         $storyItem['version_story'] = $lastVersion;
 
         $storyItem['popular_search'] = $this->popularSearchService->getPopularSearch($this->app_id, [PopularSearch::POPULAR_STORY]);
@@ -89,22 +89,21 @@ class StoryController extends BaseMobileController
             return $this->ResponseData($storyItem);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status, $isInHouse);
 
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
     }
 
-    public function getTrialItems(Request $request)
+    public function getTrialItems()
     {
         $data = [];
-
-        if ($this->validateBase($request, ['profile_id' => 'required'])) {
+        if ($this->validateBase($this->request, ['profile_id' => 'required'])) {
             goto next;
         }
+        $profileId = $this->request->input('profile_id');
 
-        $profile = $this->appConnectService->getInfoProfile($request->profile_id);
-
+        $profile = $this->appConnectService->getInfoProfile($profileId);
         if (count($profile) <= 0) {
             $this->message = __('app.profile_not_found_by_account');
             goto next;

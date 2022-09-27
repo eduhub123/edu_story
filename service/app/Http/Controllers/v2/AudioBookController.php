@@ -62,7 +62,7 @@ class AudioBookController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook', $version, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -84,7 +84,7 @@ class AudioBookController extends BaseMobileController
             return $this->responseData($data);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook', 0, $lastVersion, "", $this->status, $isInHouse);
 
         nextDownload :
         return response()->download($fileZip);
@@ -109,7 +109,7 @@ class AudioBookController extends BaseMobileController
         }
 
         if (!$json) {
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook_vm', $version, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'audiobook_v2_' . $today, 'audiobook_vm', $version, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -140,7 +140,7 @@ class AudioBookController extends BaseMobileController
         if ($json) {
             return $this->responseData($data);
         }
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', $version, $lastVersion, "", $this->status, '', true);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'audiobook_v2_' . $today, $data, 'audiobook_vm', $version, $lastVersion, "", $this->status, $isInHouse, true);
 
         nextDownload :
         return response()->download($fileZip);

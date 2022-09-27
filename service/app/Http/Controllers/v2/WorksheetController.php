@@ -43,8 +43,8 @@ class WorksheetController extends BaseMobileController
         $json    = $this->request->input('json', false);
         $version = (int)$this->request->input('version', 0);
 
-        $inHouse                   = $this->request->input('in_house');
-        $this->isNetworkEarlyStart = $this->isNetworkEarlyStart || $inHouse;
+        $inHouse   = $this->request->input('in_house');
+        $isInHouse = $this->isNetworkEarlyStart || $inHouse;
 
         $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_WORKSHEET_V2);
         if (!$lastVersion) {
@@ -54,14 +54,14 @@ class WorksheetController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'worksheet_v2_' . $today, 'worksheet', $version, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'worksheet_v2_' . $today, 'worksheet', $version, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
         }
 
         $idLanguage = Language::getIdLanguageByIdApp($this->app_id);
-        $data       = $this->worksheetService->getDataWorksheet($this->app_id, $idLanguage, $version, $this->device_type, $this->isNetworkEarlyStart);
+        $data       = $this->worksheetService->getDataWorksheet($this->app_id, $idLanguage, $version, $this->device_type, $isInHouse);
 
         $dataPopularSearch = $this->popularSearchService->getPopularSearch($this->app_id, [PopularSearch::POPULAR_WORKSHEET_PHONIC, PopularSearch::POPULAR_WORKSHEET_STORY]);
 
@@ -77,7 +77,7 @@ class WorksheetController extends BaseMobileController
             return $this->responseData($data);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'worksheet_v2_' . $today, $data, 'worksheet', $version, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'worksheet_v2_' . $today, $data, 'worksheet', $version, $lastVersion, "", $this->status, $isInHouse);
 
         nextDownload :
         return response()->download($fileZip);

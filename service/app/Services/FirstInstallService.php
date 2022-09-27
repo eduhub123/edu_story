@@ -73,7 +73,7 @@ class FirstInstallService
         $this->mediaConnectService  = $mediaConnectService;
     }
 
-    public function getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $version, $isInHouse, $dataVersion)
+    public function getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion)
     {
         $idLanguage    = Language::getIdLanguageByIdApp($idApp);
         $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($idApp);
@@ -99,7 +99,7 @@ class FirstInstallService
         }
 
         //audioBook
-        list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($idApp, $idLanguage, $version, $dataVersion['version_audio'] ?? 0, $isInHouse);
+        list($audioBooks, $delete) = $this->audioBookService->processDataAudioBook($idApp, $idLanguage, 0, $dataVersion['version_audio'] ?? 0, $isInHouse);
         $audioItem['list_audio_book'] = array_values($audioBooks);
         $audioItem['delete']          = array_values($delete);
         $audioItem['version_audio']   = $dataVersion['version_audio'] ?? 0;
@@ -108,7 +108,7 @@ class FirstInstallService
         $data['audio']                = $audioItem;
 
         //story
-        list($stories, $deleteStory) = $this->storyService->processDataStory($idApp, $deviceType, $idLanguage, 0, $version, $dataVersion['version_story'] ?? 0, $isInHouse);
+        list($stories, $deleteStory) = $this->storyService->processDataStory($idApp, $deviceType, $idLanguage, 0, 0, $dataVersion['version_story'] ?? 0, $isInHouse);
         $storyItem['story']          = array_values($stories);
         $storyItem['delete']         = array_values($deleteStory);
         $storyItem['version_story']  = $dataVersion['version_story'] ?? 0;
@@ -122,12 +122,12 @@ class FirstInstallService
 
 
         //dataMonkeyTalking
-        $data['ai_speaking'] = $this->getDataMonkeyTalking($idApp, $deviceType, $version);
+        $data['ai_speaking'] = $this->getDataMonkeyTalking($idApp, $deviceType, $subversion);
         //categories
-        $data['categories_list'] = $this->lessonConnectService->getListCategory($idApp, $deviceType, $version);
+        $data['categories_list'] = $this->lessonConnectService->getListCategory($idApp, $deviceType, $subversion);
         //lesson
-        $data['lesson_list']   = $this->lessonConnectService->getListLesson($idApp, $deviceType, $version);
-        $data['list_activity'] = $this->getListActivities($data['story'], $data['lesson_list'], $idApp, $deviceType, $os, $version, $isInHouse);
+        $data['lesson_list']   = $this->lessonConnectService->getListLesson($idApp, $deviceType, $subversion, $idLanguage,0, $isInHouse);
+        $data['list_activity'] = $this->getListActivities($data['story'], $data['lesson_list'], $idApp, $deviceType, $os, $subversion, $isInHouse);
         //worksheet
         $lessons =  [];
         if(isset($data['lesson_list']['list'])) {
@@ -135,7 +135,7 @@ class FirstInstallService
                 $lessons[$lesson['id']] = $lesson;
             }
         }
-        $worksheetItem                       = $this->worksheetService->getDataWorksheet($idApp, $idLanguage, $version, $deviceType, $isInHouse, $stories, $lessons);
+        $worksheetItem                       = $this->worksheetService->getDataWorksheet($idApp, $idLanguage, 0, $deviceType, $isInHouse, $stories, $lessons);
         $worksheetItem['popular_search']     = $dataPopularSearch[PopularSearch::POPULAR_WORKSHEET_PHONIC] ?? [];
         $worksheetItem['max_worksheet_send'] = Worksheet::CONFIG_SEND;
         $worksheetItem['version_worksheet']  = $dataVersion['version_worksheet'] ?? 0;;
