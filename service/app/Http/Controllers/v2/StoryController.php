@@ -84,7 +84,7 @@ class StoryController extends BaseMobileController
 
         if (!$json) {
             $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story', $this->ver, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story', $this->ver, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -105,7 +105,7 @@ class StoryController extends BaseMobileController
             return $this->ResponseData($storyItem);
         }
         $today   = Carbon::createFromTimestamp(time())->startOfDay()->timestamp;
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story', 0, $lastVersion, "", $this->status, $isInHouse);
 
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
@@ -131,7 +131,7 @@ class StoryController extends BaseMobileController
         }
 
         if (!$json) {
-            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story_vm', $this->ver, $lastVersion);
+            $fileZip = $this->zipService->getPathFileZip($this->app_id, 'list_story_v2_' . $today, 'list_story_vm', $this->ver, $lastVersion, "", $isInHouse);
             if (file_exists($fileZip)) {
                 goto nextDownload;
             }
@@ -170,7 +170,7 @@ class StoryController extends BaseMobileController
         if ($json) {
             return $this->ResponseData($storyItem);
         }
-        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story_vm', $this->ver, $lastVersion, "", $this->status, '', true);
+        $fileZip = $this->zipService->zipDataForAPiDownload($this->app_id, 'list_story_v2_' . $today, $storyItem, 'list_story_vm', $this->ver, $lastVersion, "", $this->status, $isInHouse, true);
 
         nextDownload :
         return response()->download($fileZip)->deleteFileAfterSend(false);
