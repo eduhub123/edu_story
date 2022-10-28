@@ -21,25 +21,25 @@ php_story_2:
 # Creating container (Nginx)
 ####################################################################################################
 
-nginx_story_1:
-    image: nginx:latest
-    container_name: nginx_story_1
-    ports:
-        - 7098:80
-    volumes:
-        - ./image/nginx/nginx-01.conf:/etc/nginx/nginx.conf
-    links:
-        - php_story_1
+# nginx_story_1:
+#     image: nginx:latest
+#     container_name: nginx_story_1
+#     ports:
+#         - 7098:80
+#     volumes:
+#         - ./image/nginx/nginx-01.conf:/etc/nginx/nginx.conf
+#     links:
+#         - php_story_1
 
-nginx_story_2:
-    image: nginx:latest
-    container_name: nginx_story_2
-    ports:
-        - 7099:80
-    volumes:
-        - ./image/nginx/nginx-02.conf:/etc/nginx/nginx.conf
-    links:
-        - php_story_2
+# nginx_story_2:
+#     image: nginx:latest
+#     container_name: nginx_story_2
+#     ports:
+#         - 7099:80
+#     volumes:
+#         - ./image/nginx/nginx-02.conf:/etc/nginx/nginx.conf
+#     links:
+#         - php_story_2
 
 nginx_proxy_story:
     image: nginx:latest
@@ -49,6 +49,6 @@ nginx_proxy_story:
     volumes:
         - ./image/nginx/nginx.proxy.conf:/etc/nginx/nginx.conf
     links:
-        - nginx_story_1
-        - nginx_story_2
+        - php_story_1
+        - php_story_2
 
