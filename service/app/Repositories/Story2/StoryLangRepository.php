@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Story2;
 
+use App\Models\Globals\ListApp;
 use App\Models\Story2\Level;
 use App\Models\Story2\StoryLang;
 use App\Models\Story2\StoryLangCategory;
@@ -40,7 +41,8 @@ class StoryLangRepository extends EloquentRepository
                 StoryLang::TABLE . '.' . StoryLang::_LEVEL_SYSTEM,
                 StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY,
                 StoryLang::TABLE . '.' . StoryLang::_DATE_PUBLISH,
-                StoryLang::TABLE . '.' . StoryLang::_STATUS
+                StoryLang::TABLE . '.' . StoryLang::_STATUS,
+                StoryLang::TABLE . '.' . StoryLang::_ID_APP
             )
             ->leftJoin(StoryLangLevel::TABLE, StoryLang::TABLE . '.' . StoryLang::_ID_STORY_LANG, StoryLangLevel::TABLE . '.' . StoryLangLevel::_ID_STORY_LANG)
             ->leftJoin(Level::TABLE, StoryLangLevel::TABLE . '.' . StoryLangLevel::_ID_LEVEL, Level::TABLE . '.' . Level::_ID_LEVEL)
@@ -48,7 +50,11 @@ class StoryLangRepository extends EloquentRepository
             ->where(StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY, '>=', $version)
             ->where(StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY, '>', 0);
         if ($idApp) {
-            $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_APP, $idApp);
+            if ($idApp == ListApp::APP_ID_MS_EN) {
+                $query->whereIn(StoryLang::TABLE . '.' . StoryLang::_ID_APP, [ListApp::APP_ID_MS_EN, ListApp::APP_ID_TUTORING_NATIVE, ListApp::APP_ID_TUTORING_PHI]);
+            } else {
+                $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_APP, $idApp);
+            }
         }
         if ($idLanguage) {
             $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_LANGUAGES, $idLanguage);
