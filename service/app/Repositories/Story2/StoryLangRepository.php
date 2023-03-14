@@ -50,7 +50,7 @@ class StoryLangRepository extends EloquentRepository
             ->where(StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY, '>=', $version)
             ->where(StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY, '>', 0);
         if ($idApp) {
-            if ($idApp == ListApp::APP_ID_MS_EN) {
+            if ($idApp == ListApp::APP_ID_MS_EN || $idApp == ListApp::APP_ID_TUTORING_NATIVE || $idApp == ListApp::APP_ID_TUTORING_PHI) {
                 $query->whereIn(StoryLang::TABLE . '.' . StoryLang::_ID_APP, [ListApp::APP_ID_MS_EN, ListApp::APP_ID_TUTORING_NATIVE, ListApp::APP_ID_TUTORING_PHI]);
             } else {
                 $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_APP, $idApp);
