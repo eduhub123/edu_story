@@ -19,10 +19,16 @@ class StoryLangRepository extends EloquentRepository
 
     public function getLastVersionStory($idApp, $idLanguage)
     {
-        return $maxVersion = $this->_model
-            ->where(StoryLang::_ID_APP, $idApp)
-            ->where(StoryLang::_ID_LANGUAGES, $idLanguage)
-            ->max(StoryLang::_VERSION_STORY);
+        $query = $this->_model
+            ->where(StoryLang::_ID_LANGUAGES, $idLanguage);
+
+        if ($idApp == ListApp::APP_ID_MS_EN || $idApp == ListApp::APP_ID_TUTORING_NATIVE || $idApp == ListApp::APP_ID_TUTORING_PHI) {
+            $query->whereIn(StoryLang::_ID_APP, [ListApp::APP_ID_MS_EN, ListApp::APP_ID_TUTORING_NATIVE, ListApp::APP_ID_TUTORING_PHI]);
+        } else {
+            $query->where(StoryLang::_ID_APP, $idApp);
+        }
+
+        return $query->max(StoryLang::_VERSION_STORY);
     }
 
     public function getStoriesLang($idApp, $idLanguage, $level, $version, $limit = null, $offset = null)
@@ -86,7 +92,11 @@ class StoryLangRepository extends EloquentRepository
             ->where(StoryLang::TABLE . '.' . StoryLang::_VERSION_STORY, '>', 0)
             ->whereIn(StoryLang::TABLE . '.' . StoryLang::_ID_STORY_LANG, $listSlangId);
         if ($idApp) {
-            $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_APP, $idApp);
+            if ($idApp == ListApp::APP_ID_MS_EN || $idApp == ListApp::APP_ID_TUTORING_NATIVE || $idApp == ListApp::APP_ID_TUTORING_PHI) {
+                $query->whereIn(StoryLang::TABLE . '.' . StoryLang::_ID_APP, [ListApp::APP_ID_MS_EN, ListApp::APP_ID_TUTORING_NATIVE, ListApp::APP_ID_TUTORING_PHI]);
+            } else {
+                $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_APP, $idApp);
+            }
         }
         if ($idLanguage) {
             $query->where(StoryLang::TABLE . '.' . StoryLang::_ID_LANGUAGES, $idLanguage);
