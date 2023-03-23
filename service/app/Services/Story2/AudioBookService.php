@@ -110,7 +110,7 @@ class AudioBookService
 
     private function getItemAudioBook($audioBook, $isInHouse= false)
     {
-        return [
+        $resourceItemAudioBook = [
             'id'                 => intval($audioBook[AudioBook::_ID_AUDIO_BOOK]),
             'title'              => preg_replace('/[\x00-\x1F\x7F\xA0]/u', '', $audioBook[AudioBook::_TITLE]),
             'lang_id'            => intval($audioBook[AudioBook::_ID_LANGUAGE]),
@@ -123,9 +123,15 @@ class AudioBookService
             'duration'           => intval($audioBook[AudioBook::_DURATION]),
             'audio_file_size'    => $audioBook[AudioBook::_AUDIO_SIZE] ? (float)$audioBook[AudioBook::_AUDIO_SIZE] : 0,
             'version_audio_book' => intval($audioBook[AudioBook::_VERSION]),
-            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH] != 0 ? $audioBook[AudioBook::_DATE_PUBLISH] : ( $isInHouse ? $audioBook[AudioBook::_UPDATED_AT] : 0 ),
+            'date_publish'       => $audioBook[AudioBook::_DATE_PUBLISH] != 0 ? $audioBook[AudioBook::_DATE_PUBLISH] : 0,
             'child'              => $audioBook['child'] ?? [],
         ];
+
+        if ($isInHouse) {
+            $resourceItemAudioBook['date_publish'] = $audioBook[AudioBook::_UPDATED_AT];
+        }
+
+        return $resourceItemAudioBook;
     }
 
     private function getItemAudioBookVM($audioBook, $isInHouse = false)

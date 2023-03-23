@@ -8,7 +8,7 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceLesson = 'http://10.240.0.42:9097';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media.monkeyuni.com';
-    $urlDisplayCdn      = 'https://monkeymedia.vcdn.com.vn/';
+    $urlDisplayCdn      = 'https://hvegjijo7jobj.vcdn.cloud/';
 } elseif (env('APP_ENV') == 'dev') {
     $urlConnectServiceMedia   = 'https://media.dev.monkeyuni.net';
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
