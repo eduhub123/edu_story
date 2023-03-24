@@ -24,9 +24,8 @@ class StoryLangRepository extends EloquentRepository
             ->max(StoryLang::_VERSION_STORY);
     }
 
-    public function getStoriesLang($idApp, $idLanguage, $level, $version, $limit = null, $offset = null)
+    public function getStoriesLang($idApp, $idLanguage, $level, $version, $limit = null, $offset = null, $isMalay = false)
     {
-
         $query = $this->_model
             ->select(
                 StoryLang::TABLE . '.' . StoryLang::_ID_STORIES,
@@ -55,6 +54,10 @@ class StoryLangRepository extends EloquentRepository
         }
         if ($level) {
             $query->where(Level::TABLE . '.' . Level::_LEVEL, $level);
+        }
+        if ($isMalay) {
+            // do not show stories in the Malay country
+            $query->whereNotIn(StoryLang::TABLE . '.' . StoryLang::_ID_STORY_LANG, [4117,1233,1015,1878,2085,1360,1934,2543,2047]);
         }
         if (isset($offset)) {
             $query->limit($limit)
