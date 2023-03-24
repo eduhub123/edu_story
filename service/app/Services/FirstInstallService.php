@@ -223,7 +223,7 @@ class FirstInstallService
         $keyFileName['subversion']                 = $subversion;
         $keyFileName['os']                         = $os;
         $keyFileName['in_house']                   = $isInHouse;
-        $keyFileName['is_malay']                   = $isMalay;
+        $keyFileName['is_malay']                   = (int)$isMalay;
 
         return $this->zipFileFirstInstall("first_install_v2", $keyFileName, $dataFirstInstall);
     }
