@@ -21,6 +21,7 @@ class BaseMobileController extends Controller
     protected $ver;
     protected $appVer;
     protected $is_vn               = false;
+    protected $isMalayNetWork      = false;
     protected $subversion;
     protected $isTest;
     protected $ip;
@@ -160,6 +161,7 @@ class BaseMobileController extends Controller
         $detectIpService   = new DetectIpService();
         $this->ip          = $ip = $detectIpService->ip_address();
         $this->is_vn       = $detectIpService->isVn($ip);
+        $this->isMalayNetWork    = $detectIpService->isMalay($ip);
         $locationFromIP    = $detectIpService->getLocationFormIp();
         $this->countryCode = $locationFromIP;
     }

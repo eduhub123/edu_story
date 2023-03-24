@@ -73,7 +73,7 @@ class FirstInstallService
         $this->mediaConnectService  = $mediaConnectService;
     }
 
-    public function getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion)
+    public function getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion, $isMalay)
     {
         $idLanguage    = Language::getIdLanguageByIdApp($idApp);
         $idLangDisplay = LangDisplay::getIdLangDisplayByIdApp($idApp);
@@ -108,7 +108,7 @@ class FirstInstallService
         $data['audio']                = $audioItem;
 
         //story
-        list($stories, $deleteStory) = $this->storyService->processDataStory($idApp, $deviceType, $idLanguage, 0, 0, $dataVersion['version_story'] ?? 0, $isInHouse);
+        list($stories, $deleteStory) = $this->storyService->processDataStory($idApp, $deviceType, $idLanguage, 0, 0, $dataVersion['version_story'] ?? 0, $isInHouse, $isMalay);
         $storyItem['story']          = array_values($stories);
         $storyItem['delete']         = array_values($deleteStory);
         $storyItem['version_story']  = $dataVersion['version_story'] ?? 0;
@@ -207,7 +207,7 @@ class FirstInstallService
         return array_merge($listActStory, $listActLesson);
     }
 
-    public function zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall)
+    public function zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall, $isMalay)
     {
         $keyFileName['env']                        = env('APP_ENV');
         $keyFileName['version_story']              = $dataVersion['version_story'] ?? 0;
@@ -223,6 +223,7 @@ class FirstInstallService
         $keyFileName['subversion']                 = $subversion;
         $keyFileName['os']                         = $os;
         $keyFileName['in_house']                   = $isInHouse;
+        $keyFileName['is_malay']                   = $isMalay;
 
         return $this->zipFileFirstInstall("first_install_v2", $keyFileName, $dataFirstInstall);
     }

@@ -39,6 +39,7 @@ class FirstInstallController extends Controller
         $isLicence        = $this->request->input('is_licence', false);
         $detectUrlCluster = $this->request->input('detect_url_cluster', "https://www.monkeyuni.net");
         $dataVersion      = $this->request->input('data_version', []);
+        $isMalay          = $this->request->input('is_malay', false);
         if (is_numeric($deviceType)) {
             if($deviceType == 2) {
                 $deviceType = "hd";
@@ -48,8 +49,8 @@ class FirstInstallController extends Controller
         }
         $dataVersion = $this->versionService->getDataVersionAppInfo($idApp, $dataVersion);
 
-        $dataFirstInstall       = $this->firstInstallService->getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion);
-        $linkFileFirstInstallMS = $this->firstInstallService->zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall);
+        $dataFirstInstall       = $this->firstInstallService->getDataFileFirstInstallMS($idApp, $deviceType, $os, $isLicence, $detectUrlCluster, $subversion, $isInHouse, $dataVersion, $isMalay);
+        $linkFileFirstInstallMS = $this->firstInstallService->zipFileFirstInstallMS($idApp, $deviceType, $os, $subversion, $isInHouse, $dataVersion, $dataFirstInstall, $isMalay);
 
         $this->status  = 'success';
         $this->message = __('app.success');

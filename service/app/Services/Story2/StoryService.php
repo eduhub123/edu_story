@@ -42,12 +42,12 @@ class StoryService
         return $this->storyLangRepos->getLastVersionStory($idApp, $idLanguage) ?? 0;
     }
 
-    public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse)
+    public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse, $isMalay = false)
     {
         $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion;
         $listStory = $this->redisService->get($keyStory, true);
         if (!$listStory) {
-            $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null)->toArray();
+            $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null, $isMalay)->toArray();
             $this->redisService->set($keyStory, $listStory);
         }
         $list   = [];

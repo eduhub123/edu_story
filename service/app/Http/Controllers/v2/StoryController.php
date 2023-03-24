@@ -73,6 +73,7 @@ class StoryController extends BaseMobileController
         $json      = $this->request->input('json');
         $inHouse   = $this->request->input('in_house', false);
         $isInHouse = $this->isNetworkEarlyStart || $inHouse;
+        $isMalay   = $this->isMalayNetWork || $this->request->input('is_malay', false);
 
         $idLanguage  = Language::getIdLanguageByIdApp($this->app_id);
         $lastVersion = $this->versionService->getVersion($this->app_id, VersionService::TYPE_STORY_V2);
@@ -90,7 +91,7 @@ class StoryController extends BaseMobileController
             }
         }
 
-        list($story, $delete) = $this->storyService->processDataStory($this->app_id, $this->device_type, $idLanguage, $level, $this->ver, $lastVersion, $isInHouse);
+        list($story, $delete) = $this->storyService->processDataStory($this->app_id, $this->device_type, $idLanguage, $level, $this->ver, $lastVersion, $isInHouse, $isMalay);
 
         $storyItem['story']          = array_values($story);
         $storyItem['delete']         = array_values($delete);
