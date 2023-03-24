@@ -47,7 +47,7 @@ class DetectIpService
         }
 
         list($ip, $countryCode, $country_name) = $this->detectLocationFromIp($ip);
-        if (!$countryCode || $countryCode != 'MY' || $countryCode != 'MYS') {
+        if (!$countryCode || $countryCode != 'MY') {
             return false;
         }
         return true;
