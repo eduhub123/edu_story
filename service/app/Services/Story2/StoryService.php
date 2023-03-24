@@ -44,7 +44,7 @@ class StoryService
 
     public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse, $isMalay = false)
     {
-        $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion;
+        $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion . "_" . (int)$isMalay;
         $listStory = $this->redisService->get($keyStory, true);
         if (!$listStory) {
             $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null, $isMalay)->toArray();
