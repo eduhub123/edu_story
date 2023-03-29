@@ -93,6 +93,9 @@ class StoryController extends BaseMobileController
 
         list($story, $delete) = $this->storyService->processDataStory($this->app_id, $this->device_type, $idLanguage, $level, $this->ver, $lastVersion, $isInHouse, $isMalay);
 
+        $storyItem['is_malay']       = $isMalay;
+        $storyItem['is_network_malay']       = $this->isMalayNetWork;
+        $storyItem['ip_malay']       = $this->ip;
         $storyItem['story']          = array_values($story);
         $storyItem['delete']         = array_values($delete);
         $storyItem['version_story']  = $lastVersion;
