@@ -53,6 +53,13 @@ class StoryService
         }
         $list   = [];
         $delete = [];
+
+        if ($isMalay) {
+            foreach ($listStoryNotShowMalay as $storyId) {
+                $delete[$storyId] = $storyId;
+            }
+        }
+
         foreach ($listStory as $story) {
             $idStoryLang = $story[StoryLang::_ID_STORY_LANG];
 
@@ -62,12 +69,6 @@ class StoryService
             } elseif ($status == LevelSystem::STATUS_DELETE) {
                 $delete[$idStoryLang] = intval($idStoryLang);
                 continue;
-            }
-
-            if ($isMalay) {
-                foreach ($listStoryNotShowMalay as $storyId) {
-                    $delete[$storyId] = $storyId;
-                }
             }
 
             if ($story[StoryLang::_DATA]) {
