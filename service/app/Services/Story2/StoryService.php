@@ -42,16 +42,24 @@ class StoryService
         return $this->storyLangRepos->getLastVersionStory($idApp, $idLanguage) ?? 0;
     }
 
-    public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse)
+    public function processDataStory($idApp, $deviceType, $idLanguage, $level, $version, $lastVersion, $isInHouse, $isMalay = false)
     {
-        $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion;
+        $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion . "_" . (int)$isMalay;
         $listStory = $this->redisService->get($keyStory, true);
+        $listStoryNotShowMalay = [4117,1233,1015,1878,2085,1360,1934,2543,2047];
         if (!$listStory) {
-            $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null)->toArray();
+            $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null, $isMalay)->toArray();
             $this->redisService->set($keyStory, $listStory);
         }
         $list   = [];
         $delete = [];
+
+        if ($isMalay) {
+            foreach ($listStoryNotShowMalay as $storyId) {
+                $delete[$storyId] = $storyId;
+            }
+        }
+
         foreach ($listStory as $story) {
             $idStoryLang = $story[StoryLang::_ID_STORY_LANG];
 
@@ -62,6 +70,7 @@ class StoryService
                 $delete[$idStoryLang] = intval($idStoryLang);
                 continue;
             }
+
             if ($story[StoryLang::_DATA]) {
                 $dataStoryNew = json_decode($story[StoryLang::_DATA], true);
                 if ($deviceType == "hd") {

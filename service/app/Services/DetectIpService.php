@@ -40,6 +40,19 @@ class DetectIpService
         return true;
     }
 
+    public function isMalay($ip = "")
+    {
+        if (!$ip) {
+            $ip = $this->ip_address();
+        }
+
+        list($ip, $countryCode, $country_name) = $this->detectLocationFromIp($ip);
+        if (!$countryCode || $countryCode != 'MY') {
+            return false;
+        }
+        return true;
+    }
+
     public function detectLocationFromIp($ip)
     {
         $ip2location = new IP2LocationLaravel();

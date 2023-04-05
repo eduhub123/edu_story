@@ -1,6 +1,6 @@
 <?php
 if (env('APP_ENV') == 'live') {
-    $urlConnectServiceMedia   = 'https://media.dev.monkeyuni.net';
+    $urlConnectServiceMedia   = 'https://media.monkeyuni.net';
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
     $urlConnectServiceSupport = 'https://ticket.monkeyuni.net';
 
