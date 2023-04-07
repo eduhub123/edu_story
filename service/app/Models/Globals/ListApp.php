@@ -17,5 +17,7 @@ class ListApp extends Model
     const APP_ID_MS_VN = 51;
     const APP_ID_MM    = 50;
     const APP_ID_MK    = 10;
+    const APP_ID_TUTORING_NATIVE    = 69;
+    const APP_ID_TUTORING_PHI       = 71;
 
 }

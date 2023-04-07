@@ -61,7 +61,7 @@ class LangDisplay
     public static function getIdLangDisplayByIdApp($idApp)
     {
         $idLang = self::ID_LANG_DISPLAY_VN;
-        if ($idApp == ListApp::APP_ID_MS_EN) {
+        if ($idApp == ListApp::APP_ID_MS_EN || $idApp == ListApp::APP_ID_TUTORING_NATIVE || $idApp == ListApp::APP_ID_TUTORING_PHI) {
             $idLang = self::ID_LANG_DISPLAY_EN;
         }
         return $idLang;
