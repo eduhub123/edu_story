@@ -131,7 +131,7 @@ class LessonConnectService
         if (isset($response['status']) && $response['status'] == 'success') {
             return $response['data'];
         }
-        Queue::push(new SendTelegram('Data not showing - API get-list-activities-by-lesson' . json_encode($response) . " " . json_encode($data)));
+        Queue::push(new SendTelegram('Data not showings - API get-list-activities-by-lesson' . json_encode($response) . " " . json_encode($data)));
         return [];
     }
 
@@ -153,7 +153,7 @@ class LessonConnectService
         if (isset($response['status']) && $response['status'] == 'success') {
             return $response['data'];
         }
-        Queue::push(new SendTelegram('Data not showing - API v1/lesson/list' . $responseData . " " . json_encode($data)));
+        Queue::push(new SendTelegram('Data not showings - API v1/lesson/list' . $responseData . " " . json_encode($data)));
         return [];
     }
 
