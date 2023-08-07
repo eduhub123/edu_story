@@ -150,6 +150,7 @@ class FirstInstallService
 
     private function getDataMonkeyTalking($idApp, $deviceType, $subversion)
     {
+        return [];
         $data['speakingTopicList'] = $this->lessonConnectService->getListCategory($idApp, $deviceType, $subversion, LessonConnectService::MONKEY_TALKING);
         $listLessonMonkeyTaking    = $this->lessonConnectService->getListLessonMonkeyTalking($idApp, $deviceType, $subversion);
         $data['lessonList']        = $listLessonMonkeyTaking;
