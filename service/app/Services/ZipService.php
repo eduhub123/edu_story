@@ -109,10 +109,10 @@ class ZipService
             if ($writeFile && file_exists($pathFile)) {
                 $pathFileZip = $folderData . '/' . $fileZip . '.zip';
                 ExtendedZip::zipFile($pathFile, $pathFileZip, \ZipArchive::CREATE, $fileName);
-                unlink($pathFile);
+//                unlink($pathFile);
                 return $pathFileZip;
             }
-            echo "Not exits file zip" . PHP_EOL;
+            echo "Not exits file zip $pathFile" . PHP_EOL;
             return false;
         } catch (\Exception $e) {
             echo $e->getMessage() . PHP_EOL;
