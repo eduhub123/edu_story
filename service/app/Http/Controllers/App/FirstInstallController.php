@@ -31,8 +31,8 @@ class FirstInstallController extends Controller
 
     public function zipFirstInstallMS()
     {
-        $idApp            = $this->request->input('id_app');
-        $subversion       = $this->request->input('subversion');
+        $idApp            = $this->request->input('id_app', 40);
+        $subversion       = $this->request->input('subversion', '3.5.8');
         $deviceType       = $this->request->input('device_type', 'hd');
         $os               = $this->request->input('os');
         $isInHouse        = $this->request->input('in_house', false);
