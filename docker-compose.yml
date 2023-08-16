@@ -7,4 +7,4 @@ php_story:
     volumes:
         - ./service/:/var/www/html
     ports:
-        - "9116:80"
+        - "9100:80"
