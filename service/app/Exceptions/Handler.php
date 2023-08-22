@@ -9,6 +9,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -37,7 +39,9 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {
         if (env('APP_ENV') != 'local') {
-            app('sentry')->captureException($exception);
+            if (!($exception instanceof MethodNotAllowedHttpException) && !($exception instanceof ValidationException) && !($exception instanceof NotFoundHttpException)) {
+                app('sentry')->captureException($exception);
+            }
         }
         parent::report($exception);
     }
