@@ -1,6 +1,7 @@
-version: '3'
-services:
-    story-php:
-        build: ./service
-        ports:
-            - "9100:80"
+php_story:
+    build: ./service
+    container_name: php_story
+    volumes:
+        - ./service/:/var/www
+    ports:
+        - "9100:80"
