@@ -5,6 +5,6 @@ php_story:
     build: ./service
     container_name: php_story
     volumes:
-        - ./service/:/var/www/html
+        - ./service/:/var/www
     ports:
         - "9100:80"
