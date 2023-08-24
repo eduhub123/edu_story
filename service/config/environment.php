@@ -4,7 +4,7 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
     $urlConnectServiceSupport = 'https://ticket.monkeyuni.net';
 
-    $urlConnectServiceApp    = 'http://edu-user.app.svc.cluster.local:80';
+    $urlConnectServiceApp    = 'http://edu-app.app.svc.cluster.local:80';
     $urlConnectServiceLesson = 'http://edu-lesson.app.svc.cluster.local:80';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media.monkeyuni.com';
