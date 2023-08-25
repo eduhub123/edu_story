@@ -93,6 +93,7 @@ class UploadService
         $finfo                  = finfo_open(FILEINFO_MIME_TYPE);
         $mime_type              = finfo_file($finfo, $realFile);
 
+
         return new UploadedFile(
             $realFile,
             $path_parts['basename'],
