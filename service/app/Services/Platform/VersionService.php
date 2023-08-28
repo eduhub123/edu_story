@@ -56,7 +56,6 @@ class VersionService
         $this->redisService         = $redisService;
     }
 
-
     public function getDataVersionAppInfo($appId, $data)
     {
         if (!isset($data['version_story']) || !$data['version_story']) {

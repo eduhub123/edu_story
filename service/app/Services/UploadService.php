@@ -90,12 +90,14 @@ class UploadService
     {
         $path_parts             = pathinfo($realFile);
         $path_parts['basename'] = $path_parts['filename'] . '.' . $path_parts['extension'];
+        $finfo                  = finfo_open(FILEINFO_MIME_TYPE);
+        $mime_type              = finfo_file($finfo, $realFile);
 
-        $imgInfo = getimagesize($realFile);
+
         return new UploadedFile(
             $realFile,
             $path_parts['basename'],
-            $imgInfo['mime'],
+            $mime_type,
             filesize($realFile),
             true
         );

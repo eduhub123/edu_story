@@ -4,11 +4,9 @@ FROM 820883240614.dkr.ecr.ap-southeast-1.amazonaws.com/php-base:latest
 WORKDIR /var/www
 ADD . .
 
-#COPY php.ini /usr/local/etc/php/php.ini
-
 #Install composer
 
-RUN composer install
+RUN composer install 
 RUN composer dump-autoload
 
 #Config apache
