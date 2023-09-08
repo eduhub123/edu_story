@@ -46,6 +46,7 @@ class ZipService
             if ($data != $json) {
                 $writeFile = File::put($filePathJson, $dataWrite);
                 Queue::push(new SendTelegram("error file save not in json format " . $filePathJson));
+                return false;
             }
         }
         if ($writeFile && file_exists($filePathJson)) {
