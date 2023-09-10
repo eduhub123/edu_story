@@ -105,6 +105,7 @@ class ZipService
                 if ($data != $json) {
                     $writeFile = File::put($pathFile, $dataWrite);
                     Queue::push(new SendTelegram("error file save with incorrect data " . $pathFile));
+                    return false;
                 }
             }
             if ($writeFile && file_exists($pathFile)) {
