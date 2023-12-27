@@ -237,6 +237,17 @@ class FirstInstallService
         }
         $pathFile   = UploadService::zipFirstInstall('install', $fileName, $dataFirstInstall);
         $fileUpload = UploadService::getFile($pathFile);
+
+        $checkInvalidJson = ZipService::checkInvalidJson($pathFile);
+
+        // invalid format json
+        if (!$checkInvalidJson) {
+            $pathJson = str_replace(".zip", "_index.json", $pathFile);
+            unlink($pathFile);
+            unlink($pathJson);
+            return '';
+        }
+
         $response   = $this->mediaConnectService->upload($fileUpload, self::FOLDER_UPLOAD_FIRST_INSTALL);
         if (isset($response['data']['link'])) {
             return $response['data']['link'];
