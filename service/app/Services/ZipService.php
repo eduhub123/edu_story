@@ -122,4 +122,34 @@ class ZipService
         }
     }
 
+    public static function checkInvalidJson($pathFile)
+    {
+        $fullUrlStorage = Storage::disk('local')->getAdapter()->getPathPrefix();
+        $folderData     = $fullUrlStorage;
+        if (!file_exists($folderData)) {
+            mkdir($folderData, 0777, true);
+        }
+        $folderDataExtract = $folderData . '/unzip';
+        if (!file_exists($folderDataExtract)) {
+            mkdir($folderDataExtract, 0777, true);
+        }
+        $zip = new \ZipArchive;
+        if ($zip->open($pathFile) === true) {
+            $zip->extractTo($folderDataExtract);
+            $zip->close();
+            $pathJson = $folderDataExtract . '/index.json';
+            $dataJson = file_get_contents($pathJson);
+            $dataJson = json_decode($dataJson, true);
+            if (file_exists($pathJson)) {
+                unlink($pathJson);
+            }
+            if (!$dataJson) {
+                return false;
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
