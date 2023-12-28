@@ -140,7 +140,9 @@ class ZipService
             $pathJson = $folderDataExtract . '/index.json';
             $dataJson = file_get_contents($pathJson);
             $dataJson = json_decode($dataJson, true);
-            unlink($pathJson);
+            if (file_exists($pathJson)) {
+                unlink($pathJson);
+            }
             if (!$dataJson) {
                 return false;
             }

@@ -243,8 +243,12 @@ class FirstInstallService
         // invalid format json
         if (!$checkInvalidJson) {
             $pathJson = str_replace(".zip", "_index.json", $pathFile);
-            unlink($pathFile);
-            unlink($pathJson);
+            if (file_exists($pathFile)) {
+                unlink($pathFile);
+            }
+            if (file_exists($pathJson)) {
+                unlink($pathJson);
+            }
             return '';
         }
 
