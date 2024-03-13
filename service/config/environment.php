@@ -8,7 +8,7 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceLesson = 'http://edu-lesson.app.svc.cluster.local:80';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media.monkeyuni.com';
-    $urlDisplayCdn      = 'https://hvegjijo7jobj.vcdn.cloud/';
+    $urlDisplayCdn      = 'https://vnmedia2.monkeyuni.net/';
 } elseif (env('APP_ENV') == 'dev') {
     $urlConnectServiceMedia   = 'https://media.dev.monkeyuni.net';
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
@@ -18,7 +18,7 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceLesson = 'https://api.dev.monkeyuni.com/lesson';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
-    $urlDisplayCdn      = 'https://vysqy4zclvobj.vcdn.cloud/';
+    $urlDisplayCdn      = 'https://vnmediadev.monkeyuni.net/';
 } else {
     $urlConnectServiceMedia   = 'http://localhost:8089';
     $urlConnectServiceCrm     = 'https://crm.dev.monkeyuni.net';
@@ -28,7 +28,7 @@ if (env('APP_ENV') == 'live') {
     $urlConnectServiceLesson = 'http://localhost:8099';
 
     $downloadResourceS3 = 'https://s3-ap-southeast-1.amazonaws.com/monkey-media-test.monkeyuni.com';
-    $urlDisplayCdn      = 'https://vysqy4zclvobj.vcdn.cloud/';
+    $urlDisplayCdn      = 'https://vnmediadev.monkeyuni.net/';
 }
 
 return [

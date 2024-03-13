@@ -46,6 +46,7 @@ class StoryService
     {
         $keyStory  = self::KEY_REDIS_STORY_V2_LIST . "_" . $idApp . "_" . $idLanguage . "_" . $level . "_" . $version . "_" . $lastVersion . "_" . (int)$isMalay;
         $listStory = $this->redisService->get($keyStory, true);
+        $listStory = false;
         $listStoryNotShowMalay = [4117,1233,1015,1878,2085,1360,1934,2543,2047];
         if (!$listStory) {
             $listStory = $this->storyLangRepos->getStoriesLang($idApp, $idLanguage, $level, $version, null, null, $isMalay)->toArray();
@@ -61,6 +62,9 @@ class StoryService
         }
 
         foreach ($listStory as $story) {
+            if ($story['id_story_lang'] == 4145) {
+                dd($story);
+            }
             $idStoryLang = $story[StoryLang::_ID_STORY_LANG];
 
             $status = LevelSystem::checkStatusLevelSystem($story[StoryLang::_LEVEL_SYSTEM], $story[StoryLang::_DATE_PUBLISH], $isInHouse);
